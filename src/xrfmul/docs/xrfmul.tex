@@ -1,0 +1,127 @@
+\documentstyle[12pt]{article}
+\title{GEBRUIK XRFMUL}
+\author{M.Bos}
+\date{7 december 1999}
+\begin{document}
+\maketitle
+\section*{Algemeen}
+Het programma {\bf xrfmul} kan voor meerlaags preparaten uit 
+gemeten intensiteiten van r\"ontgenfluorescentielijnen de dikte van
+de lagen en hun samenstelling berekenen. Voorwaarde daarbij is
+dat er om te beginnen voldoende lijnen zijn gemeten en verder
+natuurlijk dat ook de elementen in de onderste laag nog bijdragen
+aan de gemeten intensiteiten. Sommige auteurs beweren dat de lagen
+geen gemeenschappelijke elementen mogen bezitten, maar dat is mijns inziens
+geen wet van Meden en Perzen.
+
+\section*{Benodigde bestanden}
+Het programma {\bf xrfmul} haalt zijn benodigde invoergegevens uit bestanden.
+De vaste gegevens dienen als {\bf .dat} en {\bf .txt} bestanden in de
+werkdirectory van {\bf xrfmul} te staan. De monster-afhankelijke
+gegevens moeten worden ondergebracht in de volgende bestanden:
+\begin{itemize}
+\item pwsettings.dat -- de gegevens van de gebruikte  spectrometer
+\item lines.dat -- de gemeten lijnen met hun relatieve intensiteiten (t.o.v.
+het zuivere element)
+\item sample.dat -- bekende gegevens van het monster; in ieder geval
+de kwalitatieve opbouw van de verschillende lagen
+\end{itemize}
+De exacte layout en inhoud van deze bestanden wordt hieronder beschreven.
+Zij dienen zich te bevinden in de subdirectory {\bf ./data}.
+
+\subsection*{Het bestand pwsettings.dat}
+Dit bestand
+is \'e\'enregelig en bevat achetreenvolgens : symbool van het anode-element,
+de dikte in g/cm$^2$ van het berylliumvenster van de r\"ontgenbuis,
+de take-off angle van de straling bij de anode, het getal 1.0,
+de incidence angle bij het monster (in graden) en de take-off angle
+bij het monster (ook in graden).
+Voor onze spectrometer met de chroombuis dient dit bestand er als volgt uit
+te zien:
+\begin{verbatim}
+Cr 0.0925001 26.0 1.0 61.0 40.0
+\end{verbatim}
+\subsection*{Het bestand lines.dat}
+Het bestand {\bf lines.dat} bevat de gegevens omtrent de gemeten lijnen.
+Per regel worden de gegevens van \'e\'en lijn genoteerd en wel in de
+volgorde: symbool van het element, aanduiding van de lijn,
+het kilovoltage waarbij gemeten is en de gemeten relatieve intensiteit.
+Een voorbeeld van zo'n bestand:
+\begin{verbatim}
+Si ka 50.0  4.309358e-2
+Ti ka 50.0 3.907203e-2
+As ka 50.0 3.792139e-2
+Ag ka 50.0 1.375333e-2
+\end{verbatim}
+\subsection*{Het bestand sample.dat}
+De eerste regel van dit bestand bevat \'e\'en getal dat aangeeft
+uit hoeveel lagen het preparaat bestaat. Daarna volgt er per laag
+een regel met de gegevens van die laag. De tweede regel van het bestand
+bevat de gegevens van de bovenste laag van het preparaat (gezien vanaf
+de detector en de r\"ontgenbuis).
+
+De regels met de gegevens van een laag hebben de volgende structuur:
+geheel getal dat het aantal componenten in die laag representeert.
+Vervolgens een beginschatting of de werkelijke waarde van de 
+dikte in g/cm$^2$ van de laag gevolgd door het getal 0 of het getal 1.
+Het getal 1 geeft aan dat deze parameter niet "opgeknapt" hoeft te
+worden in de iteratieprocedure en dus de werkelijke dikte representeert.
+Wordt hier het getal 0 gebruikt dan wordt de dikte tijdens de 
+iteratieve berekening aangepast.
+ 
+Hierna volgen per component de naam van de component, een schatting van
+ de gewichtsfractie
+van die component in de laag of de werkelijke waarde van die gewichtsfractie,
+ook weer gevolgd door een 0 of een 1 met dezelfde betekenis van resp. opknappen
+of vasthouden.
+
+Een voorbeeld van het bestand {\bf sample.dat}:
+\begin{verbatim}
+2
+3 6.96e-4 0 Ti 0.2005 0 As 0.400039 0 Ag 0.4011 0
+1 8.474e-3 0 Si 1.0 1
+\end{verbatim}
+Het preparaat dat met dit bestand wordt gekarakteriseerd bestaat uit
+2 lagen, de bovenste laag bevat 3 componenten, heeft een beginschatting
+voor de dikte van 6.96e-4 g/cm$^2$ die moet worden opgeknapt,
+evenals de fracties 0.2005 0.400039 en 0.4011 van resp. de elementen
+Ti, As en Ag.
+
+De onderste laag bestaat uit zuiver Si met een fractie 1.0,
+ die vast moet blijven
+staan. Wel moet voor de onderste laag de beginschatting 8.474e-3 g/cm$^2$
+van de dikte worden opgeknapt.
+
+\section*{Het berekenen van de onbekende gegevens van het preparaat}
+Na het aanmaken van bovengenoemde bestanden in de subdirectory {\bf ./data}
+kan de berekening worden gestart door in de werkdirectory
+het commando:
+\begin{verbatim}
+xrfmul
+\end{verbatim}
+te geven.
+
+Een voorbeeld van de resultaten:
+\begin{verbatim}
+0 Z: 14 line ka rel int. 0.0430936 
+1 Z: 22 line ka rel int. 0.039072 
+2 Z: 33 line ka rel int. 0.0379214 
+3 Z: 47 line ka rel int. 0.0137533 
+Bulkint Si ka  1.323464e-04 
+Bulkint Ti ka  1.378835e-03 
+Bulkint As ka  4.437061e-04 
+Bulkint Ag ka  3.405200e-04 
+Warning maximum # iterations reached 
+Line nr 0 RXI found 0.0428934 RXI meas 0.0430936
+Line nr 1 RXI found 0.0390286 RXI meas 0.039072
+Line nr 2 RXI found 0.0375672 RXI meas 0.0379214
+Line nr 3 RXI found 0.0136809 RXI meas 0.0137533
+Layer 0 has 3 compounds and a massthickness of 0.000629728  g/cm2
+Compound Ti wfract 0.123567  
+Compound As wfract 0.445756  
+Compound Ag wfract 0.430676  
+Layer 1 has 1 compounds and a massthickness of 0.0575096  g/cm2
+Compound Si wfract 1  
+Ssq is 0.000137984
+\end{verbatim}
+\end{document}

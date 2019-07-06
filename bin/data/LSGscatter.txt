@@ -1,0 +1,197 @@
+Tue Apr 20 21:01:45 GMT+1 2004
+
+-----Sample ID LSGF8-2-6-4New ------
+
+
+line  kv    intens.
+
+Fe ka 50.0 2.2894 
+Ga ka 50.0 4.6764 
+Sr ka 60.0 1.7040 
+Sr la1 50.0 0.2332 
+La ka 60.0 5.2497 
+La la1 50.0 6.7574 
+
+-----Sample ID LSGF8-2-6-4New ------
+
+
+Warning maximum # iterations reached 
+
+Line  Fe ka RXI found 0.0452441 RXI meas 0.048127
+Line  Ga ka RXI found 0.105327 RXI meas 0.120837
+Line  Sr ka RXI found 0.0667929 RXI meas 0.0802638
+Line  Sr la1 RXI found 0.0353521 RXI meas 0.0332194
+Line  La ka RXI found 0.671959 RXI meas 1.11388
+Line  La la1 RXI found 0.661092 RXI meas 0.648254
+
+Layer 0 has 4 compounds and a massthickness of 10  g/cm2
+Compound Fe2O3 wfract 0.149684  
+Compound Ga2O3 wfract 0.242365  
+Compound SrO wfract 0.0980507  
+Compound La2O3 wfract 0.5099  
+Ssq is 0.406038
+================================================
+results with scattering taken into account
+================================================
+Warning maximum # iterations in scatter reached 
+
+Line  Fe ka RXI found 0.0451482 RXI meas 0.048127
+Line  Ga ka RXI found 0.104787 RXI meas 0.120837
+Line  Sr ka RXI found 0.0663891 RXI meas 0.0802638
+Line  Sr la1 RXI found 0.0353634 RXI meas 0.0332194
+Line  La ka RXI found 0.66922 RXI meas 1.11388
+Line  La la1 RXI found 0.658871 RXI meas 0.648254
+
+Layer 0 has 4 compounds and a massthickness of 10  g/cm2
+Compound Fe2O3 wfract 0.150406  
+Compound Ga2O3 wfract 0.243354  
+Compound SrO wfract 0.0982954  
+Compound La2O3 wfract 0.508347  
+Ssq is 0.413442
+
+-----Sample ID LSGF8-2-6-4Used ------
+
+
+line  kv    intens.
+
+Fe ka 50.0 1.8898 
+Ga ka 50.0 3.4168 
+Sr ka 60.0 1.4739 
+Sr la1 50.0 0.2790 
+La ka 60.0 4.5142 
+La la1 50.0 5.7353 
+
+-----Sample ID LSGF8-2-6-4Used ------
+
+
+Warning maximum # iterations reached 
+
+Line  Fe ka RXI found 0.0398211 RXI meas 0.0397267
+Line  Ga ka RXI found 0.0884653 RXI meas 0.0882894
+Line  Sr ka RXI found 0.0723421 RXI meas 0.0694253
+Line  Sr la1 RXI found 0.0381481 RXI meas 0.0397436
+Line  La ka RXI found 0.696983 RXI meas 0.957819
+Line  La la1 RXI found 0.684869 RXI meas 0.550201
+
+Layer 0 has 4 compounds and a massthickness of 10  g/cm2
+Compound Fe2O3 wfract 0.139065  
+Compound Ga2O3 wfract 0.208892  
+Compound SrO wfract 0.105954  
+Compound La2O3 wfract 0.546088  
+Ssq is 0.223636
+================================================
+results with scattering taken into account
+================================================
+Warning maximum # iterations in scatter reached 
+
+Line  Fe ka RXI found 0.0397606 RXI meas 0.0397267
+Line  Ga ka RXI found 0.0882178 RXI meas 0.0882894
+Line  Sr ka RXI found 0.0720431 RXI meas 0.0694253
+Line  Sr la1 RXI found 0.0382153 RXI meas 0.0397436
+Line  La ka RXI found 0.693821 RXI meas 0.957819
+Line  La la1 RXI found 0.682309 RXI meas 0.550201
+
+Layer 0 has 4 compounds and a massthickness of 10  g/cm2
+Compound Fe2O3 wfract 0.139764  
+Compound Ga2O3 wfract 0.21014  
+Compound SrO wfract 0.106348  
+Compound La2O3 wfract 0.544122  
+Ssq is 0.223678
+
+-----Sample ID LSGF7-3-3-7-New ------
+
+
+line  kv    intens.
+
+Fe ka 50.0 4.3659 
+Ga ka 50.0 2.6899 
+Sr ka 60.0 3.0897 
+Sr la1 50.0 0.4146 
+La ka 60.0 4.8962 
+La la1 50.0 6.2244 
+
+-----Sample ID LSGF7-3-3-7-New ------
+
+
+Warning maximum # iterations reached 
+
+Line  Fe ka RXI found 0.0810151 RXI meas 0.0917784
+Line  Ga ka RXI found 0.0636526 RXI meas 0.0695065
+Line  Sr ka RXI found 0.11422 RXI meas 0.145535
+Line  Sr la1 RXI found 0.0616454 RXI meas 0.0590598
+Line  La ka RXI found 0.610482 RXI meas 1.03887
+Line  La la1 RXI found 0.597484 RXI meas 0.597122
+
+Layer 0 has 4 compounds and a massthickness of 10  g/cm2
+Compound Fe2O3 wfract 0.252919  
+Compound Ga2O3 wfract 0.143325  
+Compound SrO wfract 0.156686  
+Compound La2O3 wfract 0.44707  
+Ssq is 0.423756
+================================================
+results with scattering taken into account
+================================================
+Warning maximum # iterations in scatter reached 
+
+Line  Fe ka RXI found 0.0807259 RXI meas 0.0917784
+Line  Ga ka RXI found 0.0634317 RXI meas 0.0695065
+Line  Sr ka RXI found 0.113429 RXI meas 0.145535
+Line  Sr la1 RXI found 0.0615939 RXI meas 0.0590598
+Line  La ka RXI found 0.60759 RXI meas 1.03887
+Line  La la1 RXI found 0.595118 RXI meas 0.597122
+
+Layer 0 has 4 compounds and a massthickness of 10  g/cm2
+Compound Fe2O3 wfract 0.253662  
+Compound Ga2O3 wfract 0.144256  
+Compound SrO wfract 0.156892  
+Compound La2O3 wfract 0.44554  
+Ssq is 0.432206
+
+-----Sample ID LSGF7-3-3-7-Used ------
+
+
+line  kv    intens.
+
+Fe ka 50.0 3.3411 
+Ga ka 50.0 1.4893 
+Sr ka 60.0 2.7421 
+Sr la1 50.0 0.3751 
+La ka 60.0 4.4293 
+La la1 50.0 4.9098 
+
+-----Sample ID LSGF7-3-3-7-Used ------
+
+
+Warning maximum # iterations reached 
+
+Line  Fe ka RXI found 0.0727413 RXI meas 0.0702354
+Line  Ga ka RXI found 0.0391248 RXI meas 0.0384832
+Line  Sr ka RXI found 0.113574 RXI meas 0.129162
+Line  Sr la1 RXI found 0.0606585 RXI meas 0.053433
+Line  La ka RXI found 0.660784 RXI meas 0.939805
+Line  La la1 RXI found 0.645774 RXI meas 0.471009
+
+Layer 0 has 4 compounds and a massthickness of 10  g/cm2
+Compound Fe2O3 wfract 0.247779  
+Compound Ga2O3 wfract 0.092526  
+Compound SrO wfract 0.155321  
+Compound La2O3 wfract 0.504374  
+Ssq is 0.368916
+================================================
+results with scattering taken into account
+================================================
+Warning maximum # iterations in scatter reached 
+
+Line  Fe ka RXI found 0.0725688 RXI meas 0.0702354
+Line  Ga ka RXI found 0.0390569 RXI meas 0.0384832
+Line  Sr ka RXI found 0.112923 RXI meas 0.129162
+Line  Sr la1 RXI found 0.0606252 RXI meas 0.053433
+Line  La ka RXI found 0.657866 RXI meas 0.939805
+Line  La la1 RXI found 0.643398 RXI meas 0.471009
+
+Layer 0 has 4 compounds and a massthickness of 10  g/cm2
+Compound Fe2O3 wfract 0.248862  
+Compound Ga2O3 wfract 0.0932957  
+Compound SrO wfract 0.155538  
+Compound La2O3 wfract 0.502729  
+Ssq is 0.368731

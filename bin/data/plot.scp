@@ -1,0 +1,6 @@
+set title " Zn ka 50.0 None 0.00 LIF200 MLARGE " 
+set xlabel "RXI"
+set ylabel "Intensity"
+plot  "./data/calib0.dat", x*1.034435e+00 with lines 
+pause 10 
+quit

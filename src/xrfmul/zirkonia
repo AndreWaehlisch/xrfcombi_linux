@@ -1,0 +1,15 @@
+0 Z: 72 line lb1 rel int. 0.0407 
+1 Z: 39 line ka rel int. 0.179725 
+2 Z: 40 line la1 rel int. 0.664401 
+Bulkint Hf lb1  4.630522e-05 
+Bulkint Y ka  5.205881e-04 
+Bulkint Zr la1  3.739530e-05 
+Warning maximum # iterations reached 
+Line nr 0 RXI found 0.0406367 RXI meas 0.0407
+Line nr 1 RXI found 0.179187 RXI meas 0.179725
+Line nr 2 RXI found 0.656173 RXI meas 0.664401
+Layer 0 has 3 compounds and a massthickness of 0.625619  g/cm2
+Compound Y2O3 wfract 0.142576  
+Compound ZrO2 wfract 0.835737  
+Compound HfO2 wfract 0.0216876  
+Ssq is 0.000232728

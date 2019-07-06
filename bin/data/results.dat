@@ -1,0 +1,12 @@
+Line nr 0 RXI found 1 RXI meas 1
+Line nr 1 RXI found 0.323235 RXI meas 0.323235
+Line nr 2 RXI found 0.101493 RXI meas 0.101493
+Line nr 3 RXI found 0.0169916 RXI meas 0.0169916
+Line nr 4 RXI found 0.0919576 RXI meas 0.0919576
+Line nr 5 RXI found 0.610645 RXI meas 0.610644
+Layer 0 has 4 compounds and a massthickness of 5  g/cm2
+Compound La2O3 wfract 0.400001  
+Compound SrO wfract 0.3  
+Compound Ga2O3 wfract 0.2  
+Compound Fe2O3 wfract 0.0999999  
+Ssq is 1.55506e-12

@@ -1,0 +1,5364 @@
+#!/usr/X11R6/bin/wish -f
+# Program: combitstn
+# Tcl version: 8.0 (Tcl/Tk/XF)
+# Tk version: 8.0
+# XF version: 4.0
+#
+
+
+# procedure to show window ShowWindow.top0
+proc ShowWindow.top0 { args} {
+# xf ignore me 7
+
+  # build widget .top0
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFDestroy .top0"
+  } {
+    catch "destroy .top0"
+  }
+  toplevel .top0 
+
+  # Window manager configurations
+  wm positionfrom .top0 user
+  wm sizefrom .top0 ""
+  wm geometry .top0 +0+116
+  wm maxsize .top0 1000 900
+  wm minsize .top0 10 10
+  wm protocol .top0 WM_DELETE_WINDOW {XFProcError {Application windows can not be destroyed.
+Please use the "Current widget path:" to show/hide windows.}}
+  wm title .top0 {EDIT CONCSET.DAT}
+
+
+  # build widget .top0.text1
+  text .top0.text1
+
+  # build widget .top0.button2
+  button .top0.button2  -command {set fileout [open ./data/concset.dat w]
+puts -nonewline $fileout [.top0.text1 get 1.0 end]
+puts $fileout ""
+close $fileout
+DestroyWindow.top0}  -padx {9}  -pady {3}  -state {active}  -text {Save}
+
+  # pack master .top0
+  pack configure .top0.text1
+  pack configure .top0.button2
+
+  .top0.text1 insert end {2
+3 12.0 SiO2 ? TiO2 ? V2O5 ?
+3 12.0 SiO2 ? TiO2 ? V2O5 ?}
+
+
+
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFMiscBindWidgetTree .top0"
+    after 2 "catch {XFEditSetShowWindows}"
+  }
+}
+
+proc DestroyWindow.top0 {} {# xf ignore me 7
+  if {"[info procs XFEdit]" != ""} {
+    if {"[info commands .top0]" != ""} {
+      global xfShowWindow.top0
+      set xfShowWindow.top0 0
+      XFEditSetPath .
+      after 2 "XFSaveAsProc .top0; XFEditSetShowWindows"
+    }
+  } {
+    catch "destroy .top0"
+    update
+  }
+}
+
+
+# procedure to show window ShowWindow.top1
+proc ShowWindow.top1 { args} {
+# xf ignore me 7
+
+  # build widget .top1
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFDestroy .top1"
+  } {
+    catch "destroy .top1"
+  }
+  toplevel .top1 
+
+  # Window manager configurations
+  wm positionfrom .top1 user
+  wm sizefrom .top1 user
+  wm geometry .top1 +653+5
+  wm maxsize .top1 1000 900
+  wm minsize .top1 10 10
+  wm protocol .top1 WM_DELETE_WINDOW {XFProcError {Application windows can not be destroyed.
+Please use the "Current widget path:" to show/hide windows.}}
+  wm title .top1 {DEFINE COMPOUNDS}
+
+
+  # build widget .top1.frame
+  frame .top1.frame  -relief {raised}
+
+  # build widget .top1.frame.label4
+  label .top1.frame.label4  -padx {2}  -relief {raised}  -text {FORMULA/NAME}
+
+  # build widget .top1.frame.entry5
+  entry .top1.frame.entry5  -relief {raised}  -textvariable {formula}
+
+  # build widget .top1.frame1
+  frame .top1.frame1  -relief {raised}
+
+  # build widget .top1.frame1.label4
+  label .top1.frame1.label4  -padx {2}  -relief {raised}  -text {DENSITY}
+
+  # build widget .top1.frame1.entry5
+  entry .top1.frame1.entry5  -relief {raised}  -textvariable {density}
+
+  # build widget .top1.frame2
+  frame .top1.frame2  -borderwidth {2}  -height {30}  -relief {raised}  -width {30}
+
+  # build widget .top1.frame2.checkbutton3
+  checkbutton .top1.frame2.checkbutton3  -command {if {$at ==0} then {set wt 1}
+if {$at == 1} then {set wt 0}}  -relief {raised}  -text {AT}  -variable {at}
+
+  # build widget .top1.frame2.checkbutton4
+  checkbutton .top1.frame2.checkbutton4  -command {if {$wt ==0} then {set at 1}
+if {$wt ==1} then {set at 0}}  -relief {raised}  -text {WT}  -variable {wt}
+
+  # build widget .top1.frame5
+  frame .top1.frame5  -relief {raised}
+
+  # build widget .top1.frame5.label4
+  label .top1.frame5.label4  -padx {2}  -relief {raised}  -text {NR_ELEMENTS}
+
+  # build widget .top1.frame5.entry5
+  entry .top1.frame5.entry5  -relief {raised}  -textvariable {nr_elms}  -width {24}
+  # bindings
+  bind .top1.frame5.entry5 <Button-1> {set bew_nr_elms $nr_elms
+set nr_elms ""
+for {set i 1} { $i <= $bew_nr_elms} {incr i 1} {
+  destroy .top1.frame[expr $i + 6]
+  unset el($i) cnt($i)
+}}
+  bind .top1.frame5.entry5 <Key-Return> {for {set i 1} { $i <= $nr_elms} {incr i 1} {
+  set f .top1.frame[expr $i + 6]
+  frame $f
+  pack $f -side top -fill x
+  entry $f.entry1 -textvariable el($i)
+  entry $f.entry2 -textvariable cnt($i)
+  pack $f.entry1 $f.entry2 -fill x -side left
+}}
+
+  # build widget .top1.frame3
+  frame .top1.frame3  -borderwidth {2}  -height {30}  -relief {raised}  -width {30}
+
+  # build widget .top1.frame3.button5
+  button .top1.frame3.button5  -command {for {set i 1} {$i < $nr_elms} {incr i 1} {
+  destroy .top1.frame[expr 7 + $i]
+}
+DestroyWindow.top1
+for {set i 0} { $i < $columns} {incr i 1} {
+  destroy .top6.frame$i}
+DestroyWindow.top6}  -padx {9}  -pady {3}  -text {DISMISS}
+
+  # build widget .top1.frame3.button6
+  button .top1.frame3.button6  -command {set fil [open ./data/compounds.dat w]
+if { $at == 1} then {set atoom AT}
+if {$wt == 1} then {set atoom WT}
+set regel1 "      DEFINE $formula $density $atoom "
+puts $fil "      "
+puts $fil $regel1
+for {set i 1} { $i <= $nr_elms} {incr i 1} {
+  puts $fil "      $el($i) $cnt($i)"
+ }
+flush $fil
+close $fil
+set fil [open ./data/complist.dat a+]
+set regel1 "$formula $density $atoom $nr_elms "
+for {set i 1} { $i <= $nr_elms} {incr i 1} {
+  set regel1 "$regel1 $el($i) $cnt($i)"
+}
+puts $fil $regel1
+flush $fil
+close $fil}  -padx {9}  -pady {3}  -text {OK-ADD TO FILE}
+
+  # build widget .top1.frame0
+  frame .top1.frame0  -borderwidth {2}  -height {30}  -relief {raised}  -width {30}
+
+  # build widget .top1.frame0.label1
+  label .top1.frame0.label1  -relief {raised}  -text {---ELEMENT--| --NUMBER OF ATOMS--}
+
+  # build widget .top1.frame7
+  frame .top1.frame7
+
+  # build widget .top1.frame7.entry1
+  entry .top1.frame7.entry1  -textvariable {el(1)}
+
+  # build widget .top1.frame7.entry2
+  entry .top1.frame7.entry2  -textvariable {cnt(1)}
+
+  # pack master .top1.frame
+  pack configure .top1.frame.label4  -side left
+  pack configure .top1.frame.entry5  -expand 1  -fill both
+
+  # pack master .top1.frame1
+  pack configure .top1.frame1.label4  -side left
+  pack configure .top1.frame1.entry5  -expand 1  -fill x
+
+  # pack master .top1.frame2
+  pack configure .top1.frame2.checkbutton3  -expand 1  -fill x  -side left
+  pack configure .top1.frame2.checkbutton4  -anchor nw  -expand 1  -fill x  -side left
+
+  # pack master .top1.frame5
+  pack configure .top1.frame5.label4  -anchor nw  -fill x  -side left
+  pack configure .top1.frame5.entry5  -anchor nw  -fill x  -side left
+
+  # pack master .top1.frame3
+  pack configure .top1.frame3.button5  -expand 1  -fill x  -side right
+  pack configure .top1.frame3.button6  -expand 1  -fill x  -side left
+
+  # pack master .top1.frame0
+  pack configure .top1.frame0.label1
+
+  # pack master .top1.frame7
+  pack configure .top1.frame7.entry1  -fill x  -side left
+  pack configure .top1.frame7.entry2  -fill x  -side left
+
+  # pack master .top1
+  pack configure .top1.frame  -anchor nw  -fill x
+  pack configure .top1.frame1  -anchor nw  -fill x
+  pack configure .top1.frame2  -anchor nw  -fill x
+  pack configure .top1.frame5  -fill both
+  pack configure .top1.frame3  -fill x  -side bottom
+  pack configure .top1.frame0  -fill x
+  pack configure .top1.frame7  -fill x
+
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFMiscBindWidgetTree .top1"
+    after 2 "catch {XFEditSetShowWindows}"
+  }
+}
+
+proc DestroyWindow.top1 {} {# xf ignore me 7
+  if {"[info procs XFEdit]" != ""} {
+    if {"[info commands .top1]" != ""} {
+      global xfShowWindow.top1
+      set xfShowWindow.top1 0
+      XFEditSetPath .
+      after 2 "XFSaveAsProc .top1; XFEditSetShowWindows"
+    }
+  } {
+    catch "destroy .top1"
+    update
+  }
+}
+
+
+# procedure to show window ShowWindow.top10
+proc ShowWindow.top10 { args} {
+# xf ignore me 7
+
+  # build widget .top10
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFDestroy .top10"
+  } {
+    catch "destroy .top10"
+  }
+  toplevel .top10 
+
+  # Window manager configurations
+  wm positionfrom .top10 user
+  wm sizefrom .top10 ""
+  wm geometry .top10 +22+181
+  wm maxsize .top10 1000 900
+  wm minsize .top10 10 10
+  wm protocol .top10 WM_DELETE_WINDOW {XFProcError {Application windows can not be destroyed.
+Please use the "Current widget path:" to show/hide windows.}}
+  wm title .top10 {LINES.DAT}
+
+
+  # build widget .top10.text11
+  text .top10.text11
+
+  # build widget .top10.button17
+  button .top10.button17  -command {DestroyWindow.top10}  -padx {9}  -pady {3}  -state {active}  -text {DISMISS}
+
+  # pack master .top10
+  pack configure .top10.text11
+  pack configure .top10.button17
+
+  .top10.text11 insert end {Al ka 50.0
+Ce ka 50.0
+Fe ka 50.0}
+
+
+
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFMiscBindWidgetTree .top10"
+    after 2 "catch {XFEditSetShowWindows}"
+  }
+}
+
+proc DestroyWindow.top10 {} {# xf ignore me 7
+  if {"[info procs XFEdit]" != ""} {
+    if {"[info commands .top10]" != ""} {
+      global xfShowWindow.top10
+      set xfShowWindow.top10 0
+      XFEditSetPath .
+      after 2 "XFSaveAsProc .top10; XFEditSetShowWindows"
+    }
+  } {
+    catch "destroy .top10"
+    update
+  }
+}
+
+
+# procedure to show window ShowWindow.top11
+proc ShowWindow.top11 { args} {
+# xf ignore me 7
+
+  # build widget .top11
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFDestroy .top11"
+  } {
+    catch "destroy .top11"
+  }
+  toplevel .top11 
+
+  # Window manager configurations
+  wm positionfrom .top11 user
+  wm sizefrom .top11 ""
+  wm geometry .top11 +22+191
+  wm maxsize .top11 1000 900
+  wm minsize .top11 10 10
+  wm protocol .top11 WM_DELETE_WINDOW {XFProcError {Application windows can not be destroyed.
+Please use the "Current widget path:" to show/hide windows.}}
+  wm title .top11 {PWSETTINGS.DAT}
+
+
+  # build widget .top11.text14
+  text .top11.text14
+
+  # build widget .top11.button18
+  button .top11.button18  -command {DestroyWindow.top11}  -padx {9}  -pady {3}  -state {active}  -text {DISMISS}
+
+  # pack master .top11
+  pack configure .top11.text14
+  pack configure .top11.button18
+
+  .top11.text14 insert end {Rh 0.0925001 26.0 1.0 63.0 40.0}
+
+
+
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFMiscBindWidgetTree .top11"
+    after 2 "catch {XFEditSetShowWindows}"
+  }
+}
+
+proc DestroyWindow.top11 {} {# xf ignore me 7
+  if {"[info procs XFEdit]" != ""} {
+    if {"[info commands .top11]" != ""} {
+      global xfShowWindow.top11
+      set xfShowWindow.top11 0
+      XFEditSetPath .
+      after 2 "XFSaveAsProc .top11; XFEditSetShowWindows"
+    }
+  } {
+    catch "destroy .top11"
+    update
+  }
+}
+
+
+# procedure to show window ShowWindow.top12
+proc ShowWindow.top12 { args} {
+# xf ignore me 7
+
+  # build widget .top12
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFDestroy .top12"
+  } {
+    catch "destroy .top12"
+  }
+  toplevel .top12 
+
+  # Window manager configurations
+  wm positionfrom .top12 user
+  wm sizefrom .top12 user
+  wm geometry .top12 -562+95
+  wm maxsize .top12 1000 1000
+  wm minsize .top12 10 10
+  wm protocol .top12 WM_DELETE_WINDOW {XFProcError {Application windows can not be destroyed.
+Please use the "Current widget path:" to show/hide windows.}}
+  wm title .top12 {CALIBRATION MENU}
+
+
+  # build widget .top12.frame0
+  frame .top12.frame0  -borderwidth {2}  -relief {raised}
+
+  # build widget .top12.frame0.menubutton1
+  menubutton .top12.frame0.menubutton1  -menu {.top12.frame0.menubutton1.m}  -padx {4}  -pady {3}  -text {File}
+
+  # build widget .top12.frame0.menubutton1.m
+  menu .top12.frame0.menubutton1.m  -tearoff {0}
+  .top12.frame0.menubutton1.m add command  -command {fileselect fileselect.make.tar}  -label {Save Calib data}
+  .top12.frame0.menubutton1.m add command  -command {#exec rm ./data/calib*.dat
+fileselect fileselect.cali.detar
+tkwait  window .fileSelectWindow
+set filein [open ./data/concset.dat r]
+gets $filein nr_of_samples
+close $filein
+set extralistlin {}
+set line_cnt 0
+set linesextra [open ./data/extralin.dat r]
+while { [gets $linesextra regel] >= 0} {
+  puts $regel
+  lappend extralistlin $regel
+  incr line_cnt 1
+}
+puts $extralistlin}  -label {Load Calib Data}
+  .top12.frame0.menubutton1.m add command  -command {set filslopes [open ./data/calibres.dat r]
+for {set i 1} { $i <= $line_cnt} { incr i 1 } {
+gets $filslopes slope
+set filplot [open ./data/plot.scp w]
+puts $filplot "set title \" [lindex $extralistlin [expr $i - 1]] \" "
+puts $filplot "set xlabel \"RXI\""
+puts $filplot  "set ylabel \"Intensity\""
+puts $filplot "plot  \"./data/calib[expr $i - 1].dat\", x*$slope with lines "
+puts $filplot "pause 10"
+puts $filplot "quit"
+close $filplot
+exec gnuplot <./data/plot.scp
+}}  -label {Plot calib Data}
+  .top12.frame0.menubutton1.m add command  -command {DestroyWindow.top12}  -label {Quit Calibration}
+
+  # build widget .top12.frame0.menubutton2
+  menubutton .top12.frame0.menubutton2  -menu {.top12.frame0.menubutton2.m}  -padx {4}  -pady {3}  -text {Help}
+
+  # build widget .top12.frame0.menubutton2.m
+  menu .top12.frame0.menubutton2.m  -tearoff {0}
+  .top12.frame0.menubutton2.m add command  -command {AlertBox "Sorry, no help yet"}  -label {General}
+
+  # build widget .top12.frame0.button0
+  button .top12.frame0.button0  -command {ShowWindow.top13
+set lijstcomps {}
+set fil [open ./data/complist.dat r]
+while { [gets $fil regel] >= 0} {
+  lappend lijstcomps $regel }
+set total_comps [llength $lijstcomps]
+puts $total_comps
+set listcomps [lsort $lijstcomps]
+for {set i 0} { $i < $total_comps} {incr i 1} {
+   .top13.frame.listbox1 insert end [lindex  [lindex $listcomps $i] 0]
+  }
+close $fil
+ShowWindow.top9
+set bew_nr_comps $nr_comps
+set nr_comps ""
+destroy .top9.frame21
+#for {set i 1} {$i <= $bew_nr_comps} {incr i 1} {
+#  unset component($i) compseq($i)
+#  }
+set nr_comps 0
+set fildefs [open defsmpl.dat w]}  -padx {9}  -pady {3}  -text {Define Sample}
+
+  # build widget .top12.frame0.button1
+  button .top12.frame0.button1  -command {set linesfil [open ./data/deflines.dat w]
+set linesextra [open ./data/extralin.dat w]
+set line_nr 0
+set listlines {}
+set extralistlin {}
+ShowWindow.top4}  -padx {9}  -pady {3}  -text {Define Lines}
+
+  # build widget .top12.frame0.button3
+  button .top12.frame0.button3  -command {ShowWindow.top5
+for {set i 1} { $i <= $nr_comps } {incr i 1} {
+  set f .top5.frame[expr $i +20]
+  frame $f
+  pack $f -side top -fill x
+  label $f.label -text $component($i)
+  entry $f.entry1 -textvariable conc($i)
+  pack $f.label -side left -fill x
+  pack $f.entry1 -side right -fill x
+}
+ 
+set lijstconcs {}
+set nr_of_samples 0
+for {set i 1} { $i <= $nr_comps } {incr i 1} {
+   set conc($i) ""
+}
+ShowWindow.top15
+set f .top15.frame1
+frame $f
+pack $f -side top -fill x
+label $f.label -text "sample ID"
+pack $f.label -side left -fill x
+
+set f .top15.frame2
+frame $f
+pack $f -side top -fill x
+label $f.label -text "Mass thickness"
+pack $f.label -side left -fill x
+
+for {set i 1} { $i <= $nr_comps} { incr i 1} {
+  set f .top15.frame[expr $i +2]
+   frame $f
+   pack $f -side top -fill x
+   label $f.label -text $component($i)
+   pack $f.label -side left -fill x
+}}  -padx {9}  -pady {3}  -text {Enter Concs}
+
+  # build widget .top12.frame0.button4
+  button .top12.frame0.button4  -padx {9}  -pady {3}  -text {Enter intensities}
+  # bindings
+  bind .top12.frame0.button4 <Button-1> {ShowWindow.top16
+ShowWindow.top17
+set f .top16.frame1
+frame $f
+pack $f -side top -fill x
+label $f.label -text "Sample ID"
+entry $f.entry1 -textvariable sidlines
+pack $f.label -side left -fill x
+pack $f.entry1 -side right -fill x
+
+for {set i 0} { $i < $line_nr} {incr i 1} {
+   set f .top16.frame[expr $i + 2]
+    frame $f
+    pack $f -side top -fill x
+    label $f.label -text [lindex $listlines $i] 
+    entry $f.entry1 -textvariable intens($i)
+    pack $f.label -side left -fill x
+    pack $f.entry1 -side right -fill x
+}
+set f .top17.frame1
+frame $f
+pack $f -side top -fill x
+label $f.label -text "Sample ID"
+pack $f.label -side left -fill x
+for {set i 0} { $i < $line_nr} {incr i 1} {
+   set f .top17.frame[expr $i + 2]
+   frame $f
+   pack $f -side top -fill x
+   label $f.label -text [lindex $listlines $i]
+   pack $f.label -side left -fill x
+}
+
+
+set sidlines $sidc(1)
+set lijstintens {}
+set smplcnt 0
+for {set i 0} { $i < $line_nr} {incr i 1} {
+  set intens($i) ""
+}}
+
+  # build widget .top12.frame0.menubutton7
+  menubutton .top12.frame0.menubutton7  -disabledforeground {red}  -highlightcolor {#000000}  -menu {.top12.frame0.menubutton7.m}  -padx {4}  -pady {3}  -text {Results}
+
+  # build widget .top12.frame0.menubutton7.m
+  menu .top12.frame0.menubutton7.m  -tearoff {0}
+  .top12.frame0.menubutton7.m add command  -command {exec xrfcalib 
+set filistio [open listio.dat r]
+set fullijst {}
+set shortlist {}
+while { [gets $filistio regel] >= 0} {
+ set lstregel [split $regel " "]
+ lappend fullijst $regel
+ set cntregel [llength $lstregel]
+ set korteregel {}
+ for {set i 0} { $i < [expr $cntregel - 1] } {incr i 1 } {
+     lappend korteregel [lindex $lstregel $i] }
+ puts $korteregel
+ lappend shortlist $korteregel
+}
+close $filistio
+puts $fullijst
+puts $shortlist
+set  fillinextra [open ./data/extralin.dat r]
+set filslopes [open ./data/calibres.dat r]
+while { [gets $fillinextra regel] >= 0 } {
+  set nummer [lsearch $shortlist $regel]
+  puts $nummer
+  if {  $nummer == -1}  then {
+        gets $filslopes regel3
+        puts $regel3
+        puts "in true deel"
+        lappend fullijst "$regel $regel3"
+     } else {
+        gets $filslopes regel3
+        puts "$nummer $regel $regel3 onzintest"
+        set fullijst [lreplace $fullijst  $nummer $nummer "$regel $regel3"]
+     } 
+}
+puts $fullijst 
+close $fillinextra
+close $filslopes
+set filistio [open listio.dat w]
+set cntregel [llength $fullijst]
+for {set i 0} {$i < $cntregel} {incr i 1 } {
+   puts $filistio [lindex $fullijst $i]
+}
+close $filistio 
+  }  -label {Normal Calibration}
+  .top12.frame0.menubutton7.m add command  -command {exec calibpis
+exec  cp  ./data/calibwang.dat ./data/calibres.dat
+set filistio [open listgi.dat r]
+set fullijst {}
+set shortlist {}
+while { [gets $filistio regel] >= 0} {
+ set lstregel [split $regel " "]
+ lappend fullijst $regel
+ set cntregel [llength $lstregel]
+ set korteregel {}
+ for {set i 0} { $i < [expr $cntregel - 1] } {incr i 1 } {
+     lappend korteregel [lindex $lstregel $i] }
+ puts $korteregel
+ lappend shortlist $korteregel
+}
+close $filistio
+puts $fullijst
+puts $shortlist
+set  fillinextra [open ./data/extralin.dat r]
+set filslopes [open ./data/calibwang.dat r]
+while { [gets $fillinextra regel] >= 0 } {
+  set nummer [lsearch $shortlist $regel]
+  puts $nummer
+  if {  $nummer == -1}  then {
+        gets $filslopes regel3
+        puts $regel3
+        puts "in true deel"
+        lappend fullijst "$regel $regel3"
+     } else {
+        gets $filslopes regel3
+        puts "$nummer $regel $regel3 onzintest"
+        set fullijst [lreplace $fullijst  $nummer $nummer "$regel $regel3"]
+     } 
+}
+puts $fullijst 
+close $fillinextra
+close $filslopes
+set filistio [open listgi.dat w]
+set cntregel [llength $fullijst]
+for {set i 0} {$i < $cntregel} {incr i 1 } {
+   puts $filistio [lindex $fullijst $i]
+}
+close $filistio 
+  }  -label {Gi-factor Calibration}  -state {active}
+  .top12.frame0.menubutton7.m add command  -command {ShowWindow.top18
+set listslopes {}
+set filslopes [open ./data/calibres.dat r]
+while { [gets $filslopes regel] >= 0 } {
+   lappend listslopes $regel}
+.top18.text20 delete 1.0 end
+.top18.text20 insert 1.0 "Calibration Results [exec date]\n"
+.top18.text20 insert 2.0 "-------------------------------------------\n"
+.top18.text20 insert 3.0 "Line               Slope\n"
+set cntregels [llength $listslopes]
+close $filslopes
+set listlines {}
+set fillines [open ./data/deflines.dat r]
+while { [gets $fillines regel] >= 0} {
+   lappend listlines $regel}
+close $fillines
+for {set i 0} { $i < $cntregels} {incr i 1} {
+.top18.text20 insert [expr $i +4].0 "[lindex $listlines  $i]       [lindex $listslopes $i]\n"
+}}  -label {Show results}
+  .top12.frame0.menubutton7.m add command  -command {set rescalfil [open ./data/cresults.dat w]
+puts $rescalfil "Calibration Results   [exec date]   \n"
+puts $rescalfil "----------------------------------------------\n"
+puts $rescalfil "\n"
+puts $rescalfil "name #cmpds mth  compound  fraction ...\n"
+puts $rescalfil "                                           \n"
+set filsetconc [open ./data/concset.dat r]
+set i 1
+gets $filsetconc regel    
+while { [gets $filsetconc regel] >= 0 } {
+  puts $regel
+  puts $rescalfil "$sidc($i)  $regel\n"
+  incr i 1
+}
+close $filsetconc
+set filsetintens [open ./data/intset.dat r]
+set i 1
+puts $rescalfil "-------------------------------------------------\n  \n"
+puts $rescalfil "Sample Id | int line 1 | int line 2 | ....      \n"
+while { [gets $filsetintens regel] >= 0} {
+  puts $rescalfil "$sid($i) $regel\n"
+  incr i 1
+}
+close $filsetintens
+set cresultsfil [open ./data/calibres.dat r]
+set linesextra [open ./data/extralin.dat r]
+puts $rescalfil "-----------slopes calibration lines ------\n"
+puts $rescalfil "\n"
+while { [gets $cresultsfil regel] >= 0 } {
+   gets $linesextra regel3
+   puts $rescalfil "$regel3  $regel"}
+close $cresultsfil
+close $linesextra
+close $rescalfil
+exec lpr ./data/cresults.dat  
+
+   }  -label {Print results}
+
+  # pack master .top12.frame0
+  pack configure .top12.frame0.menubutton1  -anchor nw  -side left
+  pack configure .top12.frame0.menubutton2  -side right
+  pack configure .top12.frame0.button0  -anchor nw  -side left
+  pack configure .top12.frame0.button1  -anchor nw  -side left
+  pack configure .top12.frame0.button3  -anchor nw  -side left
+  pack configure .top12.frame0.button4  -anchor nw  -side left
+  pack configure .top12.frame0.menubutton7  -side left
+
+  # pack master .top12
+  pack configure .top12.frame0  -fill x
+
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFMiscBindWidgetTree .top12"
+    after 2 "catch {XFEditSetShowWindows}"
+  }
+}
+
+proc DestroyWindow.top12 {} {# xf ignore me 7
+  if {"[info procs XFEdit]" != ""} {
+    if {"[info commands .top12]" != ""} {
+      global xfShowWindow.top12
+      set xfShowWindow.top12 0
+      XFEditSetPath .
+      after 2 "XFSaveAsProc .top12; XFEditSetShowWindows"
+    }
+  } {
+    catch "destroy .top12"
+    update
+  }
+}
+
+
+# procedure to show window ShowWindow.top13
+proc ShowWindow.top13 { args} {
+# xf ignore me 7
+
+  # build widget .top13
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFDestroy .top13"
+  } {
+    catch "destroy .top13"
+  }
+  toplevel .top13 
+
+  # Window manager configurations
+  wm positionfrom .top13 user
+  wm sizefrom .top13 user
+  wm geometry .top13 244x751+768+-9
+  wm maxsize .top13 1000 900
+  wm minsize .top13 10 10
+  wm protocol .top13 WM_DELETE_WINDOW {XFProcError {Application windows can not be destroyed.
+Please use the "Current widget path:" to show/hide windows.}}
+  wm title .top13 {COMPOUND SELECTION}
+
+
+  # build widget .top13.frame
+  frame .top13.frame
+
+  # build widget .top13.frame.scrollbar3
+  scrollbar .top13.frame.scrollbar3  -command {.top13.frame.listbox1 xview}  -orient {horizontal}  -relief {raised}
+
+  # build widget .top13.frame.scrollbar2
+  scrollbar .top13.frame.scrollbar2  -command {.top13.frame.listbox1 yview}  -relief {raised}
+
+  # build widget .top13.frame.listbox1
+  listbox .top13.frame.listbox1  -height {40}  -xscrollcommand {.top13.frame.scrollbar3 set}  -yscrollcommand {.top13.frame.scrollbar2 set}
+  # bindings
+  bind .top13.frame.listbox1 <Double-Button-1> {set name_comp [selection get]
+set compindex [lsearch -regexp $listcomps ^$name_comp]
+set regel_comp [lindex $listcomps $compindex]
+puts $regel_comp
+incr nr_comps 1
+set f .top9.frame[expr $nr_comps + 20]
+frame $f
+pack $f -side top -fill x
+entry $f.entry1 -textvariable compseq($nr_comps)
+entry $f.entry2 -textvariable component($nr_comps)
+pack $f.entry1 $f.entry2 -side left -fill x
+set component($nr_comps) $name_comp
+set compseq($nr_comps) $nr_comps
+
+# Now actions for preparing file with compound}
+
+  # build widget .top13.frame6
+  frame .top13.frame6  -borderwidth {2}  -height {30}  -relief {raised}  -width {30}
+
+  # build widget .top13.frame6.button7
+  button .top13.frame6.button7  -command {.top13.frame.listbox1 delete 0 end
+DestroyWindow.top13}  -padx {9}  -pady {3}  -state {active}  -text {DISMISS}
+
+  # pack master .top13.frame
+  pack configure .top13.frame.scrollbar2  -fill y  -side left
+  pack configure .top13.frame.scrollbar3  -fill x  -side bottom
+  pack configure .top13.frame.listbox1  -expand 1  -fill both
+
+  # pack master .top13.frame6
+  pack configure .top13.frame6.button7  -fill x
+
+  # pack master .top13
+  pack configure .top13.frame  -fill both
+  pack configure .top13.frame6  -fill x  -side bottom
+
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFMiscBindWidgetTree .top13"
+    after 2 "catch {XFEditSetShowWindows}"
+  }
+}
+
+proc DestroyWindow.top13 {} {# xf ignore me 7
+  if {"[info procs XFEdit]" != ""} {
+    if {"[info commands .top13]" != ""} {
+      global xfShowWindow.top13
+      set xfShowWindow.top13 0
+      XFEditSetPath .
+      after 2 "XFSaveAsProc .top13; XFEditSetShowWindows"
+    }
+  } {
+    catch "destroy .top13"
+    update
+  }
+}
+
+
+# procedure to show window ShowWindow.top14
+proc ShowWindow.top14 { args} {
+# xf ignore me 7
+
+  # build widget .top14
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFDestroy .top14"
+  } {
+    catch "destroy .top14"
+  }
+  toplevel .top14 
+
+  # Window manager configurations
+  wm positionfrom .top14 ""
+  wm sizefrom .top14 ""
+  wm maxsize .top14 1000 1000
+  wm minsize .top14 10 10
+  wm protocol .top14 WM_DELETE_WINDOW {XFProcError {Application windows can not be destroyed.
+Please use the "Current widget path:" to show/hide windows.}}
+  wm title .top14 {SPECTROM.PARAMS}
+
+
+  # build widget .top14.frame7
+  frame .top14.frame7  -borderwidth {2}  -height {30}  -relief {raised}  -width {30}
+
+  # build widget .top14.frame7.label8
+  label .top14.frame7.label8  -text {Anode El.}
+
+  # build widget .top14.frame7.entry9
+  entry .top14.frame7.entry9  -textvariable {tube_el}
+
+  # build widget .top14.frame10
+  frame .top14.frame10  -borderwidth {2}  -height {30}  -relief {raised}  -width {30}
+
+  # build widget .top14.frame10.label11
+  label .top14.frame10.label11  -text {Anode take off angle (degr)}
+
+  # build widget .top14.frame10.entry12
+  entry .top14.frame10.entry12  -textvariable {anode_angle}
+
+  # build widget .top14.frame0
+  frame .top14.frame0  -borderwidth {2}  -height {30}  -relief {raised}  -width {30}
+
+  # build widget .top14.frame0.label1
+  label .top14.frame0.label1  -text {Incident angle (degr)}
+
+  # build widget .top14.frame0.entry2
+  entry .top14.frame0.entry2  -textvariable {psi1}
+
+  # build widget .top14.frame3
+  frame .top14.frame3  -borderwidth {2}  -height {30}  -relief {raised}  -width {30}
+
+  # build widget .top14.frame3.label4
+  label .top14.frame3.label4  -text {Sample take off angle (degr)}
+
+  # build widget .top14.frame3.entry5
+  entry .top14.frame3.entry5  -textvariable {psi2}
+
+  # build widget .top14.frame6
+  frame .top14.frame6  -borderwidth {2}  -height {30}  -relief {raised}  -width {30}
+
+  # build widget .top14.frame6.label7
+  label .top14.frame6.label7  -text {Tube Be-window thickn (mm)}
+
+  # build widget .top14.frame6.entry8
+  entry .top14.frame6.entry8  -textvariable {be_thickn}
+
+  # build widget .top14.frame9
+  frame .top14.frame9  -borderwidth {2}  -height {30}  -relief {raised}  -width {30}
+
+  # build widget .top14.frame9.label10
+  label .top14.frame9.label10  -text {Geometry factor}
+
+  # build widget .top14.frame9.entry11
+  entry .top14.frame9.entry11  -textvariable {gfactor}
+
+  # build widget .top14.frame8
+  frame .top14.frame8  -borderwidth {2}  -height {30}  -relief {raised}  -width {30}
+
+  # build widget .top14.frame8.button10
+  button .top14.frame8.button10  -command {set pwfile [open ./data/pwsettings.dat w]
+set bewindow [expr $be_thickn/5.4054]
+puts $pwfile "$tube_el $bewindow $anode_angle $gfactor $psi1 $psi2"
+close $pwfile}  -padx {9}  -pady {3}  -text {To File}
+
+  # build widget .top14.frame8.button11
+  button .top14.frame8.button11  -command {set tube_el Cr
+set anode_angle 26.0
+set psi1 61.0
+set psi2 40.0
+set be_thickn 0.5
+set gfactor 1.0}  -padx {9}  -pady {3}  -text {Get PW1480 Params}
+
+  # build widget .top14.frame8.button12
+  button .top14.frame8.button12  -command {DestroyWindow.top14}  -padx {9}  -pady {3}  -state {active}  -text {Dismiss}
+
+  # pack master .top14.frame7
+  pack configure .top14.frame7.label8  -anchor nw  -side left
+  pack configure .top14.frame7.entry9  -anchor ne  -expand 1  -fill x  -side right
+
+  # pack master .top14.frame10
+  pack configure .top14.frame10.label11  -side left
+  pack configure .top14.frame10.entry12  -fill x
+
+  # pack master .top14.frame0
+  pack configure .top14.frame0.label1  -side left
+  pack configure .top14.frame0.entry2  -fill x
+
+  # pack master .top14.frame3
+  pack configure .top14.frame3.label4  -side left
+  pack configure .top14.frame3.entry5  -fill x
+
+  # pack master .top14.frame6
+  pack configure .top14.frame6.label7  -side left
+  pack configure .top14.frame6.entry8  -fill x
+
+  # pack master .top14.frame9
+  pack configure .top14.frame9.label10  -side left
+  pack configure .top14.frame9.entry11  -fill x
+
+  # pack master .top14.frame8
+  pack configure .top14.frame8.button10  -side left
+  pack configure .top14.frame8.button11  -side left
+  pack configure .top14.frame8.button12  -side right
+
+  # pack master .top14
+  pack configure .top14.frame7  -anchor n  -fill x
+  pack configure .top14.frame10  -fill x
+  pack configure .top14.frame0  -fill x
+  pack configure .top14.frame3  -fill x
+  pack configure .top14.frame6  -fill x
+  pack configure .top14.frame9  -fill x
+  pack configure .top14.frame8  -anchor n  -fill x
+
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFMiscBindWidgetTree .top14"
+    after 2 "catch {XFEditSetShowWindows}"
+  }
+}
+
+proc DestroyWindow.top14 {} {# xf ignore me 7
+  if {"[info procs XFEdit]" != ""} {
+    if {"[info commands .top14]" != ""} {
+      global xfShowWindow.top14
+      set xfShowWindow.top14 0
+      XFEditSetPath .
+      after 2 "XFSaveAsProc .top14; XFEditSetShowWindows"
+    }
+  } {
+    catch "destroy .top14"
+    update
+  }
+}
+
+
+# procedure to show window ShowWindow.top15
+proc ShowWindow.top15 { args} {
+# xf ignore me 7
+
+  # build widget .top15
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFDestroy .top15"
+  } {
+    catch "destroy .top15"
+  }
+  toplevel .top15 
+
+  # Window manager configurations
+  wm positionfrom .top15 user
+  wm sizefrom .top15 program
+  wm geometry .top15 +650+1
+  wm maxsize .top15 1000 900
+  wm minsize .top15 10 10
+  wm protocol .top15 WM_DELETE_WINDOW {XFProcError {Application windows can not be destroyed.
+Please use the "Current widget path:" to show/hide windows.}}
+  wm title .top15 {TABLE OF CONCS}
+
+
+  # build widget .top15.button17
+  button .top15.button17  -command {set filsetconc [open ./data/concset.dat w]
+puts $filsetconc $nr_of_samples
+for {set i 1} { $i <= $nr_of_samples} {incr i 1} {
+ set partlist {} 
+ for {set j 1} { $j <= $nr_comps} {incr j 1} {
+    lappend  partlist $component($j) $conc_r([expr $j + $i*$nr_comps])
+  }
+  puts $filsetconc "$nr_comps $mthc($i) $partlist"
+  puts "$nr_comps $mthc($i) $partlist"
+}
+for {set i 1} {$i <= [expr $nr_comps +2]} {incr i 1} {
+    destroy .top15.frame$i
+}
+close $filsetconc
+set filesmplids [open ./data/smplids.dat w]
+puts $filesmplids $nr_of_samples
+for {set i 1} {$i <= $nr_of_samples} {incr i 1} {
+  puts $filesmplids $sidc($i)
+}
+close $filesmplids
+DestroyWindow.top15}  -padx {9}  -pady {3}  -text {OK}
+
+  # pack master .top15
+  pack configure .top15.button17  -anchor s  -side bottom
+
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFMiscBindWidgetTree .top15"
+    after 2 "catch {XFEditSetShowWindows}"
+  }
+}
+
+proc DestroyWindow.top15 {} {# xf ignore me 7
+  if {"[info procs XFEdit]" != ""} {
+    if {"[info commands .top15]" != ""} {
+      global xfShowWindow.top15
+      set xfShowWindow.top15 0
+      XFEditSetPath .
+      after 2 "XFSaveAsProc .top15; XFEditSetShowWindows"
+    }
+  } {
+    catch "destroy .top15"
+    update
+  }
+}
+
+
+# procedure to show window ShowWindow.top16
+proc ShowWindow.top16 { args} {
+# xf ignore me 7
+
+  # build widget .top16
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFDestroy .top16"
+  } {
+    catch "destroy .top16"
+  }
+  toplevel .top16 
+
+  # Window manager configurations
+  wm positionfrom .top16 user
+  wm sizefrom .top16 ""
+  wm geometry .top16 -915+134
+  wm maxsize .top16 1000 900
+  wm minsize .top16 10 10
+  wm protocol .top16 WM_DELETE_WINDOW {XFProcError {Application windows can not be destroyed.
+Please use the "Current widget path:" to show/hide windows.}}
+  wm title .top16 {ENTER INTENSITIES}
+
+
+  # build widget .top16.frame0
+  frame .top16.frame0  -borderwidth {2}  -height {30}  -relief {raised}  -width {30}
+
+  # build widget .top16.frame0.button1
+  button .top16.frame0.button1  -padx {9}  -pady {3}  -relief {sunken}  -text {Enter}
+  # bindings
+  bind .top16.frame0.button1 <Button-1> {incr smplcnt
+set f .top17.frame1.entrysmplid($smplcnt)
+entry $f -textvariable sid($smplcnt)
+set sid($smplcnt) $sidlines
+pack $f -side right -fill x
+for {set i 0 } { $i < $line_nr } { incr i 1 } {
+   set f .top17.frame[expr $i + 2].entry($smplcnt)
+   entry $f -textvariable mintens([expr $i + 2 +$line_nr*$smplcnt])
+   set mintens([expr $i +2 + $line_nr*$smplcnt]) $intens($i)
+   pack $f -side right -fill x
+}
+
+if { $smplcnt < $nr_of_samples} then {
+  for {set i 0} { $i < $line_nr} {incr i 1} {
+    set intens($i) ""
+   }
+  set sidlines $sidc([expr $smplcnt + 1])
+  }  else {
+   for {set i 1} { $i <= [expr $line_nr + 1]} { incr i 1} {
+    destroy .top16.frame$i
+   }
+}}
+
+  # build widget .top16.frame0.button2
+  button .top16.frame0.button2  -command {DestroyWindow.top16}  -padx {9}  -pady {3}  -state {active}  -text {DISMISS}
+
+  # pack master .top16.frame0
+  pack configure .top16.frame0.button1  -anchor sw  -side left
+  pack configure .top16.frame0.button2  -anchor se  -side right
+
+  # pack master .top16
+  pack configure .top16.frame0  -anchor s  -fill x  -side bottom
+
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFMiscBindWidgetTree .top16"
+    after 2 "catch {XFEditSetShowWindows}"
+  }
+}
+
+proc DestroyWindow.top16 {} {# xf ignore me 7
+  if {"[info procs XFEdit]" != ""} {
+    if {"[info commands .top16]" != ""} {
+      global xfShowWindow.top16
+      set xfShowWindow.top16 0
+      XFEditSetPath .
+      after 2 "XFSaveAsProc .top16; XFEditSetShowWindows"
+    }
+  } {
+    catch "destroy .top16"
+    update
+  }
+}
+
+
+# procedure to show window ShowWindow.top17
+proc ShowWindow.top17 { args} {
+# xf ignore me 7
+
+  # build widget .top17
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFDestroy .top17"
+  } {
+    catch "destroy .top17"
+  }
+  toplevel .top17 
+
+  # Window manager configurations
+  wm positionfrom .top17 user
+  wm sizefrom .top17 ""
+  wm geometry .top17 +763+11
+  wm maxsize .top17 1000 1000
+  wm minsize .top17 10 10
+  wm protocol .top17 WM_DELETE_WINDOW {XFProcError {Application windows can not be destroyed.
+Please use the "Current widget path:" to show/hide windows.}}
+  wm title .top17 {TABLE OF INTENSITIES}
+
+
+  # build widget .top17.frame0
+  frame .top17.frame0  -borderwidth {2}  -height {30}  -relief {raised}  -width {30}
+
+  # build widget .top17.frame0.button1
+  button .top17.frame0.button1  -command {set filsetintens [open ./data/intset.dat w]
+for {set i 1} {$i <= $smplcnt} {incr i 1} {
+  set partlistint {}
+  for {set j 1} {$j <= $line_nr} {incr j 1 } {
+     lappend partlistint $mintens([expr $j + 1 + $line_nr*$i])
+   }
+  puts $filsetintens $partlistint
+}
+
+for {set i 1} { $i <= [expr $line_nr + 1]} {incr i 1} {
+  destroy .top17.frame$i
+}
+close $filsetintens
+DestroyWindow.top17}  -padx {9}  -pady {3}  -text {OK}
+
+  # pack master .top17.frame0
+  pack configure .top17.frame0.button1
+
+  # pack master .top17
+  pack configure .top17.frame0  -fill x  -side bottom
+
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFMiscBindWidgetTree .top17"
+    after 2 "catch {XFEditSetShowWindows}"
+  }
+}
+
+proc DestroyWindow.top17 {} {# xf ignore me 7
+  if {"[info procs XFEdit]" != ""} {
+    if {"[info commands .top17]" != ""} {
+      global xfShowWindow.top17
+      set xfShowWindow.top17 0
+      XFEditSetPath .
+      after 2 "XFSaveAsProc .top17; XFEditSetShowWindows"
+    }
+  } {
+    catch "destroy .top17"
+    update
+  }
+}
+
+
+# procedure to show window ShowWindow.top18
+proc ShowWindow.top18 { args} {
+# xf ignore me 7
+
+  # build widget .top18
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFDestroy .top18"
+  } {
+    catch "destroy .top18"
+  }
+  toplevel .top18 
+
+  # Window manager configurations
+  wm positionfrom .top18 user
+  wm sizefrom .top18 user
+  wm geometry .top18 419x716+66+33
+  wm maxsize .top18 1000 900
+  wm minsize .top18 10 10
+  wm protocol .top18 WM_DELETE_WINDOW {XFProcError {Application windows can not be destroyed.
+Please use the "Current widget path:" to show/hide windows.}}
+  wm title .top18 {CALIBRATION RESULTS}
+
+
+  # build widget .top18.text20
+  text .top18.text20  -height {48}  -width {48}
+
+  # build widget .top18.button21
+  button .top18.button21  -command {DestroyWindow.top18}  -padx {9}  -pady {3}  -state {active}  -text {DISMISS}
+
+  # pack master .top18
+  pack configure .top18.text20  -fill both
+  pack configure .top18.button21  -anchor s  -side bottom
+
+  .top18.text20 insert end {Calibration Results Fri May 29 15:55:35 CEST 1998
+-------------------------------------------
+Line               Slope
+Al ka 50.0       2.364943e+02
+Si ka 50.0       4.029339e+02
+Ti ka 50.0       7.000965e+01}
+
+
+
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFMiscBindWidgetTree .top18"
+    after 2 "catch {XFEditSetShowWindows}"
+  }
+}
+
+proc DestroyWindow.top18 {} {# xf ignore me 7
+  if {"[info procs XFEdit]" != ""} {
+    if {"[info commands .top18]" != ""} {
+      global xfShowWindow.top18
+      set xfShowWindow.top18 0
+      XFEditSetPath .
+      after 2 "XFSaveAsProc .top18; XFEditSetShowWindows"
+    }
+  } {
+    catch "destroy .top18"
+    update
+  }
+}
+
+
+# procedure to show window ShowWindow.top19
+proc ShowWindow.top19 { args} {
+# xf ignore me 7
+
+  # build widget .top19
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFDestroy .top19"
+  } {
+    catch "destroy .top19"
+  }
+  toplevel .top19 
+
+  # Window manager configurations
+  wm positionfrom .top19 user
+  wm sizefrom .top19 ""
+  wm geometry .top19 +9+39
+  wm maxsize .top19 1000 900
+  wm minsize .top19 10 10
+  wm protocol .top19 WM_DELETE_WINDOW {XFProcError {Application windows can not be destroyed.
+Please use the "Current widget path:" to show/hide windows.}}
+  wm title .top19 {ANALYZE SAMPLES}
+
+
+  # build widget .top19.frame0
+  frame .top19.frame0  -borderwidth {2}  -relief {raised}
+
+  # build widget .top19.frame0.menubutton1
+  menubutton .top19.frame0.menubutton1  -menu {.top19.frame0.menubutton1.m}  -padx {4}  -pady {3}  -text {File}
+
+  # build widget .top19.frame0.menubutton1.m
+  menu .top19.frame0.menubutton1.m  -tearoff {0}
+  .top19.frame0.menubutton1.m add command  -command {fileselect fileselect.analyze.tar}  -label {Save data}
+  .top19.frame0.menubutton1.m add command  -command {fileselect fileselect.analyze.detar
+tkwait  window .fileSelectWindow
+set filein [open ./data/smplids.dat r]
+gets $filein nr_smplids
+for {set i 1} { $i <= $nr_smplids} { incr i 1} {
+gets $filein sidc($i)
+}
+close $filein
+ }  -label {Load Data}
+  .top19.frame0.menubutton1.m add command  -command {ShowWindow.top0
+.top0.text1 delete 1.0 end
+FileInText .top0.text1 ./data/concset.dat}  -label {Edit concset.dat}
+  .top19.frame0.menubutton1.m add command  -command {ShowWindow.top21
+.top21.text23 delete 1.0 end
+FileInText .top21.text23 ./data/intset.dat}  -label {Edit intset.dat}
+  .top19.frame0.menubutton1.m add command  -command {ShowWindow.top25
+.top25.text26 delete 1.0 end
+FileInText .top25.text26 ./data/smplids.dat}  -label {Edit smplids.dat}
+  .top19.frame0.menubutton1.m add command  -command {DestroyWindow.top19}  -label {Quit Analyze}
+
+  # build widget .top19.frame0.menubutton2
+  menubutton .top19.frame0.menubutton2  -menu {.top19.frame0.menubutton2.m}  -padx {4}  -pady {3}  -text {Help}
+
+  # build widget .top19.frame0.menubutton2.m
+  menu .top19.frame0.menubutton2.m
+
+  # build widget .top19.frame0.button0
+  button .top19.frame0.button0  -command {ShowWindow.top13
+set lijstcomps {}
+set fil [open ./data/complist.dat r]
+while { [gets $fil regel] >= 0} {
+  lappend lijstcomps $regel }
+set total_comps [llength $lijstcomps]
+puts $total_comps
+set listcomps [lsort $lijstcomps]
+for {set i 0} { $i < $total_comps} {incr i 1} {
+   .top13.frame.listbox1 insert end [lindex  [lindex $listcomps $i] 0]
+  }
+close $fil
+ShowWindow.top9
+set bew_nr_comps $nr_comps
+set nr_comps ""
+destroy .top9.frame21
+#for {set i 1} {$i <= $bew_nr_comps} {incr i 1} {
+#  unset component($i) compseq($i)
+#  }
+set nr_comps 0
+set fildefs [open defsmpl.dat w]}  -padx {9}  -pady {3}  -text {Compounds in sample}
+
+  # build widget .top19.frame0.button3
+  button .top19.frame0.button3  -command {ShowWindow.top5
+for {set i 1} { $i <= $nr_comps } {incr i 1} {
+  set f .top5.frame[expr $i +20]
+  frame $f
+  pack $f -side top -fill x
+  label $f.label -text $component($i)
+  entry $f.entry1 -textvariable conc($i)
+  pack $f.label -side left -fill x
+  pack $f.entry1 -side right -fill x
+}
+ 
+set lijstconcs {}
+set nr_of_samples 0
+for {set i 1} { $i <= $nr_comps } {incr i 1} {
+   set conc($i) ""
+}
+ShowWindow.top15
+set f .top15.frame1
+frame $f
+pack $f -side top -fill x
+label $f.label -text "sample ID"
+pack $f.label -side left -fill x
+
+set f .top15.frame2
+frame $f
+pack $f -side top -fill x
+label $f.label -text "Mass thickness"
+pack $f.label -side left -fill x
+
+for {set i 1} { $i <= $nr_comps} { incr i 1} {
+  set f .top15.frame[expr $i +2]
+   frame $f
+   pack $f -side top -fill x
+   label $f.label -text $component($i)
+   pack $f.label -side left -fill x
+}}  -padx {9}  -pady {3}  -text {Enter Concs}
+
+  # build widget .top19.frame0.button1
+  button .top19.frame0.button1  -command {set linesfil [open ./data/deflines.dat w]
+set linesextra [open ./data/extralin.dat w]
+set line_nr 0
+set listlines {}
+set extralistlin {}
+ShowWindow.top4
+
+set filistio [open listio.dat r]
+set fullijst {}
+set shortlist {}
+while { [gets $filistio regel] >= 0} {
+ set lstregel [split $regel " "]
+ lappend fullijst $regel
+ set cntregel [llength $lstregel]
+ set korteregel {}
+ for {set i 0} { $i < [expr $cntregel - 1] } {incr i 1 } {
+     lappend korteregel [lindex $lstregel $i] }
+ puts $korteregel
+ lappend shortlist $korteregel
+}
+close $filistio}  -padx {9}  -pady {3}  -text {Define Lines}
+
+  # build widget .top19.frame0.button4
+  button .top19.frame0.button4  -padx {9}  -pady {3}  -text {Enter intensities}
+  # bindings
+  bind .top19.frame0.button4 <Button-1> {ShowWindow.top16
+ShowWindow.top17
+set f .top16.frame1
+frame $f
+pack $f -side top -fill x
+label $f.label -text "Sample ID"
+entry $f.entry1 -textvariable sidlines
+pack $f.label -side left -fill x
+pack $f.entry1 -side right -fill x
+
+for {set i 0} { $i < $line_nr} {incr i 1} {
+   set f .top16.frame[expr $i + 2]
+    frame $f
+    pack $f -side top -fill x
+    label $f.label -text [lindex $listlines $i] 
+    entry $f.entry1 -textvariable intens($i)
+    pack $f.label -side left -fill x
+    pack $f.entry1 -side right -fill x
+}
+set f .top17.frame1
+frame $f
+pack $f -side top -fill x
+label $f.label -text "Sample ID"
+pack $f.label -side left -fill x
+for {set i 0} { $i < $line_nr} {incr i 1} {
+   set f .top17.frame[expr $i + 2]
+   frame $f
+   pack $f -side top -fill x
+   label $f.label -text [lindex $listlines $i]
+   pack $f.label -side left -fill x
+}
+
+
+
+set lijstintens {}
+set smplcnt 0
+set sidlines $sidc(1)
+for {set i 0} { $i < $line_nr} {incr i 1} {
+  set intens($i) ""
+}}
+
+  # build widget .top19.frame0.menubutton21
+  menubutton .top19.frame0.menubutton21  -menu {.top19.frame0.menubutton21.m}  -padx {4}  -pady {3}  -text {Results}
+
+  # build widget .top19.frame0.menubutton21.m
+  menu .top19.frame0.menubutton21.m  -tearoff {0}
+  .top19.frame0.menubutton21.m add command  -command {set filaresults [open ./data/aresults.dat w]
+puts $filaresults "     "
+close $filaresults
+set filistio [open listio.dat r]
+set fullijst {}
+set shortlist {}
+while { [gets $filistio regel] >= 0} {
+ set lstregel [split $regel " "]
+ lappend fullijst $regel
+ set cntregel [llength $lstregel]
+ set korteregel {}
+ for {set i 0} { $i < [expr $cntregel - 1] } {incr i 1 } {
+     lappend korteregel [lindex $lstregel $i] }
+ puts $korteregel
+ lappend shortlist $korteregel
+}
+close $filistio
+puts $fullijst
+puts $shortlist
+set  fillinextra [open ./data/extralin.dat r]
+set inulcnt 0
+while { [gets $fillinextra regel] >= 0 } {
+  set nummer [lsearch $shortlist $regel]
+  puts $nummer
+  if {  $nummer == -1}  then {
+      puts "error!!"
+      puts "error in $regel"
+      AlertBox "Cannot find line from $regel"
+     } else {
+        set regel [lindex $fullijst $nummer]
+        puts $regel
+        set lstregel [split $regel " "]
+        set inul [lindex $lstregel 7]
+        puts "inul is $inul"
+        set i0array($inulcnt) $inul
+        incr inulcnt 1
+     } 
+}
+close $fillinextra
+
+set  filconc [open ./data/concset.dat r]
+set filint [open ./data/intset.dat r]
+set fildeflin [open ./data/extralin.dat r]
+set fillin [open ./data/allints.dat w]
+set filsmpldef [open ./data/allsmpls.dat w]
+
+# first get line definitions 
+
+set linecnt 0
+while { [gets $fildeflin regel] >=0} {
+        set linedef($linecnt) $regel
+        incr linecnt 1
+}
+close $fildeflin
+puts "na lezen fildeflin pa0mbo linecmnt is $linecnt"
+
+# now get nr of samples we have to deal with
+gets $filconc nr_samples
+puts "nr of samples  $nr_samples"
+
+for {set i 1} { $i <= $nr_samples} {incr i 1 } {
+  gets $filconc regel
+  puts $regel
+  set lstregel [split $regel " "]
+  puts $lstregel
+  if { [gets $filint regel1] < 0 } then {
+     puts "error not enough intensities!"
+     AlertBox "error, not enough intensities"
+    } else {
+     set lstregel1 [split $regel1 " "]
+  }
+  set nr_compounds [lindex $lstregel 0]
+  set mth [lindex $lstregel 1]
+  set nr_line_unkn 0
+  for {set j 0 } { $j < $nr_compounds} {incr j 1} {
+     set name_compd($j)  [lindex $lstregel [expr 2 + 2*$j]]
+     set fixed [lindex $lstregel [expr 3 + 2*$j]]
+     puts "fixed is $fixed"
+     puts "pa0mbo extra na fixed"
+     puts "lstregel is $lstregel"
+     puts "lstregel1 is $lstregel1 en j is $j"
+     if { $fixed == "?"} then {
+       if { [lindex $lstregel1 $j] == ""} then {
+         set estim($j) 0.00001
+         set fix($j) 0 } else {
+        set estim($j) [expr  [lindex $lstregel1 $j] /  $i0array($nr_line_unkn)]
+          set fix($j) 0
+          incr nr_line_unkn 1
+          puts "rxi estimate is $estim($j)"
+        }
+      } 
+     if { $fixed != "?" } then { 
+        set estim($j) $fixed
+        set fix($j) 1
+     }
+  }
+# now prepare line for file allsmpls.dat
+  set lstoutline {}
+  lappend lstoutline $nr_compounds
+  if { $mth == "?"} then {
+   lappend lstoutline "0.0001 0" 
+  } else {
+   lappend lstoutline "$mth 1"
+  }
+  for {set j 0} {$j < $nr_compounds} {incr j 1} {
+    lappend lstoutline "$name_compd($j) $estim($j) $fix($j)" 
+  }
+  set lstoutline [join $lstoutline]
+  puts $filsmpldef $lstoutline
+  puts $lstoutline
+
+# now prepare line for file allints.dat
+  set lstoutline {}
+  puts "linecount is $linecnt"
+  for {set k 0} { $k <  $linecnt } {incr k 1} {
+    lappend lstoutline $linedef($k) 
+    lappend lstoutline  [expr [lindex $lstregel1 $k] / $i0array($k)]
+   }
+   set lstoutline [join $lstoutline]
+   puts $fillin $lstoutline
+   puts $lstoutline
+}
+close $fillin
+close $filsmpldef 
+
+set fil [open ./data/allints.dat r]
+set filsmpl [open ./data/allsmpls.dat r]
+set filout1 [open ./data/aresults.dat w]
+set filintsorg [open ./data/intset.dat r]
+puts $filout1 [exec date]
+close $filout1
+# tijdelijke oplossing tot moment van inbouw !!
+#set nr_samples 3
+#set inulcnt 3
+for {set i 0} { $i < $nr_samples} {incr i 1} {
+  set filout3 [open ./data/aresults.dat a]
+  puts $filout3  "\n-----Sample ID $sidc([expr $i +1]) ------\n\n"
+  puts $filout3  "line  kv    intens.\n"
+  set filout1 [open ./data/lines.dat w]
+  set filout2 [open ./data/sample.dat w]
+  puts $filout2 "1"
+  gets $filsmpl regel 
+  puts $filout2 $regel
+  close $filout2
+  gets $filintsorg regelints
+  set lstints [split $regelints " "]
+  gets $fil regel
+  set lstregel [split $regel " "]
+  for {set j 0} {$j < $inulcnt} { incr j 1} {
+    for {set k 0} {$k < 3} {incr k 1} {
+      puts -nonewline $filout1 "[lindex $lstregel [expr $j*8 + $k]] "
+      puts -nonewline $filout3 "[lindex $lstregel [expr $j*8 + $k]] "
+    }
+    puts  $filout3 "[lindex $lstints [expr $j]] "
+    if { [lindex $lstregel [expr $j*8 + 3]] == "None" } then {
+      puts $filout1 [lindex $lstregel [expr $j*8 + 7]] 
+    } else {
+      puts -nonewline $filout1 "[lindex $lstregel [expr $j*8 + 3]] "
+      puts -nonewline $filout1 "[lindex $lstregel [expr $j*8 + 4]] "  
+      puts  $filout1 "[lindex $lstregel [expr $j*8 + 7]] "
+    }
+  }
+  close $filout1
+  close $filout3
+  set filout1 [open ./data/aresults.dat a]
+  close $filout1
+  exec xrfsmplx >> ./data/aresults.dat
+}}  -label {XRFSMPLX}
+  .top19.frame0.menubutton21.m add command  -command {set filaresults [open ./data/aresults.dat w]
+puts $filaresults "     "
+close $filaresults
+set filistio [open listio.dat r]
+set fullijst {}
+set shortlist {}
+while { [gets $filistio regel] >= 0} {
+ set lstregel [split $regel " "]
+ lappend fullijst $regel
+ set cntregel [llength $lstregel]
+ set korteregel {}
+ for {set i 0} { $i < [expr $cntregel - 1] } {incr i 1 } {
+     lappend korteregel [lindex $lstregel $i] }
+ puts $korteregel
+ lappend shortlist $korteregel
+}
+close $filistio
+puts $fullijst
+puts $shortlist
+set  fillinextra [open ./data/extralin.dat r]
+set inulcnt 0
+while { [gets $fillinextra regel] >= 0 } {
+  set nummer [lsearch $shortlist $regel]
+  puts $nummer
+  if {  $nummer == -1}  then {
+      puts "error!!"
+      puts "error in $regel"
+      AlertBox "Cannot find line from $regel"
+     } else {
+        set regel [lindex $fullijst $nummer]
+        puts $regel
+        set lstregel [split $regel " "]
+        set inul [lindex $lstregel 7]
+        puts "inul is $inul"
+        set i0array($inulcnt) $inul
+        incr inulcnt 1
+     } 
+}
+close $fillinextra
+
+set  filconc [open ./data/concset.dat r]
+set filint [open ./data/intset.dat r]
+set fildeflin [open ./data/extralin.dat r]
+set fillin [open ./data/allints.dat w]
+set filsmpldef [open ./data/allsmpls.dat w]
+
+# first get line definitions 
+
+set linecnt 0
+while { [gets $fildeflin regel] >=0} {
+        set linedef($linecnt) $regel
+        incr linecnt 1
+}
+close $fildeflin
+puts "na lezen fildeflin pa0mbo linecmnt is $linecnt"
+
+# now get nr of samples we have to deal with
+gets $filconc nr_samples
+puts "nr of samples  $nr_samples"
+
+for {set i 1} { $i <= $nr_samples} {incr i 1 } {
+  gets $filconc regel
+  puts $regel
+  set lstregel [split $regel " "]
+  puts $lstregel
+  if { [gets $filint regel1] < 0 } then {
+     puts "error not enough intensities!"
+     AlertBox "error, not enough intensities"
+    } else {
+     set lstregel1 [split $regel1 " "]
+  }
+  set nr_compounds [lindex $lstregel 0]
+  set mth [lindex $lstregel 1]
+  set nr_line_unkn 0
+  for {set j 0 } { $j < $nr_compounds} {incr j 1} {
+     set name_compd($j)  [lindex $lstregel [expr 2 + 2*$j]]
+     set fixed [lindex $lstregel [expr 3 + 2*$j]]
+     puts "fixed is $fixed"
+     puts "pa0mbo extra na fixed"
+     puts "lstregel is $lstregel"
+     puts "lstregel1 is $lstregel1 en j is $j"
+     if { $fixed == "?"} then {
+       if { [lindex $lstregel1 $j] == ""} then {
+         set estim($j) 0.00001
+         set fix($j) 0 } else {
+        set estim($j) [expr  [lindex $lstregel1 $j] /  $i0array($nr_line_unkn)]
+          set fix($j) 0
+          incr nr_line_unkn 1
+          puts "rxi estimate is $estim($j)"
+        }
+      } 
+     if { $fixed != "?" } then { 
+        set estim($j) $fixed
+        set fix($j) 1
+     }
+  }
+# now prepare line for file allsmpls.dat
+  set lstoutline {}
+  lappend lstoutline $nr_compounds
+  if { $mth == "?"} then {
+   lappend lstoutline "0.0001 0" 
+  } else {
+   lappend lstoutline "$mth 1"
+  }
+  for {set j 0} {$j < $nr_compounds} {incr j 1} {
+    lappend lstoutline "$name_compd($j) $estim($j) $fix($j)" 
+  }
+  set lstoutline [join $lstoutline]
+  puts $filsmpldef $lstoutline
+  puts $lstoutline
+
+# now prepare line for file allints.dat
+  set lstoutline {}
+  puts "linecount is $linecnt"
+  for {set k 0} { $k <  $linecnt } {incr k 1} {
+    lappend lstoutline $linedef($k) 
+    lappend lstoutline  [expr [lindex $lstregel1 $k] / $i0array($k)]
+   }
+   set lstoutline [join $lstoutline]
+   puts $fillin $lstoutline
+   puts $lstoutline
+}
+close $fillin
+close $filsmpldef 
+
+set filout1 [open ./data/aresults.dat w]
+puts $filout1 "RESULTS GENERATED BY XRFALFAS"
+puts $filout1 "-----------------------------"
+close $filout1
+set fil [open ./data/allints.dat r]
+set filsmpl [open ./data/allsmpls.dat r]
+
+# tijdelijke oplossing tot moment van inbouw !!
+#set nr_samples 3
+#set inulcnt 3
+for {set i 0} { $i < $nr_samples} {incr i 1} {
+  set filout1 [open ./data/lines.dat w]
+  set filout2 [open ./data/sample.dat w]
+  puts $filout2 "1"
+  gets $filsmpl regel 
+  puts $filout2 $regel
+  close $filout2
+  gets $fil regel
+  set lstregel [split $regel " "]
+  for {set j 0} {$j < $inulcnt} { incr j 1} {
+    for {set k 0} {$k < 3} {incr k 1} {
+      puts -nonewline $filout1 "[lindex $lstregel [expr $j*8 + $k]] "
+    }
+    if { [lindex $lstregel [expr $j*8 + 3]] == "None" } then {
+      puts $filout1 [lindex $lstregel [expr $j*8 + 7]] 
+    } else {
+      puts -nonewline $filout1 "[lindex $lstregel [expr $j*8 + 3]] "
+      puts -nonewline $filout1 "[lindex $lstregel [expr $j*8 + 4]] "  
+      puts  $filout1 "[lindex $lstregel [expr $j*8 + 7]] "
+    }
+  }
+  close $filout1
+  set filout1 [open ./data/aresults.dat a]
+  set datum [exec date] 
+  puts $filout1  "\n-----Sample ID $sidc([expr $i +1]) ----- $datum ----\n\n"
+  close $filout1
+  exec xrfalfas >> ./data/aresults.dat
+}}  -label {XRFALFAS}
+  .top19.frame0.menubutton21.m add command  -command {set filaresults [open ./data/aresults.dat w]
+puts $filaresults "     "
+close $filaresults
+set filistio [open listio.dat r]
+set fullijst {}
+set shortlist {}
+while { [gets $filistio regel] >= 0} {
+ set lstregel [split $regel " "]
+ lappend fullijst $regel
+ set cntregel [llength $lstregel]
+ set korteregel {}
+ for {set i 0} { $i < [expr $cntregel - 1] } {incr i 1 } {
+     lappend korteregel [lindex $lstregel $i] }
+ puts $korteregel
+ lappend shortlist $korteregel
+}
+close $filistio
+puts $fullijst
+puts $shortlist
+set  fillinextra [open ./data/extralin.dat r]
+set inulcnt 0
+while { [gets $fillinextra regel] >= 0 } {
+  set nummer [lsearch $shortlist $regel]
+  puts $nummer
+  if {  $nummer == -1}  then {
+      puts "error!!"
+      puts "error in $regel"
+      AlertBox "Cannot find line from $regel"
+     } else {
+        set regel [lindex $fullijst $nummer]
+        puts $regel
+        set lstregel [split $regel " "]
+        set inul [lindex $lstregel 7]
+        puts "inul is $inul"
+        set i0array($inulcnt) $inul
+        incr inulcnt 1
+     } 
+}
+close $fillinextra
+
+set  filconc [open ./data/concset.dat r]
+set filint [open ./data/intset.dat r]
+set fildeflin [open ./data/extralin.dat r]
+set fillin [open ./data/allints.dat w]
+set filsmpldef [open ./data/allsmpls.dat w]
+
+# first get line definitions 
+
+set linecnt 0
+while { [gets $fildeflin regel] >=0} {
+        set linedef($linecnt) $regel
+        incr linecnt 1
+}
+close $fildeflin
+puts "na lezen fildeflin pa0mbo linecmnt is $linecnt"
+
+# now get nr of samples we have to deal with
+gets $filconc nr_samples
+puts "nr of samples  $nr_samples"
+
+for {set i 1} { $i <= $nr_samples} {incr i 1 } {
+  gets $filconc regel
+  puts $regel
+  set lstregel [split $regel " "]
+  puts $lstregel
+  if { [gets $filint regel1] < 0 } then {
+     puts "error not enough intensities!"
+     AlertBox "error, not enough intensities"
+    } else {
+     set lstregel1 [split $regel1 " "]
+  }
+  set nr_compounds [lindex $lstregel 0]
+  set mth [lindex $lstregel 1]
+  set nr_line_unkn 0
+  for {set j 0 } { $j < $nr_compounds} {incr j 1} {
+     set name_compd($j)  [lindex $lstregel [expr 2 + 2*$j]]
+     set fixed [lindex $lstregel [expr 3 + 2*$j]]
+     puts "fixed is $fixed"
+     puts "pa0mbo extra na fixed"
+     puts "lstregel is $lstregel"
+     puts "lstregel1 is $lstregel1 en j is $j"
+     if { $fixed == "?"} then {
+       if { [lindex $lstregel1 $j] == ""} then {
+         set estim($j) 0.00001
+         set fix($j) 0 } else {
+        set estim($j) [expr  [lindex $lstregel1 $j] /  $i0array($nr_line_unkn)]
+          set fix($j) 0
+          incr nr_line_unkn 1
+          puts "rxi estimate is $estim($j)"
+        }
+      } 
+     if { $fixed != "?" } then { 
+        set estim($j) $fixed
+        set fix($j) 1
+     }
+  }
+# now prepare line for file allsmpls.dat
+  set lstoutline {}
+  lappend lstoutline $nr_compounds
+  if { $mth == "?"} then {
+   lappend lstoutline "0.0001 0" 
+  } else {
+   lappend lstoutline "$mth 1"
+  }
+  for {set j 0} {$j < $nr_compounds} {incr j 1} {
+    lappend lstoutline "$name_compd($j) $estim($j) $fix($j)" 
+  }
+  set lstoutline [join $lstoutline]
+  puts $filsmpldef $lstoutline
+  puts $lstoutline
+
+# now prepare line for file allints.dat
+  set lstoutline {}
+  puts "linecount is $linecnt"
+  for {set k 0} { $k <  $linecnt } {incr k 1} {
+    lappend lstoutline $linedef($k) 
+    lappend lstoutline  [expr [lindex $lstregel1 $k] / $i0array($k)]
+   }
+   set lstoutline [join $lstoutline]
+   puts $fillin $lstoutline
+   puts $lstoutline
+}
+close $fillin
+close $filsmpldef 
+
+set filout1 [open ./data/aresults.dat w]
+puts $filout1 "RESULTS GENERATED BY XRFROUS"
+puts $filout1 "----------------------------"
+close $filout1
+set fil [open ./data/allints.dat r]
+set filsmpl [open ./data/allsmpls.dat r]
+# tijdelijke oplossing tot moment van inbouw !!
+#set nr_samples 3
+#set inulcnt 3
+set filout1 [open ./data/aresults.dat w]
+puts $filout1 [exec date]
+close $filout1
+for {set i 0} { $i < $nr_samples} {incr i 1} {
+  set filout1 [open ./data/lines.dat w]
+  set filout2 [open ./data/sample.dat w]
+  puts $filout2 "1"
+  gets $filsmpl regel 
+  puts $filout2 $regel
+  close $filout2
+  gets $fil regel
+  set lstregel [split $regel " "]
+  for {set j 0} {$j < $inulcnt} { incr j 1} {
+    for {set k 0} {$k < 3} {incr k 1} {
+      puts -nonewline $filout1 "[lindex $lstregel [expr $j*8 + $k]] "
+    }
+    if { [lindex $lstregel [expr $j*8 + 3]] == "None" } then {
+      puts $filout1 [lindex $lstregel [expr $j*8 + 7]] 
+    } else {
+      puts -nonewline $filout1 "[lindex $lstregel [expr $j*8 + 3]] "
+      puts -nonewline $filout1 "[lindex $lstregel [expr $j*8 + 4]] "  
+      puts  $filout1 "[lindex $lstregel [expr $j*8 + 7]] "
+    }
+  }
+  close $filout1
+  set filout1 [open ./data/aresults.dat a]
+  puts $filout1  "\n-----Sample ID $sidc([expr $i +1]) --------\n\n"
+  close $filout1
+  exec xrfrous >> ./data/aresults.dat
+}}  -label {XRFROUS}
+  .top19.frame0.menubutton21.m add command  -command {set filaresults [open ./data/aresults.dat w]
+puts $filaresults "     "
+close $filaresults
+set filistio [open listio.dat r]
+set fullijst {}
+set shortlist {}
+while { [gets $filistio regel] >= 0} {
+ set lstregel [split $regel " "]
+ lappend fullijst $regel
+ set cntregel [llength $lstregel]
+ set korteregel {}
+ for {set i 0} { $i < [expr $cntregel - 1] } {incr i 1 } {
+     lappend korteregel [lindex $lstregel $i] }
+ puts $korteregel
+ lappend shortlist $korteregel
+}
+close $filistio
+puts $fullijst
+puts $shortlist
+set  fillinextra [open ./data/extralin.dat r]
+set inulcnt 0
+while { [gets $fillinextra regel] >= 0 } {
+  set nummer [lsearch $shortlist $regel]
+  puts $nummer
+  if {  $nummer == -1}  then {
+      puts "error!!"
+      puts "error in $regel"
+      AlertBox "Cannot find line from $regel"
+     } else {
+        set regel [lindex $fullijst $nummer]
+        puts $regel
+        set lstregel [split $regel " "]
+        set inul [lindex $lstregel 7]
+        puts "inul is $inul"
+        set i0array($inulcnt) $inul
+        incr inulcnt 1
+     } 
+}
+close $fillinextra
+
+set  filconc [open ./data/concset.dat r]
+set filint [open ./data/intset.dat r]
+set fildeflin [open ./data/extralin.dat r]
+set fillin [open ./data/allints.dat w]
+set filsmpldef [open ./data/allsmpls.dat w]
+
+# first get line definitions 
+
+set linecnt 0
+while { [gets $fildeflin regel] >=0} {
+        set linedef($linecnt) $regel
+        incr linecnt 1
+}
+close $fildeflin
+puts "na lezen fildeflin pa0mbo linecmnt is $linecnt"
+
+# now get nr of samples we have to deal with
+gets $filconc nr_samples
+puts "nr of samples  $nr_samples"
+
+for {set i 1} { $i <= $nr_samples} {incr i 1 } {
+  gets $filconc regel
+  puts $regel
+  set lstregel [split $regel " "]
+  puts $lstregel
+  if { [gets $filint regel1] < 0 } then {
+     puts "error not enough intensities!"
+     AlertBox "error, not enough intensities"
+    } else {
+     set lstregel1 [split $regel1 " "]
+  }
+  set nr_compounds [lindex $lstregel 0]
+  set mth [lindex $lstregel 1]
+  set nr_line_unkn 0
+  for {set j 0 } { $j < $nr_compounds} {incr j 1} {
+     set name_compd($j)  [lindex $lstregel [expr 2 + 2*$j]]
+     set fixed [lindex $lstregel [expr 3 + 2*$j]]
+     puts "fixed is $fixed"
+     puts "pa0mbo extra na fixed"
+     puts "lstregel is $lstregel"
+     puts "lstregel1 is $lstregel1 en j is $j"
+     if { $fixed == "?"} then {
+       if { [lindex $lstregel1 $j] == ""} then {
+         set estim($j) 0.00001
+         set fix($j) 0 } else {
+        set estim($j) [expr  [lindex $lstregel1 $j] /  $i0array($nr_line_unkn)]
+          set fix($j) 0
+          incr nr_line_unkn 1
+          puts "rxi estimate is $estim($j)"
+        }
+      } 
+     if { $fixed != "?" } then { 
+        set estim($j) $fixed
+        set fix($j) 1
+     }
+  }
+# now prepare line for file allsmpls.dat
+  set lstoutline {}
+  lappend lstoutline $nr_compounds
+  if { $mth == "?"} then {
+   lappend lstoutline "0.0001 0" 
+  } else {
+   lappend lstoutline "$mth 1"
+  }
+  for {set j 0} {$j < $nr_compounds} {incr j 1} {
+    lappend lstoutline "$name_compd($j) $estim($j) $fix($j)" 
+  }
+  set lstoutline [join $lstoutline]
+  puts $filsmpldef $lstoutline
+  puts $lstoutline
+
+# now prepare line for file allints.dat
+  set lstoutline {}
+  puts "linecount is $linecnt"
+  for {set k 0} { $k <  $linecnt } {incr k 1} {
+    lappend lstoutline $linedef($k) 
+    lappend lstoutline  [expr [lindex $lstregel1 $k] / $i0array($k)]
+   }
+   set lstoutline [join $lstoutline]
+   puts $fillin $lstoutline
+   puts $lstoutline
+}
+close $fillin
+close $filsmpldef 
+
+set fil [open ./data/allints.dat r]
+set filsmpl [open ./data/allsmpls.dat r]
+set filout1 [open ./data/aresults.dat w]
+puts $filout1 "RESULTS GENERATED BY XRFLAGUI"
+puts $filout1 [exec date]
+close $filout1
+# tijdelijke oplossing tot moment van inbouw !!
+#set nr_samples 3
+#set inulcnt 3
+for {set i 0} { $i < $nr_samples} {incr i 1} {
+  set filout1 [open ./data/lines.dat w]
+  set filout2 [open ./data/sample.dat w]
+  puts $filout2 "1"
+  gets $filsmpl regel 
+  puts $filout2 $regel
+  close $filout2
+  gets $fil regel
+  set lstregel [split $regel " "]
+  for {set j 0} {$j < $inulcnt} { incr j 1} {
+    for {set k 0} {$k < 3} {incr k 1} {
+      puts -nonewline $filout1 "[lindex $lstregel [expr $j*8 + $k]] "
+    }
+    if { [lindex $lstregel [expr $j*8 + 3]] == "None" } then {
+      puts $filout1 [lindex $lstregel [expr $j*8 + 7]] 
+    } else {
+      puts -nonewline $filout1 "[lindex $lstregel [expr $j*8 + 3]] "
+      puts -nonewline $filout1 "[lindex $lstregel [expr $j*8 + 4]] "  
+      puts  $filout1 "[lindex $lstregel [expr $j*8 + 7]] "
+    }
+  }
+  close $filout1
+  set filout1 [open ./data/aresults.dat a]
+  puts $filout1  "\n-----Sample ID $sidc([expr $i +1]) -------\n\n"
+  close $filout1
+  exec laguit >> ./data/aresults.dat
+}}  -label {XRFLAGUI}
+  .top19.frame0.menubutton21.m add command  -command {ShowWindow.top20
+.top20.frame22.text24 delete 1.0 end
+FileInText .top20.frame22.text24 ./data/aresults.dat}  -label {View}
+  .top19.frame0.menubutton21.m add command  -command {exec lpr ./data/aresults.dat}  -label {Print}
+  .top19.frame0.menubutton21.m add command  -command {set filaresults [open ./data/aresults.dat w]
+puts $filaresults "     "
+close $filaresults
+set filistio [open listgi.dat r]
+set fullijst {}
+set shortlist {}
+while { [gets $filistio regel] >= 0} {
+ set lstregel [split $regel " "]
+ lappend fullijst $regel
+ set cntregel [llength $lstregel]
+ set korteregel {}
+ for {set i 0} { $i < [expr $cntregel - 1] } {incr i 1 } {
+     lappend korteregel [lindex $lstregel $i] }
+ puts $korteregel
+ lappend shortlist $korteregel
+}
+close $filistio
+puts $fullijst
+puts $shortlist
+set  fillinextra [open ./data/extralin.dat r]
+set inulcnt 0
+while { [gets $fillinextra regel] >= 0 } {
+  set nummer [lsearch $shortlist $regel]
+  puts $nummer
+  if {  $nummer == -1}  then {
+      puts "error!!"
+      puts "error in $regel"
+      AlertBox "Cannot find line from $regel"
+     } else {
+        set regel [lindex $fullijst $nummer]
+        puts $regel
+        set lstregel [split $regel " "]
+        set inul [lindex $lstregel 7]
+        puts "inul is $inul"
+        set i0array($inulcnt) $inul
+        incr inulcnt 1
+     } 
+}
+close $fillinextra
+
+set  filconc [open ./data/concset.dat r]
+set filint [open ./data/intset.dat r]
+set fildeflin [open ./data/extralin.dat r]
+set fillin [open ./data/allints.dat w]
+set filsmpldef [open ./data/allsmpls.dat w]
+
+# first get line definitions 
+
+set linecnt 0
+while { [gets $fildeflin regel] >=0} {
+        set linedef($linecnt) $regel
+        incr linecnt 1
+}
+close $fildeflin
+puts "na lezen fildeflin pa0mbo linecmnt is $linecnt"
+
+# now get nr of samples we have to deal with
+gets $filconc nr_samples
+puts "nr of samples  $nr_samples"
+
+for {set i 1} { $i <= $nr_samples} {incr i 1 } {
+  gets $filconc regel
+  puts $regel
+  set lstregel [split $regel " "]
+  puts $lstregel
+  if { [gets $filint regel1] < 0 } then {
+     puts "error not enough intensities!"
+     AlertBox "error, not enough intensities"
+    } else {
+     set lstregel1 [split $regel1 " "]
+  }
+  set nr_compounds [lindex $lstregel 0]
+  set mth [lindex $lstregel 1]
+  set nr_line_unkn 0
+  for {set j 0 } { $j < $nr_compounds} {incr j 1} {
+     set name_compd($j)  [lindex $lstregel [expr 2 + 2*$j]]
+     set fixed [lindex $lstregel [expr 3 + 2*$j]]
+     puts "fixed is $fixed"
+     puts "pa0mbo extra na fixed"
+     puts "lstregel is $lstregel"
+     puts "lstregel1 is $lstregel1 en j is $j"
+     if { $fixed == "?"} then {
+       if { [lindex $lstregel1 $j] == ""} then {
+         set estim($j) 0.00001
+         set fix($j) 0 } else {
+        set estim($j)  0.01
+          set fix($j) 0
+          incr nr_line_unkn 1
+          puts "rxi estimate is $estim($j)"
+        }
+      } 
+     if { $fixed != "?" } then { 
+        set estim($j) $fixed
+        set fix($j) 1
+     }
+  }
+# now prepare line for file allsmpls.dat
+  set lstoutline {}
+  lappend lstoutline $nr_compounds
+  if { $mth == "?"} then {
+   lappend lstoutline "0.0001 0" 
+  } else {
+   lappend lstoutline "$mth 1"
+  }
+  for {set j 0} {$j < $nr_compounds} {incr j 1} {
+    lappend lstoutline "$name_compd($j) $estim($j) $fix($j)" 
+  }
+  set lstoutline [join $lstoutline]
+  puts $filsmpldef $lstoutline
+  puts $lstoutline
+
+# now prepare line for file allints.dat
+  set lstoutline {}
+  puts "linecount is $linecnt"
+  for {set k 0} { $k <  $linecnt } {incr k 1} {
+    set lstoutline {}
+    lappend lstoutline $linedef($k) 
+    lappend lstoutline   [lindex $lstregel1 $k] 
+    lappend lstoutline  $i0array($k)
+    set lstoutline [join $lstoutline]
+    puts $fillin $lstoutline
+    puts $lstoutline
+   }
+}
+close $fillin
+close $filsmpldef 
+
+set fil [open ./data/allints.dat r]
+set filsmpl [open ./data/allsmpls.dat r]
+set filout1 [open ./data/aresults.dat w]
+puts $filout1 [exec date]
+close $filout1
+# tijdelijke oplossing tot moment van inbouw !!
+#set nr_samples 3
+#set inulcnt 3
+for {set i 0} { $i < $nr_samples} {incr i 1} {
+  set filout1 [open ./data/lines.dat w]
+  set filout2 [open ./data/sample.dat w]
+  puts $filout2 "1"
+  gets $filsmpl regel 
+  puts $filout2 $regel
+  close $filout2
+  for {set j 0} {$j < $inulcnt} { incr j 1} {
+    gets $fil regel
+     puts $filout1 $regel
+     puts $regel
+  }
+  close $filout1
+  set filout1 [open ./data/aresults.dat a]
+  puts $filout1  "\n-----Sample ID $sidc([expr $i +1]) ------\n\n"
+  close $filout1
+  exec xrfwang >> ./data/aresults.dat
+}}  -label {SMPLX/GICAL}
+
+  # pack master .top19.frame0
+  pack configure .top19.frame0.menubutton1  -side left
+  pack configure .top19.frame0.menubutton2  -side right
+  pack configure .top19.frame0.button0  -anchor nw  -side left
+  pack configure .top19.frame0.button3  -anchor nw  -side left
+  pack configure .top19.frame0.button1  -anchor nw  -side left
+  pack configure .top19.frame0.button4  -anchor nw  -side left
+  pack configure .top19.frame0.menubutton21  -side left
+
+  # pack master .top19
+  pack configure .top19.frame0  -fill x
+
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFMiscBindWidgetTree .top19"
+    after 2 "catch {XFEditSetShowWindows}"
+  }
+}
+
+proc DestroyWindow.top19 {} {# xf ignore me 7
+  if {"[info procs XFEdit]" != ""} {
+    if {"[info commands .top19]" != ""} {
+      global xfShowWindow.top19
+      set xfShowWindow.top19 0
+      XFEditSetPath .
+      after 2 "XFSaveAsProc .top19; XFEditSetShowWindows"
+    }
+  } {
+    catch "destroy .top19"
+    update
+  }
+}
+
+
+# procedure to show window ShowWindow.top2
+proc ShowWindow.top2 { args} {
+# xf ignore me 7
+
+  # build widget .top2
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFDestroy .top2"
+  } {
+    catch "destroy .top2"
+  }
+  toplevel .top2 
+
+  # Window manager configurations
+  wm positionfrom .top2 user
+  wm sizefrom .top2 user
+  wm geometry .top2 246x737+705+4
+  wm maxsize .top2 1000 900
+  wm minsize .top2 10 10
+  wm protocol .top2 WM_DELETE_WINDOW {XFProcError {Application windows can not be destroyed.
+Please use the "Current widget path:" to show/hide windows.}}
+  wm title .top2 {COMPOUND SELECTION}
+
+
+  # build widget .top2.frame
+  frame .top2.frame
+
+  # build widget .top2.frame.scrollbar3
+  scrollbar .top2.frame.scrollbar3  -command {.top2.frame.listbox1 xview}  -orient {horizontal}  -relief {raised}
+
+  # build widget .top2.frame.scrollbar2
+  scrollbar .top2.frame.scrollbar2  -command {.top2.frame.listbox1 yview}  -relief {raised}
+
+  # build widget .top2.frame.listbox1
+  listbox .top2.frame.listbox1  -height {40}  -xscrollcommand {.top2.frame.scrollbar3 set}  -yscrollcommand {.top2.frame.scrollbar2 set}
+  # bindings
+  bind .top2.frame.listbox1 <Double-Button-1> {set name_comp [selection get]
+set compindex [lsearch -regexp $listcomps ^$name_comp]
+set regel_comp [lindex $listcomps $compindex]
+puts $regel_comp
+incr nr_comps 1
+set f .top3.frame[expr $nr_comps + 20]
+frame $f
+pack $f -side top -fill x
+entry $f.entry1 -textvariable component($nr_comps)
+entry $f.entry2 -textvariable compcnt($nr_comps)
+pack $f.entry1 $f.entry2 -side left -fill x
+set component($nr_comps) $name_comp
+
+# Now actions for preparing file with compound
+# definitions
+
+set density [lindex $regel_comp 1]
+set atoom [lindex $regel_comp 2]
+puts $fildefs "      "
+puts $fildefs "      DEFINE $name_comp $density $atoom"
+set nr_elmsa [lindex $regel_comp 3]
+for {set i 0} {$i < $nr_elmsa} {incr i 1} {
+set element [lindex $regel_comp [expr $i*2 + 4]]
+set atoomcnt [lindex $regel_comp [expr $i*2 + 5]]
+puts $fildefs "      $element $atoomcnt"
+}
+flush $fildefs}
+
+  # build widget .top2.frame6
+  frame .top2.frame6  -borderwidth {2}  -height {30}  -relief {raised}  -width {30}
+
+  # build widget .top2.frame6.button7
+  button .top2.frame6.button7  -command {.top2.frame.listbox1 delete 0 end
+DestroyWindow.top2
+close $fildefs}  -padx {9}  -pady {3}  -state {active}  -text {DISMISS}
+
+  # pack master .top2.frame
+  pack configure .top2.frame.scrollbar2  -fill y  -side left
+  pack configure .top2.frame.scrollbar3  -fill x  -side bottom
+  pack configure .top2.frame.listbox1  -expand 1  -fill both
+
+  # pack master .top2.frame6
+  pack configure .top2.frame6.button7  -fill x
+
+  # pack master .top2
+  pack configure .top2.frame  -fill both
+  pack configure .top2.frame6  -fill x  -side bottom
+
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFMiscBindWidgetTree .top2"
+    after 2 "catch {XFEditSetShowWindows}"
+  }
+}
+
+proc DestroyWindow.top2 {} {# xf ignore me 7
+  if {"[info procs XFEdit]" != ""} {
+    if {"[info commands .top2]" != ""} {
+      global xfShowWindow.top2
+      set xfShowWindow.top2 0
+      XFEditSetPath .
+      after 2 "XFSaveAsProc .top2; XFEditSetShowWindows"
+    }
+  } {
+    catch "destroy .top2"
+    update
+  }
+}
+
+
+# procedure to show window ShowWindow.top20
+proc ShowWindow.top20 { args} {
+# xf ignore me 7
+
+  # build widget .top20
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFDestroy .top20"
+  } {
+    catch "destroy .top20"
+  }
+  toplevel .top20 
+
+  # Window manager configurations
+  wm positionfrom .top20 user
+  wm sizefrom .top20 ""
+  wm geometry .top20 +22+208
+  wm maxsize .top20 1000 900
+  wm minsize .top20 10 10
+  wm protocol .top20 WM_DELETE_WINDOW {XFProcError {Application windows can not be destroyed.
+Please use the "Current widget path:" to show/hide windows.}}
+  wm title .top20 {ANALYTICAL RESULTS}
+
+
+  # build widget .top20.frame22
+  frame .top20.frame22  -borderwidth {2}  -height {30}  -relief {raised}  -width {30}
+
+  # build widget .top20.frame22.text24
+  text .top20.frame22.text24
+
+  # build widget .top20.button23
+  button .top20.button23  -command {
+DestroyWindow.top20}  -padx {9}  -pady {3}  -state {active}  -text {DISMISS}
+
+  # pack master .top20.frame22
+  pack configure .top20.frame22.text24
+
+  # pack master .top20
+  pack configure .top20.frame22  -anchor n  -fill both
+  pack configure .top20.button23  -side bottom
+
+  .top20.frame22.text24 insert end {Fri Sep 10 13:26:51 WEST 1999
+
+-----Sample ID STD-2 ------}
+
+
+
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFMiscBindWidgetTree .top20"
+    after 2 "catch {XFEditSetShowWindows}"
+  }
+}
+
+proc DestroyWindow.top20 {} {# xf ignore me 7
+  if {"[info procs XFEdit]" != ""} {
+    if {"[info commands .top20]" != ""} {
+      global xfShowWindow.top20
+      set xfShowWindow.top20 0
+      XFEditSetPath .
+      after 2 "XFSaveAsProc .top20; XFEditSetShowWindows"
+    }
+  } {
+    catch "destroy .top20"
+    update
+  }
+}
+
+
+# procedure to show window ShowWindow.top21
+proc ShowWindow.top21 { args} {
+# xf ignore me 7
+
+  # build widget .top21
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFDestroy .top21"
+  } {
+    catch "destroy .top21"
+  }
+  toplevel .top21 
+
+  # Window manager configurations
+  wm positionfrom .top21 ""
+  wm sizefrom .top21 ""
+  wm maxsize .top21 1000 900
+  wm minsize .top21 10 10
+  wm protocol .top21 WM_DELETE_WINDOW {XFProcError {Application windows can not be destroyed.
+Please use the "Current widget path:" to show/hide windows.}}
+  wm title .top21 {EDIT INTSET.DAT}
+
+
+  # build widget .top21.text23
+  text .top21.text23
+
+  # build widget .top21.button24
+  button .top21.button24  -command {set fileout [open ./data/intset.dat w]
+puts -nonewline $fileout [.top21.text23 get 1.0 end]
+puts $fileout ""
+close $fileout
+DestroyWindow.top21}  -padx {9}  -pady {3}  -text {Save}
+
+  # pack master .top21
+  pack configure .top21.text23
+  pack configure .top21.button24
+
+  .top21.text23 insert end {8.12 0.11 0.09
+1.09 1.11 2.1}
+
+
+
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFMiscBindWidgetTree .top21"
+    after 2 "catch {XFEditSetShowWindows}"
+  }
+}
+
+proc DestroyWindow.top21 {} {# xf ignore me 7
+  if {"[info procs XFEdit]" != ""} {
+    if {"[info commands .top21]" != ""} {
+      global xfShowWindow.top21
+      set xfShowWindow.top21 0
+      XFEditSetPath .
+      after 2 "XFSaveAsProc .top21; XFEditSetShowWindows"
+    }
+  } {
+    catch "destroy .top21"
+    update
+  }
+}
+
+
+# procedure to show window ShowWindow.top22
+proc ShowWindow.top22 { args} {
+# xf ignore me 7
+
+  # build widget .top22
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFDestroy .top22"
+  } {
+    catch "destroy .top22"
+  }
+  toplevel .top22 
+
+  # Window manager configurations
+  wm positionfrom .top22 user
+  wm sizefrom .top22 user
+  wm geometry .top22 +8+87
+  wm maxsize .top22 1000 1000
+  wm minsize .top22 10 10
+  wm protocol .top22 WM_DELETE_WINDOW {XFProcError {Application windows can not be destroyed.
+Please use the "Current widget path:" to show/hide windows.}}
+  wm title .top22 {SIMULATION MENU}
+
+
+  # build widget .top22.frame0
+  frame .top22.frame0  -borderwidth {2}  -relief {raised}
+
+  # build widget .top22.frame0.menubutton2
+  menubutton .top22.frame0.menubutton2  -menu {.top22.frame0.menubutton2.m}  -padx {4}  -pady {3}  -text {Help}  -underline {0}
+
+  # build widget .top22.frame0.menubutton2.m
+  menu .top22.frame0.menubutton2.m  -tearoff {0}
+  .top22.frame0.menubutton2.m add command  -command {AlertBox "help not implemented yet"}  -label {General}
+
+  # build widget .top22.frame0.button0
+  button .top22.frame0.button0  -command {ShowWindow.top1
+set bew_nr_elms $nr_elms
+set nr_elms ""
+destroy .top1.frame7
+for {set i 1} {$i <= $bew_nr_elms} {incr i 1} {
+   unset el($i) cnt($i)
+}
+ShowWindow.top6
+set lijstcomps {}
+set fil [open ./data/complist.dat r]
+while { [ gets $fil regel] >= 0 } {
+    lappend lijstcomps $regel}
+set total_comps [llength $lijstcomps]
+set listcomps [lsort $lijstcomps ]
+set columns [ expr [expr $total_comps/15] + 1]
+for {set i 0} { $i < $columns} {incr i 1} {
+  frame .top6.frame$i 
+   pack .top6.frame$i -side left 
+}
+for {set i 0} { $i < $total_comps} {incr i 1} {
+  puts $i
+  set colum [expr $i / 15]
+  puts $colum
+  set regel [expr $i % 15]
+  puts $regel
+  label .top6.frame$colum.label$regel -justify left -text [lindex [lindex $listcomps $i] 0] -relief flat
+  pack .top6.frame$colum.label$regel -side top -anchor nw
+}}  -padx {9}  -pady {3}  -text {Compounds}
+
+  # build widget .top22.frame0.button1
+  button .top22.frame0.button1  -command {ShowWindow.top2
+set lijstcomps {}
+set fil [open ./data/complist.dat r]
+while { [gets $fil regel] >= 0} {
+    lappend lijstcomps $regel }
+set total_comps [llength $lijstcomps]
+puts $total_comps
+  set listcomps [lsort $lijstcomps]
+for {set i 0} { $i < $total_comps} {incr i 1} {
+   .top2.frame.listbox1 insert end [lindex [lindex $listcomps $i] 0]
+ }
+close $fil
+ShowWindow.top3
+set bew_nr_comps $nr_comps
+set nr_comps ""
+destroy .top3.frame21
+#for {set i 1} {$i <= $bew_nr_comps} {incr i 1} {
+#  unset component($i) compcnt($i)
+#}
+set nr_comps 0
+set fildefs [open  defcomps.dat w]}  -padx {9}  -pady {3}  -text {Sample}
+
+  # build widget .top22.frame0.button2
+  button .top22.frame0.button2  -command {set linesfil  [open ./data/deflines.dat w]
+set linesextra [open ./data/extralin.dat w]
+set line_nr 0
+set listlines {}
+ShowWindow.top4
+
+
+set vorigfilt 0.00}  -padx {9}  -pady {3}  -text {Lines}
+
+  # build widget .top22.frame0.button3
+  button .top22.frame0.button3  -command {catch {exec xrfsim}}  -padx {9}  -pady {3}  -text {Simulate}
+
+  # build widget .top22.frame0.menubutton0
+  menubutton .top22.frame0.menubutton0  -menu {.top22.frame0.menubutton0.m}  -padx {4}  -pady {3}  -text {Print}
+
+  # build widget .top22.frame0.menubutton0.m
+  menu .top22.frame0.menubutton0.m  -tearoff {0}
+  .top22.frame0.menubutton0.m add command  -command {exec date > nep1
+exec echo "Sample: $sample_name\n" >> nep1
+exec echo "--------------lines-----------\n" >> nep1
+exec cat ./data/deflines.dat >> nep1
+exec echo "-------------sample-----------\n" >> nep1
+exec cat ./data/simsampl.dat >> nep1
+exec echo "----results ------------------\n" >> nep1
+exec cat uitvoer >> nep1
+exec chmod a+r nep1
+exec lpr nep1 }  -label {Print Results}
+
+  # build widget .top22.frame0.menubutton1
+  menubutton .top22.frame0.menubutton1  -menu {.top22.frame0.menubutton1.m}  -padx {4}  -pady {3}  -text {Viewer}
+
+  # build widget .top22.frame0.menubutton1.m
+  menu .top22.frame0.menubutton1.m  -tearoff {0}
+  .top22.frame0.menubutton1.m add command  -command {ShowWindow.top7
+.top7.text9 delete 1.0 end
+.top7.text9 insert 1.0 "$sample_name\n"
+.top7.text9 insert 2.0 "-------------\n"
+.top7.text9 insert 3.0 [exec cat uitvoer]}  -label {View Results Simulation}
+  .top22.frame0.menubutton1.m add command  -command {ShowWindow.top10
+.top10.text11 delete 1.0 end
+.top10.text11 insert 1.0 [exec cat ./data/deflines.dat]}  -label {View File deflines.dat}
+  .top22.frame0.menubutton1.m add command  -command {ShowWindow.top8
+.top8.text13 delete 1.0 end
+.top8.text13 insert 1.0 [exec cat ./data/simsampl.dat]}  -label {View File simsampl.dat}
+  .top22.frame0.menubutton1.m add command  -command {ShowWindow.top11
+.top11.text14 delete 1.0 end
+.top11.text14 insert 1.0 [exec cat ./data/pwsettings.dat]}  -label {View File pwsettings.dat}
+
+  # build widget .top22.frame0.button4
+  button .top22.frame0.button4  -command {DestroyWindow.top22}  -padx {9}  -pady {3}  -state {active}  -text {Dismiss Sim. Menu}
+
+  # pack master .top22.frame0
+  pack configure .top22.frame0.menubutton2  -side right
+  pack configure .top22.frame0.button0  -side left
+  pack configure .top22.frame0.button1  -side left
+  pack configure .top22.frame0.button2  -side left
+  pack configure .top22.frame0.button3  -side left
+  pack configure .top22.frame0.menubutton0  -side right
+  pack configure .top22.frame0.menubutton1  -side right
+  pack configure .top22.frame0.button4  -side left
+
+  # pack master .top22
+  pack configure .top22.frame0  -fill x
+
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFMiscBindWidgetTree .top22"
+    after 2 "catch {XFEditSetShowWindows}"
+  }
+}
+
+proc DestroyWindow.top22 {} {# xf ignore me 7
+  if {"[info procs XFEdit]" != ""} {
+    if {"[info commands .top22]" != ""} {
+      global xfShowWindow.top22
+      set xfShowWindow.top22 0
+      XFEditSetPath .
+      after 2 "XFSaveAsProc .top22; XFEditSetShowWindows"
+    }
+  } {
+    catch "destroy .top22"
+    update
+  }
+}
+
+
+# procedure to show window ShowWindow.top25
+proc ShowWindow.top25 { args} {
+# xf ignore me 7
+
+  # build widget .top25
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFDestroy .top25"
+  } {
+    catch "destroy .top25"
+  }
+  toplevel .top25 
+
+  # Window manager configurations
+  wm positionfrom .top25 ""
+  wm sizefrom .top25 ""
+  wm maxsize .top25 1000 900
+  wm minsize .top25 10 10
+  wm protocol .top25 WM_DELETE_WINDOW {XFProcError {Application windows can not be destroyed.
+Please use the "Current widget path:" to show/hide windows.}}
+  wm title .top25 {EDIT SMPLIDS.DAT}
+
+
+  # build widget .top25.text26
+  text .top25.text26
+
+  # build widget .top25.button27
+  button .top25.button27  -command {set fileout [open ./data/smplids.dat w]
+puts -nonewline $fileout [.top25.text26 get 1.0 end]
+close $fileout
+DestroyWindow.top25}  -padx {9}  -pady {3}  -state {active}  -text {Save}
+
+  # pack master .top25
+  pack configure .top25.text26
+  pack configure .top25.button27
+
+  .top25.text26 insert end {2
+S1
+S2A}
+
+
+
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFMiscBindWidgetTree .top25"
+    after 2 "catch {XFEditSetShowWindows}"
+  }
+}
+
+proc DestroyWindow.top25 {} {# xf ignore me 7
+  if {"[info procs XFEdit]" != ""} {
+    if {"[info commands .top25]" != ""} {
+      global xfShowWindow.top25
+      set xfShowWindow.top25 0
+      XFEditSetPath .
+      after 2 "XFSaveAsProc .top25; XFEditSetShowWindows"
+    }
+  } {
+    catch "destroy .top25"
+    update
+  }
+}
+
+
+# procedure to show window ShowWindow.top3
+proc ShowWindow.top3 { args} {
+# xf ignore me 7
+
+  # build widget .top3
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFDestroy .top3"
+  } {
+    catch "destroy .top3"
+  }
+  toplevel .top3 
+
+  # Window manager configurations
+  wm positionfrom .top3 user
+  wm sizefrom .top3 user
+  wm geometry .top3 +28+160
+  wm maxsize .top3 1000 900
+  wm minsize .top3 10 10
+  wm protocol .top3 WM_DELETE_WINDOW {XFProcError {Application windows can not be destroyed.
+Please use the "Current widget path:" to show/hide windows.}}
+  wm title .top3 {DEFINE SAMPLE}
+
+
+  # build widget .top3.frame
+  frame .top3.frame  -relief {raised}
+
+  # build widget .top3.frame.label4
+  label .top3.frame.label4  -padx {2}  -relief {raised}  -text {NAME }
+
+  # build widget .top3.frame.entry5
+  entry .top3.frame.entry5  -relief {raised}  -textvariable {sample_name}
+
+  # build widget .top3.frame3
+  frame .top3.frame3  -relief {raised}
+
+  # build widget .top3.frame3.label4
+  label .top3.frame3.label4  -padx {2}  -relief {raised}  -text {THICKNESS  g/cm2}
+
+  # build widget .top3.frame3.entry5
+  entry .top3.frame3.entry5  -relief {raised}  -textvariable {thickness}
+
+  # build widget .top3.frame4
+  frame .top3.frame4  -relief {raised}
+
+  # build widget .top3.frame4.label4
+  label .top3.frame4.label4  -padx {2}  -relief {raised}  -text {NR_COMPOUNDS}
+
+  # build widget .top3.frame4.entry5
+  entry .top3.frame4.entry5  -relief {raised}  -textvariable {nr_comps}
+  # bindings
+  bind .top3.frame4.entry5 <Button-1> {set bew_nr_comps $nr_comps
+set nr_comps 0
+for {set i 1} {$i <= $bew_nr_comps} { incr i 1} {
+  destroy .top3.frame[expr $i+20]
+  unset component($i) compcnt($i)
+}}
+  bind .top3.frame4.entry5 <Key-Return> {for {set i 1} { $i <= $nr_comps} {incr i 1} {
+  set f .top3.frame[expr $i + 20]
+  frame $f 
+  pack $f -side top -fill x
+  entry $f.entry1 -textvariable component($i) 
+  entry $f.entry2 -textvariable compcnt($i)
+  pack $f.entry1 $f.entry2 -side left -fill x
+}}
+
+  # build widget .top3.frame5
+  frame .top3.frame5  -borderwidth {2}  -height {30}  -relief {raised}  -width {30}
+
+  # build widget .top3.frame5.checkbutton6
+  checkbutton .top3.frame5.checkbutton6  -command {if {$homog == 0} then {set partic 1}
+if {$homog == 1} then {set partic 0}}  -relief {raised}  -text {HOMOGENEOUS}  -variable {homog}
+
+  # build widget .top3.frame5.checkbutton7
+  checkbutton .top3.frame5.checkbutton7  -command {if { $partic == 0} then {set homog 1}
+if { $partic == 1} then {set homog 0}}  -relief {raised}  -text {PARTICULATE}  -variable {partic}
+
+  # build widget .top3.frame10
+  frame .top3.frame10  -relief {raised}
+
+  # build widget .top3.frame10.label4
+  label .top3.frame10.label4  -padx {2}  -relief {raised}  -text {VOID FRACTION}
+
+  # build widget .top3.frame10.entry5
+  entry .top3.frame10.entry5  -relief {raised}  -textvariable {voidfract}
+
+  # build widget .top3.frame11
+  frame .top3.frame11  -relief {raised}
+
+  # build widget .top3.frame11.label4
+  label .top3.frame11.label4  -padx {2}  -relief {raised}  -text {VOID SIZE (micrometer)}
+
+  # build widget .top3.frame11.entry5
+  entry .top3.frame11.entry5  -relief {raised}  -textvariable {voidsize}
+
+  # build widget .top3.label12
+  label .top3.label12  -relief {raised}  -text {--COMPOUND----FRACTION--}
+
+  # build widget .top3.frame6
+  frame .top3.frame6  -borderwidth {2}  -height {30}  -relief {raised}  -width {30}
+
+  # build widget .top3.frame6.button9
+  button .top3.frame6.button9  -padx {9}  -pady {3}  -text {OK ADD TO FILE}
+  # bindings
+  bind .top3.frame6.button9 <Button-1> {set fil2 [open ./data/simsampl.dat w]
+if {$homog == 1} then {set kind HOM}
+if {$homog == 0} then {set kind PART}
+#set regel2 "      COM $sample_name $kind $thickness $voidfract $voidsize"
+puts $fil2 "1"
+puts $fil2 "$nr_comps $thickness"
+for {set i 1} {$i <= $nr_comps} {incr i 1 } {
+  puts $fil2 "$component($i) $compcnt($i)"
+}
+flush $fil2
+close $fil2}
+
+  # build widget .top3.frame6.button10
+  button .top3.frame6.button10  -command {for {set i 1} {$i < $nr_comps} {incr i 1} {
+  destroy .top3.frame[expr 21 + $i]
+}
+DestroyWindow.top3}  -padx {9}  -pady {3}  -text {DISMISS}
+
+  # build widget .top3.frame21
+  frame .top3.frame21
+
+  # build widget .top3.frame21.entry1
+  entry .top3.frame21.entry1  -textvariable {component(1)}
+
+  # build widget .top3.frame21.entry2
+  entry .top3.frame21.entry2  -textvariable {compcnt(1)}
+
+  # pack master .top3.frame
+  pack configure .top3.frame.label4  -fill x  -side left
+  pack configure .top3.frame.entry5  -fill x
+
+  # pack master .top3.frame3
+  pack configure .top3.frame3.label4  -side left
+  pack configure .top3.frame3.entry5  -expand 1  -fill both
+
+  # pack master .top3.frame4
+  pack configure .top3.frame4.label4  -side left
+  pack configure .top3.frame4.entry5  -expand 1  -fill x
+
+  # pack master .top3.frame5
+  pack configure .top3.frame5.checkbutton6  -anchor nw  -fill x  -side left
+  pack configure .top3.frame5.checkbutton7  -anchor nw  -expand 1  -fill x  -side right
+
+  # pack master .top3.frame10
+  pack configure .top3.frame10.label4  -side left
+  pack configure .top3.frame10.entry5  -expand 1  -fill x
+
+  # pack master .top3.frame11
+  pack configure .top3.frame11.label4  -side left
+  pack configure .top3.frame11.entry5  -expand 1  -fill both
+
+  # pack master .top3.frame6
+  pack configure .top3.frame6.button9  -expand 1  -fill x  -side left
+  pack configure .top3.frame6.button10  -expand 1  -fill x  -side right
+
+  # pack master .top3.frame21
+  pack configure .top3.frame21.entry1  -fill x  -side left
+  pack configure .top3.frame21.entry2  -fill x  -side left
+
+  # pack master .top3
+  pack configure .top3.frame  -fill both
+  pack configure .top3.frame3  -fill both
+  pack configure .top3.frame4  -fill both
+  pack configure .top3.frame5
+  pack configure .top3.frame10  -fill both
+  pack configure .top3.frame11  -fill both
+  pack configure .top3.label12  -fill x
+  pack configure .top3.frame6  -fill x  -side bottom
+  pack configure .top3.frame21  -fill x
+
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFMiscBindWidgetTree .top3"
+    after 2 "catch {XFEditSetShowWindows}"
+  }
+}
+
+proc DestroyWindow.top3 {} {# xf ignore me 7
+  if {"[info procs XFEdit]" != ""} {
+    if {"[info commands .top3]" != ""} {
+      global xfShowWindow.top3
+      set xfShowWindow.top3 0
+      XFEditSetPath .
+      after 2 "XFSaveAsProc .top3; XFEditSetShowWindows"
+    }
+  } {
+    catch "destroy .top3"
+    update
+  }
+}
+
+
+# procedure to show window ShowWindow.top4
+proc ShowWindow.top4 { args} {
+# xf ignore me 7
+
+  # build widget .top4
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFDestroy .top4"
+  } {
+    catch "destroy .top4"
+  }
+  toplevel .top4 
+
+  # Window manager configurations
+  wm positionfrom .top4 user
+  wm sizefrom .top4 ""
+  wm geometry .top4 +12+156
+  wm maxsize .top4 1000 900
+  wm minsize .top4 10 10
+  wm protocol .top4 WM_DELETE_WINDOW {XFProcError {Application windows can not be destroyed.
+Please use the "Current widget path:" to show/hide windows.}}
+  wm title .top4 {DEFINE LINES}
+
+
+  # build widget .top4.frame5
+  frame .top4.frame5  -borderwidth {2}  -height {30}  -relief {raised}  -width {30}
+
+  # build widget .top4.frame5.label10
+  label .top4.frame5.label10  -relief {raised}  -text {Element}
+
+  # build widget .top4.frame5.entry11
+  entry .top4.frame5.entry11  -textvariable {elem_name}
+
+  # build widget .top4.frame6
+  frame .top4.frame6  -borderwidth {2}  -height {30}  -relief {raised}  -width {30}
+
+  # build widget .top4.frame6.label12
+  label .top4.frame6.label12  -relief {raised}  -text {Line}
+
+  # build widget .top4.frame6.entry13
+  entry .top4.frame6.entry13  -textvariable {elem_line}
+
+  # build widget .top4.frame7
+  frame .top4.frame7  -borderwidth {2}  -height {30}  -relief {raised}  -width {30}
+
+  # build widget .top4.frame7.label14
+  label .top4.frame7.label14  -relief {raised}  -text {kV}
+
+  # build widget .top4.frame7.entry15
+  entry .top4.frame7.entry15  -textvariable {kv_value}
+
+  # build widget .top4.frame8
+  frame .top4.frame8  -borderwidth {2}  -height {30}  -relief {raised}  -width {30}
+
+  # build widget .top4.frame8.checkbutton16
+  checkbutton .top4.frame8.checkbutton16  -relief {raised}  -text {FILTER ON}  -variable {filter}
+
+  # build widget .top4.frame9
+  frame .top4.frame9  -borderwidth {2}  -height {30}  -relief {raised}  -width {30}
+
+  # build widget .top4.frame9.button17
+  button .top4.frame9.button17  -command {if { $filter == 1} then {
+  set extrareg "$elem_name $elem_line $kv_value Al 0.081 $xtal $mask"
+  set regg "$elem_name $elem_line $kv_value Al 0.081" }
+if { $filter == 0} then {
+  set regg "$elem_name $elem_line $kv_value"
+  set extrareg "$elem_name $elem_line $kv_value None 0.00 $xtal $mask" }
+set nummer [lsearch $shortlist $extrareg]
+puts "nummer is $nummer"
+puts $shortlist
+puts "regel tested is "
+puts $extrareg
+set resnummer 1
+puts " resnummer is $resnummer"
+
+if { [winfo exists .top12] == 1 } then {
+  lappend listlines $regg
+   lappend extralistlin $extrareg
+   incr line_nr 1} elseif { [winfo exists .top22] == 1 } then {
+     lappend listlines $regg
+     incr line_nr 1} elseif  { $nummer== -1} then {
+   AlertBox "Line not in Data Base; Correct entries" 
+} else {
+lappend listlines $regg
+lappend extralistlin $extrareg 
+incr line_nr 1}}  -padx {9}  -pady {3}  -text {OK ADD TO LIST}
+
+  # build widget .top4.frame9.button18
+  button .top4.frame9.button18  -command {for {set i 0} { $i < $line_nr} { incr i 1} {
+   puts [lindex $listlines $i]
+   puts $linesfil [lindex $listlines $i]
+   puts [lindex $extralistlin $i]
+   puts $linesextra [lindex $extralistlin $i]
+  }
+close $linesfil
+close $linesextra
+set line_cnt $line_nr
+DestroyWindow.top4}  -padx {9}  -pady {3}  -state {active}  -text {CLOSE FILE}
+
+  # build widget .top4.frame0
+  frame .top4.frame0  -borderwidth {2}  -height {30}  -relief {raised}  -width {30}
+
+  # build widget .top4.frame0.radiobutton1
+  radiobutton .top4.frame0.radiobutton1  -relief {raised}  -text {LIF-200}  -value {LIF200}  -variable {xtal}
+
+  # build widget .top4.frame0.radiobutton2
+  radiobutton .top4.frame0.radiobutton2  -relief {raised}  -text {GE}  -value {GE}  -variable {xtal}
+
+  # build widget .top4.frame0.radiobutton3
+  radiobutton .top4.frame0.radiobutton3  -relief {raised}  -text {PE}  -value {PE}  -variable {xtal}
+
+  # build widget .top4.frame0.radiobutton4
+  radiobutton .top4.frame0.radiobutton4  -relief {raised}  -text {PX1}  -value {PX1}  -variable {xtal}
+
+  # build widget .top4.label6
+  label .top4.label6  -relief {raised}  -text {----ANALYZING  X-TAL----}
+
+  # build widget .top4.label7
+  label .top4.label7  -relief {raised}  -text {-----MASK ---------}
+
+  # build widget .top4.frame10
+  frame .top4.frame10  -borderwidth {2}  -height {30}  -relief {raised}  -width {30}
+
+  # build widget .top4.frame10.radiobutton12
+  radiobutton .top4.frame10.radiobutton12  -relief {raised}  -text {LARGE}  -value {MLARGE}  -variable {mask}
+
+  # build widget .top4.frame10.radiobutton13
+  radiobutton .top4.frame10.radiobutton13  -relief {raised}  -text {SMALL}  -value {MSMALL}  -variable {mask}
+
+  # build widget .top4.frame10.radiobutton14
+  radiobutton .top4.frame10.radiobutton14  -relief {raised}  -text {MYLAR}  -value {MMYLAR}  -variable {mask}
+
+  # pack master .top4.frame5
+  pack configure .top4.frame5.label10  -expand 1  -fill x  -side left
+  pack configure .top4.frame5.entry11  -expand 1  -fill x
+
+  # pack master .top4.frame6
+  pack configure .top4.frame6.label12  -expand 1  -fill x  -side left
+  pack configure .top4.frame6.entry13  -side left
+
+  # pack master .top4.frame7
+  pack configure .top4.frame7.label14  -expand 1  -fill x  -side left
+  pack configure .top4.frame7.entry15  -fill x  -side left
+
+  # pack master .top4.frame8
+  pack configure .top4.frame8.checkbutton16  -expand 1  -fill x
+
+  # pack master .top4.frame9
+  pack configure .top4.frame9.button17  -expand 1  -fill x  -side left
+  pack configure .top4.frame9.button18  -expand 1  -fill x  -side left
+
+  # pack master .top4.frame0
+  pack configure .top4.frame0.radiobutton1
+  pack configure .top4.frame0.radiobutton2
+  pack configure .top4.frame0.radiobutton3
+  pack configure .top4.frame0.radiobutton4
+
+  # pack master .top4.frame10
+  pack configure .top4.frame10.radiobutton12
+  pack configure .top4.frame10.radiobutton13
+  pack configure .top4.frame10.radiobutton14
+
+  # pack master .top4
+  pack configure .top4.frame5  -fill x
+  pack configure .top4.frame6  -fill x
+  pack configure .top4.frame7  -fill x
+  pack configure .top4.frame8  -fill x
+  pack configure .top4.frame9  -fill x  -side bottom
+  pack configure .top4.frame0  -fill x  -side bottom
+  pack configure .top4.label6  -fill x  -side bottom
+  pack configure .top4.label7  -fill x
+  pack configure .top4.frame10  -fill x
+
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFMiscBindWidgetTree .top4"
+    after 2 "catch {XFEditSetShowWindows}"
+  }
+}
+
+proc DestroyWindow.top4 {} {# xf ignore me 7
+  if {"[info procs XFEdit]" != ""} {
+    if {"[info commands .top4]" != ""} {
+      global xfShowWindow.top4
+      set xfShowWindow.top4 0
+      XFEditSetPath .
+      after 2 "XFSaveAsProc .top4; XFEditSetShowWindows"
+    }
+  } {
+    catch "destroy .top4"
+    update
+  }
+}
+
+
+# procedure to show window ShowWindow.top5
+proc ShowWindow.top5 { args} {
+# xf ignore me 7
+
+  # build widget .top5
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFDestroy .top5"
+  } {
+    catch "destroy .top5"
+  }
+  toplevel .top5 
+
+  # Window manager configurations
+  wm positionfrom .top5 user
+  wm sizefrom .top5 ""
+  wm geometry .top5 +13+151
+  wm maxsize .top5 1000 900
+  wm minsize .top5 10 10
+  wm protocol .top5 WM_DELETE_WINDOW {XFProcError {Application windows can not be destroyed.
+Please use the "Current widget path:" to show/hide windows.}}
+  wm title .top5 {ENTER CONCS}
+
+
+  # build widget .top5.frame
+  frame .top5.frame  -relief {raised}
+
+  # build widget .top5.frame.label4
+  label .top5.frame.label4  -padx {2}  -relief {raised}  -text {Sample ID}
+
+  # build widget .top5.frame.entry5
+  entry .top5.frame.entry5  -relief {raised}  -textvariable {smpl_name}
+
+  # build widget .top5.frame6
+  frame .top5.frame6  -relief {raised}
+
+  # build widget .top5.frame6.label4
+  label .top5.frame6.label4  -padx {2}  -relief {raised}  -text {Massthickn g/cm2}
+
+  # build widget .top5.frame6.entry5
+  entry .top5.frame6.entry5  -relief {raised}  -textvariable {mth}
+
+  # build widget .top5.label0
+  label .top5.label0  -relief {raised}  -text {Compound                     Fraction}
+
+  # build widget .top5.button0
+  button .top5.button0  -padx {9}  -pady {3}  -text {Enter}
+  # bindings
+  bind .top5.button0 <Button-1> {incr nr_of_samples
+set tmplijst {}
+lappend tmplijst $nr_comps
+lappend tmplijst $mth
+for {set i 1} { $i <= $nr_comps} {incr i 1} {
+  lappend tmplijst $component($i) 
+  lappend tmplijst $conc($i)
+}
+lappend lijstconcs $tmplijst
+puts $lijstconcs
+set f .top15.frame1.entryr1c$nr_of_samples
+entry $f -textvariable sidc($nr_of_samples)
+set sidc($nr_of_samples) $smpl_name
+pack $f -side right -fill x
+set f .top15.frame2.entryr2c$nr_of_samples
+entry $f -textvariable mthc($nr_of_samples)
+set mthc($nr_of_samples) $mth
+pack $f -side right -fill x
+
+for {set i 1} { $i <= $nr_comps} {incr i 1} {
+  set f .top15.frame[expr $i + 2 ].entryr[expr $i + 2]c$nr_of_samples
+  entry $f -textvariable conc_r([expr $i + $nr_comps*$nr_of_samples])
+  set conc_r([expr $i + $nr_comps*$nr_of_samples]) $conc($i)
+  pack $f -side right -fill x
+   }}
+
+  # build widget .top5.button1
+  button .top5.button1  -command {set concfile [open ./data/concs.dat w]
+puts $concfile $nr_of_samples
+for {set i 0} {$i < $nr_comps} {incr i 1} {
+   destroy .top5.frame[expr $i + 21]
+}
+for {set i 0} {$i < $nr_of_samples} { incr i 1} {
+   puts $concfile [lindex $lijstconcs $i]
+}
+close $concfile
+DestroyWindow.top5}  -padx {9}  -pady {3}  -text {Done}
+
+  # pack master .top5.frame
+  pack configure .top5.frame.label4  -side left
+  pack configure .top5.frame.entry5  -expand 1  -fill both
+
+  # pack master .top5.frame6
+  pack configure .top5.frame6.label4  -side left
+  pack configure .top5.frame6.entry5  -expand 1  -fill both
+
+  # pack master .top5
+  pack configure .top5.frame  -fill both
+  pack configure .top5.frame6  -fill both
+  pack configure .top5.label0  -fill x
+  pack configure .top5.button0  -anchor sw  -side left
+  pack configure .top5.button1  -anchor se  -side right
+
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFMiscBindWidgetTree .top5"
+    after 2 "catch {XFEditSetShowWindows}"
+  }
+}
+
+proc DestroyWindow.top5 {} {# xf ignore me 7
+  if {"[info procs XFEdit]" != ""} {
+    if {"[info commands .top5]" != ""} {
+      global xfShowWindow.top5
+      set xfShowWindow.top5 0
+      XFEditSetPath .
+      after 2 "XFSaveAsProc .top5; XFEditSetShowWindows"
+    }
+  } {
+    catch "destroy .top5"
+    update
+  }
+}
+
+
+# procedure to show window ShowWindow.top6
+proc ShowWindow.top6 { args} {
+# xf ignore me 7
+
+  # build widget .top6
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFDestroy .top6"
+  } {
+    catch "destroy .top6"
+  }
+  toplevel .top6 
+
+  # Window manager configurations
+  wm positionfrom .top6 user
+  wm sizefrom .top6 user
+  wm geometry .top6 +14+157
+  wm maxsize .top6 1000 900
+  wm minsize .top6 10 10
+  wm protocol .top6 WM_DELETE_WINDOW {XFProcError {Application windows can not be destroyed.
+Please use the "Current widget path:" to show/hide windows.}}
+  wm title .top6 {COMPOUNDS}
+
+
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFMiscBindWidgetTree .top6"
+    after 2 "catch {XFEditSetShowWindows}"
+  }
+}
+
+proc DestroyWindow.top6 {} {# xf ignore me 7
+  if {"[info procs XFEdit]" != ""} {
+    if {"[info commands .top6]" != ""} {
+      global xfShowWindow.top6
+      set xfShowWindow.top6 0
+      XFEditSetPath .
+      after 2 "XFSaveAsProc .top6; XFEditSetShowWindows"
+    }
+  } {
+    catch "destroy .top6"
+    update
+  }
+}
+
+
+# procedure to show window ShowWindow.top7
+proc ShowWindow.top7 { args} {
+# xf ignore me 7
+
+  # build widget .top7
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFDestroy .top7"
+  } {
+    catch "destroy .top7"
+  }
+  toplevel .top7 
+
+  # Window manager configurations
+  wm positionfrom .top7 user
+  wm sizefrom .top7 ""
+  wm geometry .top7 +11+214
+  wm maxsize .top7 1000 900
+  wm minsize .top7 10 10
+  wm protocol .top7 WM_DELETE_WINDOW {XFProcError {Application windows can not be destroyed.
+Please use the "Current widget path:" to show/hide windows.}}
+  wm title .top7 {RESULTS}
+
+
+  # build widget .top7.text9
+  text .top7.text9
+
+  # build widget .top7.button16
+  button .top7.button16  -command {DestroyWindow.top7}  -padx {9}  -pady {3}  -state {active}  -text {DISMISS}
+
+  # pack master .top7
+  pack configure .top7.text9
+  pack configure .top7.button16
+
+  .top7.text9 insert end {no1
+-------------
+Al ka 1.294471e-02
+Ce ka 5.690094e-01
+Fe ka 2.039229e-01}
+
+
+
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFMiscBindWidgetTree .top7"
+    after 2 "catch {XFEditSetShowWindows}"
+  }
+}
+
+proc DestroyWindow.top7 {} {# xf ignore me 7
+  if {"[info procs XFEdit]" != ""} {
+    if {"[info commands .top7]" != ""} {
+      global xfShowWindow.top7
+      set xfShowWindow.top7 0
+      XFEditSetPath .
+      after 2 "XFSaveAsProc .top7; XFEditSetShowWindows"
+    }
+  } {
+    catch "destroy .top7"
+    update
+  }
+}
+
+
+# procedure to show window ShowWindow.top8
+proc ShowWindow.top8 { args} {
+# xf ignore me 7
+
+  # build widget .top8
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFDestroy .top8"
+  } {
+    catch "destroy .top8"
+  }
+  toplevel .top8 
+
+  # Window manager configurations
+  wm positionfrom .top8 user
+  wm sizefrom .top8 ""
+  wm geometry .top8 +107+192
+  wm maxsize .top8 1000 900
+  wm minsize .top8 10 10
+  wm protocol .top8 WM_DELETE_WINDOW {XFProcError {Application windows can not be destroyed.
+Please use the "Current widget path:" to show/hide windows.}}
+  wm title .top8 {SIMSAMPL.DAT}
+
+
+  # build widget .top8.text13
+  text .top8.text13
+
+  # build widget .top8.button15
+  button .top8.button15  -command {DestroyWindow.top8}  -padx {9}  -pady {3}  -state {active}  -text {DISMISS}
+
+  # pack master .top8
+  pack configure .top8.text13
+  pack configure .top8.button15
+
+  .top8.text13 insert end {1
+4 5.0
+Al2O3 0.1
+Ce2O3 0.2
+Fe2O3 0.3
+Li2B4O7 0.4}
+
+
+
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFMiscBindWidgetTree .top8"
+    after 2 "catch {XFEditSetShowWindows}"
+  }
+}
+
+proc DestroyWindow.top8 {} {# xf ignore me 7
+  if {"[info procs XFEdit]" != ""} {
+    if {"[info commands .top8]" != ""} {
+      global xfShowWindow.top8
+      set xfShowWindow.top8 0
+      XFEditSetPath .
+      after 2 "XFSaveAsProc .top8; XFEditSetShowWindows"
+    }
+  } {
+    catch "destroy .top8"
+    update
+  }
+}
+
+
+# procedure to show window ShowWindow.top9
+proc ShowWindow.top9 { args} {
+# xf ignore me 7
+
+  # build widget .top9
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFDestroy .top9"
+  } {
+    catch "destroy .top9"
+  }
+  toplevel .top9 
+
+  # Window manager configurations
+  wm positionfrom .top9 user
+  wm sizefrom .top9 ""
+  wm geometry .top9 -832+167
+  wm maxsize .top9 1000 900
+  wm minsize .top9 10 10
+  wm protocol .top9 WM_DELETE_WINDOW {XFProcError {Application windows can not be destroyed.
+Please use the "Current widget path:" to show/hide windows.}}
+  wm title .top9 {SAMPLE COMPOUNDS}
+
+
+  # build widget .top9.label12
+  label .top9.label12  -relief {raised}  -text {Listt of compounds in sample series}
+
+  # build widget .top9.frame2
+  frame .top9.frame2  -borderwidth {2}  -height {30}  -relief {raised}  -width {30}
+
+  # build widget .top9.frame2.button4
+  button .top9.frame2.button4  -command {for {set i 1} { $i < $nr_comps} {incr i 1} {
+  destroy .top9.frame[expr 21 + $i]
+}
+DestroyWindow.top9}  -padx {9}  -pady {3}  -text {DISMISS}
+
+  # build widget .top9.frame21
+  frame .top9.frame21
+
+  # build widget .top9.frame21.entry1
+  entry .top9.frame21.entry1  -textvariable {compseq(1)}
+
+  # build widget .top9.frame21.entry2
+  entry .top9.frame21.entry2  -textvariable {component(1)}
+
+  # pack master .top9.frame2
+  pack configure .top9.frame2.button4  -side bottom
+
+  # pack master .top9.frame21
+  pack configure .top9.frame21.entry1  -fill x  -side left
+  pack configure .top9.frame21.entry2  -fill x  -side left
+
+  # pack master .top9
+  pack configure .top9.label12  -fill x
+  pack configure .top9.frame2  -fill x  -side bottom
+  pack configure .top9.frame21  -fill x
+
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFMiscBindWidgetTree .top9"
+    after 2 "catch {XFEditSetShowWindows}"
+  }
+}
+
+proc DestroyWindow.top9 {} {# xf ignore me 7
+  if {"[info procs XFEdit]" != ""} {
+    if {"[info commands .top9]" != ""} {
+      global xfShowWindow.top9
+      set xfShowWindow.top9 0
+      XFEditSetPath .
+      after 2 "XFSaveAsProc .top9; XFEditSetShowWindows"
+    }
+  } {
+    catch "destroy .top9"
+    update
+  }
+}
+
+
+# procedure to show window .
+proc ShowWindow. {args} {# xf ignore me 7
+
+  # Window manager configurations
+  wm positionfrom . user
+  wm sizefrom . user
+  wm geometry . +47+24
+  wm maxsize . 1152 900
+  wm minsize . 1 1
+  wm protocol . WM_DELETE_WINDOW {XFProcError {Application windows can not be destroyed.
+Please use the "Current widget path:" to show/hide windows.}}
+  wm title . {combitstn}
+
+  # bindings
+  bind . <Button-3> {tk_popup .frame0.menubutton0.menu1 %X %Y}
+
+  # build widget .frame0
+  frame .frame0 \
+    -borderwidth {2} \
+    -relief {raised}
+
+  # build widget .frame0.menubutton1
+  menubutton .frame0.menubutton1 \
+    -menu {.frame0.menubutton1.m} \
+    -padx {4} \
+    -pady {3} \
+    -text {File}
+
+  # build widget .frame0.menubutton1.m
+  menu .frame0.menubutton1.m \
+    -tearoff {0}
+  .frame0.menubutton1.m add command \
+    -command {exit} \
+    -label {Quit}
+
+  # build widget .frame0.menubutton2
+  menubutton .frame0.menubutton2 \
+    -menu {.frame0.menubutton2.m} \
+    -padx {4} \
+    -pady {3} \
+    -text {Help}
+
+  # build widget .frame0.menubutton2.m
+  menu .frame0.menubutton2.m \
+    -tearoff {0}
+  .frame0.menubutton2.m add command \
+    -command {AlertBox "Help not implemented yet"} \
+    -label {General}
+
+  # build widget .frame0.button1
+  button .frame0.button1 \
+    -command {ShowWindow.top22} \
+    -padx {9} \
+    -pady {3} \
+    -text {Simulate} \
+    -textvariable {sim_on}
+
+  # build widget .frame0.button0
+  button .frame0.button0 \
+    -command {ShowWindow.top12} \
+    -padx {9} \
+    -pady {3} \
+    -text {Calibrate} \
+    -textvariable {calib_on}
+
+  # build widget .frame0.button2
+  button .frame0.button2 \
+    -command {ShowWindow.top14} \
+    -padx {9} \
+    -pady {3} \
+    -text {Spectrometer}
+
+  # build widget .frame0.button3
+  button .frame0.button3 \
+    -command {ShowWindow.top19} \
+    -padx {9} \
+    -pady {3} \
+    -text {Analyze}
+
+  # pack master .frame0
+  pack configure .frame0.menubutton1 \
+    -anchor nw \
+    -side left
+  pack configure .frame0.menubutton2 \
+    -anchor ne \
+    -side right
+  pack configure .frame0.button1 \
+    -anchor nw \
+    -side left
+  pack configure .frame0.button0 \
+    -anchor nw \
+    -side left
+  pack configure .frame0.button2 \
+    -anchor nw \
+    -side left
+  pack configure .frame0.button3 \
+    -anchor nw \
+    -side left
+
+  # pack master .
+  pack configure .frame0 \
+    -fill x
+
+  if {"[info procs XFEdit]" != ""} {
+    catch "XFMiscBindWidgetTree ."
+    after 2 "catch {XFEditSetShowWindows}"
+  }
+}
+
+
+# Procedure: AlertBox
+proc AlertBox { {alertBoxMessage "Alert message"} {alertBoxCommand ""} {alertBoxGeometry "350x150"} {alertBoxTitle "Alert box"} args} {
+# xf ignore me 5
+##########
+# Procedure: AlertBox
+# Description: show alert box
+# Arguments: {alertBoxMessage} - the text to display
+#            {alertBoxCommand} - the command to call after ok
+#            {alertBoxGeometry} - the geometry for the window
+#            {alertBoxTitle} - the title for the window
+#            {args} - labels of buttons
+# Returns: The number of the selected button, ot nothing
+# Sideeffects: none
+# Notes: there exist also functions called:
+#          AlertBoxFile - to open and read a file automatically
+#          AlertBoxFd - to read from an already opened filedescriptor
+##########
+#
+# global alertBox(activeBackground) - active background color
+# global alertBox(activeForeground) - active foreground color
+# global alertBox(after) - destroy alert box after n seconds
+# global alertBox(anchor) - anchor for message box
+# global alertBox(background) - background color
+# global alertBox(font) - message font
+# global alertBox(foreground) - foreground color
+# global alertBox(justify) - justify for message box
+# global alertBox(toplevelName) - the toplevel name
+
+  global alertBox
+
+  # show alert box
+  if {[llength $args] > 0} {
+    eval AlertBoxInternal "\{$alertBoxMessage\}" "\{$alertBoxCommand\}" "\{$alertBoxGeometry\}" "\{$alertBoxTitle\}" $args
+  } {
+    AlertBoxInternal $alertBoxMessage $alertBoxCommand $alertBoxGeometry $alertBoxTitle
+  }
+
+  if {[llength $args] > 0} {
+    # wait for the box to be destroyed
+    update idletask
+    grab $alertBox(toplevelName)
+    tkwait window $alertBox(toplevelName)
+
+    return $alertBox(button)
+  }
+}
+
+
+# Procedure: AlertBoxFd
+proc AlertBoxFd { {alertBoxInFile ""} {alertBoxCommand ""} {alertBoxGeometry "350x150"} {alertBoxTitle "Alert box"} args} {
+# xf ignore me 5
+##########
+# Procedure: AlertBoxFd
+# Description: show alert box containing a filedescriptor
+# Arguments: {alertBoxInFile} - a filedescriptor to read. The descriptor
+#                               is closed after reading
+#            {alertBoxCommand} - the command to call after ok
+#            {alertBoxGeometry} - the geometry for the window
+#            {alertBoxTitle} - the title for the window
+#            {args} - labels of buttons
+# Returns: The number of the selected button, ot nothing
+# Sideeffects: none
+# Notes: there exist also functions called:
+#          AlertBox - to display a passed string
+#          AlertBoxFile - to open and read a file automatically
+##########
+#
+# global alertBox(activeBackground) - active background color
+# global alertBox(activeForeground) - active foreground color
+# global alertBox(after) - destroy alert box after n seconds
+# global alertBox(anchor) - anchor for message box
+# global alertBox(background) - background color
+# global alertBox(font) - message font
+# global alertBox(foreground) - foreground color
+# global alertBox(justify) - justify for message box
+# global alertBox(toplevelName) - the toplevel name
+
+  global alertBox
+
+  # check file existance
+  if {"$alertBoxInFile" == ""} {
+    puts stderr "No filedescriptor specified"
+    return
+  }
+
+  set alertBoxMessage [read $alertBoxInFile]
+  close $alertBoxInFile
+
+  # show alert box
+  if {[llength $args] > 0} {
+    eval AlertBoxInternal "\{$alertBoxMessage\}" "\{$alertBoxCommand\}" "\{$alertBoxGeometry\}" "\{$alertBoxTitle\}" $args
+  } {
+    AlertBoxInternal $alertBoxMessage $alertBoxCommand $alertBoxGeometry $alertBoxTitle
+  }
+
+  if {[llength $args] > 0} {
+    # wait for the box to be destroyed
+    update idletask
+    grab $alertBox(toplevelName)
+    tkwait window $alertBox(toplevelName)
+
+    return $alertBox(button)
+  }
+}
+
+
+# Procedure: AlertBoxFile
+proc AlertBoxFile { {alertBoxFile ""} {alertBoxCommand ""} {alertBoxGeometry "350x150"} {alertBoxTitle "Alert box"} args} {
+# xf ignore me 5
+##########
+# Procedure: AlertBoxFile
+# Description: show alert box containing a file
+# Arguments: {alertBoxFile} - filename to read
+#            {alertBoxCommand} - the command to call after ok
+#            {alertBoxGeometry} - the geometry for the window
+#            {alertBoxTitle} - the title for the window
+#            {args} - labels of buttons
+# Returns: The number of the selected button, ot nothing
+# Sideeffects: none
+# Notes: there exist also functions called:
+#          AlertBox - to display a passed string
+#          AlertBoxFd - to read from an already opened filedescriptor
+##########
+#
+# global alertBox(activeBackground) - active background color
+# global alertBox(activeForeground) - active foreground color
+# global alertBox(after) - destroy alert box after n seconds
+# global alertBox(anchor) - anchor for message box
+# global alertBox(background) - background color
+# global alertBox(font) - message font
+# global alertBox(foreground) - foreground color
+# global alertBox(justify) - justify for message box
+# global alertBox(toplevelName) - the toplevel name
+
+  global alertBox
+
+  # check file existance
+  if {"$alertBoxFile" == ""} {
+    puts stderr "No filename specified"
+    return
+  }
+
+  if {[catch "open $alertBoxFile r" alertBoxInFile]} {
+    puts stderr "$alertBoxInFile"
+    return
+  }
+
+  set alertBoxMessage [read $alertBoxInFile]
+  close $alertBoxInFile
+
+  # show alert box
+  if {[llength $args] > 0} {
+    eval AlertBoxInternal "\{$alertBoxMessage\}" "\{$alertBoxCommand\}" "\{$alertBoxGeometry\}" "\{$alertBoxTitle\}" $args
+  } {
+    AlertBoxInternal $alertBoxMessage $alertBoxCommand $alertBoxGeometry $alertBoxTitle
+  }
+
+  if {[llength $args] > 0} {
+    # wait for the box to be destroyed
+    update idletask
+    grab $alertBox(toplevelName)
+    tkwait window $alertBox(toplevelName)
+
+    return $alertBox(button)
+  }
+}
+
+
+# Procedure: AlertBoxInternal
+proc AlertBoxInternal { alertBoxMessage alertBoxCommand alertBoxGeometry alertBoxTitle args} {
+# xf ignore me 6
+  global alertBox
+
+  set tmpButtonOpt ""
+  set tmpFrameOpt ""
+  set tmpMessageOpt ""
+  if {"$alertBox(activeBackground)" != ""} {
+    append tmpButtonOpt "-activebackground \"$alertBox(activeBackground)\" "
+  }
+  if {"$alertBox(activeForeground)" != ""} {
+    append tmpButtonOpt "-activeforeground \"$alertBox(activeForeground)\" "
+  }
+  if {"$alertBox(background)" != ""} {
+    append tmpButtonOpt "-background \"$alertBox(background)\" "
+    append tmpFrameOpt "-background \"$alertBox(background)\" "
+    append tmpMessageOpt "-background \"$alertBox(background)\" "
+  }
+  if {"$alertBox(font)" != ""} {
+    append tmpButtonOpt "-font \"$alertBox(font)\" "
+    append tmpMessageOpt "-font \"$alertBox(font)\" "
+  }
+  if {"$alertBox(foreground)" != ""} {
+    append tmpButtonOpt "-foreground \"$alertBox(foreground)\" "
+    append tmpMessageOpt "-foreground \"$alertBox(foreground)\" "
+  }
+
+  # start build of toplevel
+  if {"[info commands XFDestroy]" != ""} {
+    catch {XFDestroy $alertBox(toplevelName)}
+  } {
+    catch {destroy $alertBox(toplevelName)}
+  }
+  toplevel $alertBox(toplevelName)  -borderwidth 0
+  catch "$alertBox(toplevelName) config $tmpFrameOpt"
+  if {[catch "wm geometry $alertBox(toplevelName) $alertBoxGeometry"]} {
+    wm geometry $alertBox(toplevelName) 350x150
+  }
+  wm title $alertBox(toplevelName) $alertBoxTitle
+  wm maxsize $alertBox(toplevelName) 1000 1000
+  wm minsize $alertBox(toplevelName) 100 100
+  # end build of toplevel
+
+  message $alertBox(toplevelName).message1  -anchor "$alertBox(anchor)"  -justify "$alertBox(justify)"  -relief raised  -text "$alertBoxMessage"
+  catch "$alertBox(toplevelName).message1 config $tmpMessageOpt"
+
+  set xfTmpWidth  [string range $alertBoxGeometry 0 [expr [string first x $alertBoxGeometry]-1]]
+  if {"$xfTmpWidth" != ""} {
+    # set message size
+    catch "$alertBox(toplevelName).message1 configure  -width [expr $xfTmpWidth-10]"
+  } {
+    $alertBox(toplevelName).message1 configure  -aspect 1500
+  }
+
+  frame $alertBox(toplevelName).frame1  -borderwidth 0  -relief raised
+  catch "$alertBox(toplevelName).frame1 config $tmpFrameOpt"
+
+  set alertBoxCounter 0
+  set buttonNum [llength $args]
+  if {$buttonNum > 0} {
+    while {$alertBoxCounter < $buttonNum} {
+      button $alertBox(toplevelName).frame1.button$alertBoxCounter  -text "[lindex $args $alertBoxCounter]"  -command "
+          global alertBox
+          set alertBox(button) $alertBoxCounter
+          if {\"\[info commands XFDestroy\]\" != \"\"} {
+            catch {XFDestroy $alertBox(toplevelName)}
+          } {
+            catch {destroy $alertBox(toplevelName)}
+          }"
+      catch "$alertBox(toplevelName).frame1.button$alertBoxCounter config $tmpButtonOpt"
+
+      pack append $alertBox(toplevelName).frame1  $alertBox(toplevelName).frame1.button$alertBoxCounter {left fillx expand}
+
+      incr alertBoxCounter
+    }
+  } {
+    button $alertBox(toplevelName).frame1.button0  -text "OK"  -command "
+        global alertBox
+        set alertBox(button) 0
+        if {\"\[info commands XFDestroy\]\" != \"\"} {
+          catch {XFDestroy $alertBox(toplevelName)}
+        } {
+          catch {destroy $alertBox(toplevelName)}
+        }
+        $alertBoxCommand"
+    catch "$alertBox(toplevelName).frame1.button0 config $tmpButtonOpt"
+
+    pack append $alertBox(toplevelName).frame1  $alertBox(toplevelName).frame1.button0 {left fillx expand}
+  }
+
+  # packing
+  pack append $alertBox(toplevelName)  $alertBox(toplevelName).frame1 {bottom fill}  $alertBox(toplevelName).message1 {top fill expand}
+
+  if {$alertBox(after) != 0} {
+    after [expr $alertBox(after)*1000]  "catch \"$alertBox(toplevelName).frame1.button0 invoke\""
+  }
+}
+
+
+# Procedure: Alias
+if {"[info procs Alias]" == ""} {
+proc Alias { args} {
+# xf ignore me 7
+##########
+# Procedure: Alias
+# Description: establish an alias for a procedure
+# Arguments: args - no argument means that a list of all aliases
+#                   is returned. Otherwise the first parameter is
+#                   the alias name, and the second parameter is
+#                   the procedure that is aliased.
+# Returns: nothing, the command that is bound to the alias or a
+#          list of all aliases - command pairs. 
+# Sideeffects: internalAliasList is updated, and the alias
+#              proc is inserted
+##########
+  global internalAliasList
+
+  if {[llength $args] == 0} {
+    return $internalAliasList
+  } {
+    if {[llength $args] == 1} {
+      set xfTmpIndex [lsearch $internalAliasList "[lindex $args 0] *"]
+      if {$xfTmpIndex != -1} {
+        return [lindex [lindex $internalAliasList $xfTmpIndex] 1]
+      }
+    } {
+      if {[llength $args] == 2} {
+        eval "proc [lindex $args 0] {args} {#xf ignore me 4
+return \[eval \"[lindex $args 1] \$args\"\]}"
+        set xfTmpIndex [lsearch $internalAliasList "[lindex $args 0] *"]
+        if {$xfTmpIndex != -1} {
+          set internalAliasList [lreplace $internalAliasList $xfTmpIndex $xfTmpIndex "[lindex $args 0] [lindex $args 1]"]
+        } {
+          lappend internalAliasList "[lindex $args 0] [lindex $args 1]"
+        }
+      } {
+        error "Alias: wrong number or args: $args"
+      }
+    }
+  }
+}
+}
+
+
+# Procedure: Cat
+if {"[info procs Cat]" == ""} {
+proc Cat { filename} {
+# xf ignore me 7
+##########
+# Procedure: Cat
+# Description: emulate UNIX cat for one file
+# Arguments: filename
+# Returns: file contents
+# Sideeffects: none
+##########
+global tcl_platform
+if {$tcl_platform(platform) == "unix"} {exec cat $filename} {
+   set fileid [open $filename "r"]
+   set data [read $fileid]
+   close $fileid
+   return $data
+}
+}
+}
+
+
+# Procedure: Chmod
+if {"[info procs Chmod]" == ""} {
+proc Chmod { mode file} {
+# xf ignore me 7
+##########
+# Procedure: Chmod
+# Description: ignore UNIX chmod under DOS
+# Arguments: file1 file2/directory
+# Returns: nothing
+# Sideeffects: none
+##########
+global tcl_platform
+if {$tcl_platform(platform) == "unix"} {eval exec chmod $mode $file} {
+   regsub -all {/} $file1 {\\\\} file1
+   regsub -all {/} $file2 {\\\\} file2
+   eval exec command.com /c copy /y $file1 $file2 >@stderr
+}
+}
+}
+
+
+# Procedure: Cp
+if {"[info procs Cp]" == ""} {
+proc Cp { file1 file2} {
+# xf ignore me 7
+##########
+# Procedure: Cp
+# Description: emulate UNIX cp with DOS COPY
+# Arguments: file1 file2/directory
+# Returns: nothing
+# Sideeffects: none
+##########
+global tcl_platform
+if {$tcl_platform(platform) == "unix"} {eval exec cp $file1 $file2} {
+   regsub -all {/} $file1 {\\\\} file1
+   regsub -all {/} $file2 {\\\\} file2
+   eval exec C:/command.com /c copy /y $file1 $file2 >@stderr
+}
+}
+}
+
+
+# Procedure: FdInText
+proc FdInText { textWidget {fileInFile ""}} {
+# xf ignore me 5
+##########
+# Procedure: FdInText
+# Description: fill a text with the contents of a filedescriptor
+# Arguments: textWidget - the widget
+#            {fileInFile} - a filedescriptor to read. The descriptor
+#                           is closed after reading
+# Returns: none
+# Sideeffects: the text widget is filled
+# Notes: there exists also a function called:
+#          FileInText - to open and read a file automatically
+##########
+
+  # check file existance
+  if {"$fileInFile" == ""} {
+    puts stderr "no filedescriptor specified"
+    return
+  }
+
+  set textValue [read $fileInFile]
+  $textWidget insert end "$textValue"
+  close $fileInFile
+}
+
+
+# Procedure: FileInText
+proc FileInText { textWidget {fileName ""}} {
+# xf ignore me 5
+##########
+# Procedure: FileInText
+# Description: fill a text with the contents of the file
+# Arguments: textWidget - the widget
+#            {fileName} - filename to read
+# Returns: none
+# Sideeffects: the text widget is filled
+# Notes: there exists also a function called:
+#          FdInText - to read from an already opened filedescriptor
+##########
+
+  # check file existance
+  if {"$fileName" == ""} {
+    puts stderr "no filename specified"
+    return
+  }
+  if {[catch "open $fileName r" fileInFile]} {
+    puts stderr "$fileInFile"
+    return
+  }
+
+  set textValue [read $fileInFile]
+  $textWidget insert end "$textValue"
+  close $fileInFile
+}
+
+
+# Procedure: GetSelection
+if {"[info procs GetSelection]" == ""} {
+proc GetSelection {} {
+# xf ignore me 7
+##########
+# Procedure: GetSelection
+# Description: get current selection
+# Arguments: none
+# Returns: none
+# Sideeffects: none
+##########
+
+  # the save way
+  set xfSelection ""
+  catch "selection get" xfSelection
+  if {"$xfSelection" == "selection doesn't exist or form \"STRING\" not defined"} {
+    return ""
+  } {
+    return $xfSelection
+  }
+}
+}
+
+
+# Procedure: Ls
+if {"[info procs Ls]" == ""} {
+proc Ls { args} {
+# xf ignore me 7
+##########
+# Procedure: Ls
+# Description: emulate UNIX ls
+# Arguments: like UNIX (switches authorized -F -a [-a is ignored])
+# Returns: directory list
+# Sideeffects: none
+##########
+global tcl_platform
+if {$tcl_platform(platform) == "unix"} {eval exec ls $args} {
+   set last [lindex $args end]
+   if {[lsearch $last -* ] >= 0 || $last == "" } {set path "*"} {set path $last/*}
+   set lst [glob $path]
+   set lst1 ""
+   if {[lsearch -exact $args "-F"] >= 0} then {set car "/"} else {set car ""}
+   foreach f $lst {
+      if {[file isdirectory $f]}  {set f [file tail $f]$car} {set f [file tail $f]}
+      lappend lst1 $f
+   }
+   return [lsort $lst1]
+}
+}
+}
+
+
+# Procedure: NoFunction
+if {"[info procs NoFunction]" == ""} {
+proc NoFunction { args} {
+# xf ignore me 7
+##########
+# Procedure: NoFunction
+# Description: do nothing (especially with scales and scrollbars)
+# Arguments: args - a number of ignored parameters
+# Returns: none
+# Sideeffects: none
+##########
+}
+}
+
+
+# Procedure: Rm
+if {"[info procs Rm]" == ""} {
+proc Rm { filename} {
+# xf ignore me 7
+##########
+# Procedure: Rm
+# Description: emulate UNIX rm with DOS DEL
+# Arguments: filename(s)
+# Returns: nothing
+# Sideeffects: none
+##########
+global tcl_platform
+if {$tcl_platform(platform) == "unix"} {exec rm -f $filename} {
+   regsub -all {/} $filename {\\\\} filename
+   eval exec command.com /c del $filename >@stderr
+}
+}
+}
+
+
+# Procedure: SN
+if {"[info procs SN]" == ""} {
+proc SN { {xfName ""}} {
+# xf ignore me 7
+##########
+# Procedure: SN
+# Description: map a symbolic name to the widget path
+# Arguments: xfName
+# Returns: the symbolic name
+# Sideeffects: none
+##########
+
+  SymbolicName $xfName
+}
+}
+
+
+# Procedure: SymbolicName
+if {"[info procs SymbolicName]" == ""} {
+proc SymbolicName { {xfName ""}} {
+# xf ignore me 7
+##########
+# Procedure: SymbolicName
+# Description: map a symbolic name to the widget path
+# Arguments: xfName
+# Returns: the symbolic name
+# Sideeffects: none
+##########
+
+  global symbolicName
+
+  if {"$xfName" != ""} {
+    set xfArrayName ""
+    append xfArrayName symbolicName ( $xfName )
+    if {![catch "set \"$xfArrayName\"" xfValue]} {
+      return $xfValue
+    } {
+      if {"[info commands XFProcError]" != ""} {
+        XFProcError "Unknown symbolic name:\n$xfName"
+      } {
+        puts stderr "XF error: unknown symbolic name:\n$xfName"
+      }
+    }
+  }
+  return ""
+}
+}
+
+
+# Procedure: Unalias
+if {"[info procs Unalias]" == ""} {
+proc Unalias { aliasName} {
+# xf ignore me 7
+##########
+# Procedure: Unalias
+# Description: remove an alias for a procedure
+# Arguments: aliasName - the alias name to remove
+# Returns: none
+# Sideeffects: internalAliasList is updated, and the alias
+#              proc is removed
+##########
+  global internalAliasList
+
+  set xfIndex [lsearch $internalAliasList "$aliasName *"]
+  if {$xfIndex != -1} {
+    rename $aliasName ""
+    set internalAliasList [lreplace $internalAliasList $xfIndex $xfIndex]
+  }
+}
+}
+
+
+# Procedure: fileselect
+proc fileselect { {cmd "fileselect.default.cmd"} {purpose "Open file:"} {w ".fileSelectWindow"}} {
+# xf ignore me 5
+##########
+# Procedure: fileselect
+# Author: Mario Jorge Silva (msilva@cs.Berkeley.EDU)
+# Description: show file selection box
+# Arguments: cmd - the default command to execute
+#            purpose - the purpose of the selection box
+#            w - the toplevel widget path
+# Returns: None
+# Notes: names starting with "fileselect" are reserved by this
+#        module no other names used. The procedure passed as
+#        the first parameter get the file name as parameter. This
+#        procedure is evaluated when the OK button is pressed.
+##########
+
+    if {"[info commands XFDestroy]" != ""} {
+        catch {XFDestroy $w}
+    } {
+        catch {destroy $w}
+    }
+
+    toplevel $w
+    grab $w
+    wm title $w "Select File"
+
+
+    # path independent names for the widgets
+    global fileselect_entry fileselect_list  fileselect_ok fileselect_cancel fileselect_dirlabel
+
+    set fileselect_entry $w.file.eframe.entry
+    set fileselect_list $w.file.sframe.list
+    set fileselect_scroll $w.file.sframe.scroll
+    set fileselect_ok $w.bframe.okframe.ok
+    set fileselect_cancel $w.bframe.cancel
+    set fileselect_dirlabel $w.file.dirlabel
+
+    # widgets
+    frame $w.file -bd 10 
+    frame $w.bframe -bd 10
+    pack append $w  $w.file {left filly}  $w.bframe {left expand frame n}
+
+    frame $w.file.eframe
+    frame $w.file.sframe
+    label $w.file.dirlabel -anchor e -width 24 -text [pwd] 
+
+    pack append $w.file  $w.file.eframe {top frame w}  $w.file.sframe {top fillx}  $w.file.dirlabel {top frame w}
+
+
+    label $w.file.eframe.label -anchor w -width 24 -text $purpose
+    entry $w.file.eframe.entry -relief sunken 
+
+    pack append $w.file.eframe  $w.file.eframe.label {top expand frame w}  $w.file.eframe.entry {top fillx frame w}
+
+
+    scrollbar $w.file.sframe.yscroll -relief sunken  -command "$w.file.sframe.list yview"
+    listbox $w.file.sframe.list -relief sunken  -yscroll "$w.file.sframe.yscroll set" 
+
+    pack append $w.file.sframe  $w.file.sframe.yscroll {right filly}  $w.file.sframe.list {left fill} 
+
+    # buttons
+    frame $w.bframe.okframe -borderwidth 2 -relief sunken
+ 
+    button $w.bframe.okframe.ok -text OK -relief raised -padx 10  -command "fileselect.ok.cmd $w $cmd"
+
+    button $w.bframe.cancel -text cancel -relief raised -padx 10  -command "fileselect.cancel.cmd $w"
+    pack append $w.bframe.okframe $w.bframe.okframe.ok {padx 10 pady 10}
+
+    pack append $w.bframe $w.bframe.okframe {expand padx 20 pady 20}  $w.bframe.cancel {top}
+
+    # Fill the listbox with a list of all the files in the directory (run
+    # the "ls" command to get that information).
+ 
+    foreach i [Ls -a [pwd]] {
+        if {[string compare $i "."] != 0} {
+            $fileselect_list insert end $i
+        }
+    }
+
+    # Set up bindings for the browser.
+    bind $fileselect_entry <Return> {eval $fileselect_ok invoke}
+    bind $fileselect_entry <Control-c> {eval $fileselect_cancel invoke}
+
+    bind $w <Control-c> {eval $fileselect_cancel invoke}
+    bind $w <Return> {eval $fileselect_ok invoke}
+
+    bind $fileselect_list <ButtonRelease-1> {
+        # puts stderr "button 1"
+        %W select clear 0 end
+        %W select set [%W nearest %y]
+	eval $fileselect_entry delete 0 end
+	eval $fileselect_entry insert 0 [%W get [%W nearest %y]]
+    }
+
+    bind $fileselect_list <Button-1> {
+        # puts stderr "button 1 release"
+        %W select clear 0 end
+        %W select set [%W nearest %y]
+	eval $fileselect_entry delete 0 end
+	eval $fileselect_entry insert 0 [%W get [%W nearest %y]]
+    }
+
+    bind $fileselect_list <Key> {
+        %W select clear 0 end
+        %W select set [%W nearest %y]
+        eval $fileselect_entry delete 0 end
+	eval $fileselect_entry insert 0 [%W get [%W nearest %y]]
+    }
+
+    bind $fileselect_list <Double-ButtonPress-1> {
+        # puts stderr "double button 1"
+	eval $fileselect_ok invoke
+    }
+
+    bind $fileselect_list <Return> {
+        %W select clear 0 end
+        %W select set [%W nearest %y]
+	eval $fileselect_entry delete 0 end
+	eval $fileselect_entry insert 0 [%W get [%W nearest %y]]
+	eval $fileselect_ok invoke
+    }
+
+    # set kbd focus to entry widget
+
+    focus $fileselect_entry
+}
+
+
+# Procedure: fileselect.analyze.detar
+proc fileselect.analyze.detar { f} {
+exec tar -xf $f
+}
+
+
+# Procedure: fileselect.analyze.tar
+proc fileselect.analyze.tar { f} {
+exec tar -cf $f ./data/*.dat 
+}
+
+
+# Procedure: fileselect.cali.detar
+proc fileselect.cali.detar { f} {
+exec tar -xf $f
+}
+
+
+# Procedure: fileselect.cancel.cmd
+proc fileselect.cancel.cmd { w} {
+# xf ignore me 6
+    # puts stderr "Cancel"
+    if {"[info commands XFDestroy]" != ""} {
+        catch {XFDestroy $w}
+    } {
+        catch {destroy $w}
+    }
+}
+
+
+# Procedure: fileselect.default.cmd
+proc fileselect.default.cmd { f} {
+# xf ignore me 5
+  puts stderr "selected file $f"
+}
+
+
+# Procedure: fileselect.make.tar
+proc fileselect.make.tar { f} {
+exec tar -cvf $f ./data/smplids.dat ./data/concset.dat ./data/deflines.dat  ./data/extralin.dat  ./data/intset.dat ./data/calibres.dat
+}
+
+
+# Procedure: fileselect.ok.cmd
+proc fileselect.ok.cmd { w cmd} {
+# xf ignore me 6
+    global fileselect_entry fileselect_dirlabel fileselect_list 
+    set selected [$fileselect_entry get]
+
+    if {[file isdirectory $selected] != 0} {
+	cd $selected
+	set dir [pwd]
+	eval $fileselect_dirlabel configure -text $dir
+	eval $fileselect_entry delete 0 end
+	eval $fileselect_list delete 0 end
+	foreach i [Ls -a $dir] {
+	    if {[string compare $i "."] != 0} {
+		eval $fileselect_list insert end $i
+	    }
+	}
+	return
+    }
+
+    if {"[info commands XFDestroy]" != ""} {
+        catch {XFDestroy $w}
+    } {
+        catch {destroy $w}
+    }
+    eval $cmd \"$selected\"
+}
+
+
+# Procedure: tcl_endOfWord
+proc tcl_endOfWord { str start} {
+    global tcl_nonwordchars tcl_wordchars
+    if {[regexp -indices "$tcl_nonwordchars*$tcl_wordchars+$tcl_nonwordchars"  [string range $str $start end] result]} {
+	return [expr {[lindex $result 1] + $start}]
+    }
+    return -1
+}
+
+
+# Procedure: tcl_startOfNextWord
+proc tcl_startOfNextWord { str start} {
+    global tcl_nonwordchars tcl_wordchars
+    if {[regexp -indices "$tcl_wordchars*$tcl_nonwordchars+$tcl_wordchars"  [string range $str $start end] result]} {
+	return [expr {[lindex $result 1] + $start}]
+    }
+    return -1
+}
+
+
+# Procedure: tcl_startOfPreviousWord
+proc tcl_startOfPreviousWord { str start} {
+    global tcl_nonwordchars tcl_wordchars
+    if {[string compare $start end] == 0} {
+	set start [string length $str]
+    }
+    if {[regexp -indices  "$tcl_nonwordchars*($tcl_wordchars+)$tcl_nonwordchars*\$"  [string range $str 0 [expr {$start - 1}]] result word]} {
+	return [lindex $word 0]
+    }
+    return -1
+}
+
+
+# Procedure: tcl_wordBreakAfter
+proc tcl_wordBreakAfter { str start} {
+    global tcl_nonwordchars tcl_wordchars
+    set str [string range $str $start end]
+    if {[regexp -indices "$tcl_wordchars$tcl_nonwordchars|$tcl_nonwordchars$tcl_wordchars" $str result]} {
+	return [expr {[lindex $result 1] + $start}]
+    }
+    return -1
+}
+
+
+# Procedure: tcl_wordBreakBefore
+proc tcl_wordBreakBefore { str start} {
+    global tcl_nonwordchars tcl_wordchars
+    if {[string compare $start end] == 0} {
+	set start [string length $str]
+    }
+    if {[regexp -indices "^.*($tcl_wordchars$tcl_nonwordchars|$tcl_nonwordchars$tcl_wordchars)" [string range $str 0 $start] result]} {
+	return [lindex $result 1]
+    }
+    return -1
+}
+
+
+
+# module load procedure
+proc XFLocalIncludeModule {{moduleName ""}} {
+  global env
+  global xfLoadInfo
+  global xfLoadPath
+  global xfStatus
+  global xfMisc
+
+  foreach p [split $xfLoadPath $xfMisc(separator)] {
+    if {[file exists "$p/$moduleName"]} {
+      if {![file readable "$p/$moduleName"]} {
+        puts stderr "Cannot read $p/$moduleName (permission denied)"
+        continue
+      }
+      if {$xfLoadInfo} {
+        puts stdout "Loading $p/$moduleName..."
+      }
+      source "$p/$moduleName"
+      return 1
+    }
+    # first see if we have a load command
+    if {[info exists env(XF_VERSION_SHOW)]} {
+      set xfCommand $env(XF_VERSION_SHOW)
+      regsub -all {\$xfFileName} $xfCommand $p/$moduleName xfCommand
+      if {$xfLoadInfo} {
+        puts stdout "Loading $p/$moduleName...($xfCommand)"
+      }
+      if {[catch "exec $xfCommand" contents]} {
+        continue
+      } {
+        eval $contents
+        return 1
+      }
+    }
+  }
+  puts stderr "Cannot load module $moduleName -- check your xf load path"
+  puts stderr "Specify a xf load path with the environment variable:"
+  puts stderr "  XF_LOAD_PATH (e.g \"export XF_LOAD_PATH=.\")"
+  catch "destroy ."
+  catch "exit 0"
+}
+
+# application parsing procedure
+proc XFLocalParseAppDefs {xfAppDefFile} {
+  global xfAppDefaults tcl_platform
+
+  # basically from: Michael Moore
+  if {[file exists $xfAppDefFile] &&
+      [file readable $xfAppDefFile] &&
+      "[file type $xfAppDefFile]" == "link"} {
+    catch "file type $xfAppDefFile" xfType
+    while {"$xfType" == "link"} {
+      if {[catch "file readlink $xfAppDefFile" xfAppDefFile]} {
+        return
+      }
+      catch "file type $xfAppDefFile" xfType
+    }
+  }
+  if {!("$xfAppDefFile" != "" &&
+        [file exists $xfAppDefFile] &&
+        [file readable $xfAppDefFile] &&
+        "[file type $xfAppDefFile]" == "file")} {
+    return
+  }
+  if {![catch "open $xfAppDefFile r" xfResult]} {
+    set xfAppFileContents [read $xfResult]
+    close $xfResult
+    foreach line [split $xfAppFileContents "\n"] {
+      # backup indicates how far to backup.  It applies to the
+      # situation where a resource name ends in . and when it
+      # ends in *.  In the second case you want to keep the *
+      # in the widget name for pattern matching, but you want
+      # to get rid of the . if it is the end of the name. 
+      set backup -2  
+      set line [string trim $line]
+      if {[string index $line 0] == "#" || "$line" == ""} {
+        # skip comments and empty lines
+        continue
+      }
+      if {![string compare "windows" $tcl_platform(platform)]} {
+        set list [split $line ";"]
+      } {
+        set list [split $line ":"]
+      }
+      set resource [string trim [lindex $list 0]]
+      set i [string last "." $resource]
+      set j [string last "*" $resource]
+      if {$j > $i} { 
+        set i $j
+        set backup -1
+      }
+      incr i
+      set name [string range $resource $i end]
+      incr i $backup
+      set widname [string range $resource 0 $i]
+      set value [string trim [lindex $list 1]]
+      if {"$widname" != "" && "$widname" != "*"} {
+        # insert the widget and resourcename to the application
+        # defaults list.
+        if {![info exists xfAppDefaults]} {
+          set xfAppDefaults ""
+        }
+        lappend xfAppDefaults [list $widname [string tolower $name] $value]
+      }
+    }
+  }
+}
+
+# application loading procedure
+proc XFLocalLoadAppDefs {{xfClasses ""} {xfPriority "startupFile"} {xfAppDefFile ""}} {
+  global env tcl_platform
+
+  if {![string compare "windows" $tcl_platform(platform)]} {
+    set separator ";"
+  } {
+    set separator ":"
+  }
+  if {"$xfAppDefFile" == ""} {
+    set xfFileList ""
+    if {[info exists env(XUSERFILESEARCHPATH)]} {
+      eval lappend xfFileList [split $env(XUSERFILESEARCHPATH) $separator]
+    }
+    if {[info exists env(XAPPLRESDIR)]} {
+      eval lappend xfFileList [split $env(XAPPLRESDIR) $separator]
+    }
+    if {[info exists env(XFILESEARCHPATH)]} {
+      eval lappend xfFileList [split $env(XFILESEARCHPATH) $separator]
+    }
+    append xfFileList " /usr/lib/X11/app-defaults"
+    append xfFileList " /usr/X11/lib/X11/app-defaults"
+
+    foreach xfCounter1 $xfClasses {
+      foreach xfCounter2 $xfFileList {
+        set xfPathName $xfCounter2
+        if {[regsub -all "%N" "$xfPathName" "$xfCounter1" xfResult]} {
+          set xfPathName $xfResult
+        }
+        if {[regsub -all "%T" "$xfPathName" "app-defaults" xfResult]} {
+          set xfPathName $xfResult
+        }
+        if {[regsub -all "%S" "$xfPathName" "" xfResult]} {
+          set xfPathName $xfResult
+        }
+        if {[regsub -all "%C" "$xfPathName" "" xfResult]} {
+          set xfPathName $xfResult
+        }
+        if {[file exists $xfPathName] &&
+            [file readable $xfPathName] &&
+            ("[file type $xfPathName]" == "file" ||
+             "[file type $xfPathName]" == "link")} {
+          catch "option readfile $xfPathName $xfPriority"
+          if {"[info commands XFParseAppDefs]" != ""} {
+            XFParseAppDefs $xfPathName
+          } {
+            if {"[info commands XFLocalParseAppDefs]" != ""} {
+              XFLocalParseAppDefs $xfPathName
+            }
+          }
+        } {
+          if {[file exists $xfCounter2/$xfCounter1] &&
+              [file readable $xfCounter2/$xfCounter1] &&
+              ("[file type $xfCounter2/$xfCounter1]" == "file" ||
+               "[file type $xfCounter2/$xfCounter1]" == "link")} {
+            catch "option readfile $xfCounter2/$xfCounter1 $xfPriority"
+            if {"[info commands XFParseAppDefs]" != ""} {
+              XFParseAppDefs $xfCounter2/$xfCounter1
+            } {
+              if {"[info commands XFLocalParseAppDefs]" != ""} {
+                XFLocalParseAppDefs $xfCounter2/$xfCounter1
+              }
+            }
+          }
+        }
+      }
+    }
+  } {
+    # load a specific application defaults file
+    if {[file exists $xfAppDefFile] &&
+        [file readable $xfAppDefFile] &&
+        ("[file type $xfAppDefFile]" == "file" ||
+         "[file type $xfAppDefFile]" == "link")} {
+      catch "option readfile $xfAppDefFile $xfPriority"
+      if {"[info commands XFParseAppDefs]" != ""} {
+        XFParseAppDefs $xfAppDefFile
+      } {
+        if {"[info commands XFLocalParseAppDefs]" != ""} {
+          XFLocalParseAppDefs $xfAppDefFile
+        }
+      }
+    }
+  }
+}
+
+# application setting procedure
+proc XFLocalSetAppDefs {{xfWidgetPath "."}} {
+  global xfAppDefaults
+
+  if {![info exists xfAppDefaults]} {
+    return
+  }
+  foreach xfCounter $xfAppDefaults {
+    if {"$xfCounter" == ""} {
+      break
+    }
+    set widname [lindex $xfCounter 0]
+    if {[string match $widname ${xfWidgetPath}] ||
+        [string match "${xfWidgetPath}*" $widname]} {
+      set name [string tolower [lindex $xfCounter 1]]
+      set value [lindex $xfCounter 2]
+      # Now lets see how many tcl commands match the name
+      # pattern specified.
+      set widlist [info command $widname]
+      if {"$widlist" != ""} {
+        foreach widget $widlist {
+          # make sure this command is a widget.
+          if {![catch "winfo id $widget"] &&
+              [string match "${xfWidgetPath}*" $widget]} {
+            catch "$widget configure -$name $value" 
+          }
+        }
+      }
+    }
+  }
+}
+
+# initialize bindings for all widgets
+proc XFInitAllBindings {} {
+  # bindings
+  bind all <Alt-Key> {
+    tkTraverseToMenu %W %A
+}
+  bind all <Key-F10> {
+    tkFirstMenu %W
+}
+  bind all <Key-Tab> {focus [tk_focusNext %W]}
+  bind all <Shift-Key-Tab> {focus [tk_focusPrev %W]}
+}
+
+# initialize global variables
+global {S12}
+set {S12} {SAMPLE_NR4}
+global {alertBox}
+set {alertBox(activeBackground)} {}
+set {alertBox(activeForeground)} {}
+set {alertBox(after)} {0}
+set {alertBox(anchor)} {nw}
+set {alertBox(background)} {}
+set {alertBox(button)} {0}
+set {alertBox(font)} {}
+set {alertBox(foreground)} {}
+set {alertBox(justify)} {center}
+set {alertBox(toplevelName)} {.alertBox}
+global {anode_angle}
+set {anode_angle} {26.0}
+global {at}
+set {at} {1}
+global {atoom}
+set {atoom} {AT}
+global {atoomcnt}
+set {atoomcnt} {7}
+global {be_thickn}
+set {be_thickn} {0.5}
+global {bew_nr_comps}
+set {bew_nr_comps} {4}
+global {bew_nr_elms}
+set {bew_nr_elms} {}
+global {bewindow}
+set {bewindow} {0.0925001}
+global {calib_on}
+set {calib_on} {Calibrate}
+global {cnt}
+set {cnt(1)} {2}
+set {cnt(2)} {1}
+global {cntregel}
+set {cntregel} {8}
+global {cntregels}
+set {cntregels} {3}
+global {colum}
+set {colum} {3}
+global {column}
+set {column} {2}
+global {columns}
+set {columns} {4}
+global {compcnt}
+set {compcnt(1)} {0.1}
+set {compcnt(2)} {0.2}
+set {compcnt(3)} {0.3}
+set {compcnt(4)} {0.4}
+global {compindex}
+set {compindex} {21}
+global {component}
+set {component(1)} {Al2O3}
+set {component(2)} {Ce2O3}
+set {component(3)} {Fe2O3}
+set {component(4)} {Li2B4O7}
+set {component(5)} {Li2B4O7}
+global {compseq}
+set {compseq(1)} {1}
+set {compseq(2)} {2}
+set {compseq(3)} {3}
+set {compseq(4)} {4}
+set {compseq(5)} {5}
+global {comseq}
+set {comseq(1)} {1}
+set {comseq(2)} {2)}
+set {comseq(3)} {3)}
+set {comseq(4)} {4)}
+global {conc}
+set {conc(1)} {0.10}
+set {conc(2)} {0.10}
+set {conc(3)} {0.10}
+set {conc(4)} {0.70}
+set {conc(5)} {0.80}
+global {conc_r}
+set {conc_r(10)} {0.10}
+set {conc_r(11)} {0.10}
+set {conc_r(12)} {0.70}
+set {conc_r(3)} {}
+set {conc_r(3)(1)} {0.1}
+set {conc_r(3)(2)} {0.2}
+set {conc_r(3)(3)} {0.1}
+set {conc_r(3)(4)} {0.1}
+set {conc_r(4)} {0.1}
+set {conc_r(4)(1)} {0.2}
+set {conc_r(4)(2)} {0.2}
+set {conc_r(4)(3)} {0.2}
+set {conc_r(4)(4)} {0.2}
+set {conc_r(5)} {0.05}
+set {conc_r(5)(1)} {0.3}
+set {conc_r(5)(2)} {0.3}
+set {conc_r(5)(3)} {0.3}
+set {conc_r(5)(4)} {0.3}
+set {conc_r(6)} {0.05}
+set {conc_r(7)} {0.05}
+set {conc_r(8)} {0.85}
+set {conc_r(9)} {0.10}
+global {conc_r3.C2 {Ca ka 50.0 None 0.00 LIF200 MLARGE 11.111 } {Ba la1 50.0 None 0.00 LIF200 MLARGE 125.757 } {Cu ka 50.0 None 0.00 LIF200 MLARGE 136.214 } {Ca ka 50.0 None 0.00 LIF200 MLARGE 11.111 }}
+set {conc_r3.C2 {Ca ka 50.0 None 0.00 LIF200 MLARGE 11.111 } {Ba la1 50.0 None 0.00 LIF200 MLARGE 125.757 } {Cu ka 50.0 None 0.00 LIF200 MLARGE 136.214 } {Ca ka 50.0 None 0.00 LIF200 MLARGE 11.111 }} {{Ba la1 50.0 None 0.00 LIF200 MLARGE 125.757 }}
+global {conc_r3.c1}
+set {conc_r3.c1} {0.1}
+global {conc_r3.c2}
+set {conc_r3.c2} {0.2}
+global {conc_r3.c3}
+set {conc_r3.c3} {0.3}
+global {conc_r3c1}
+set {conc_r3c1} {0.1}
+global {conc_r3c10}
+set {conc_r3c10} {0.4}
+global {conc_r3c11}
+set {conc_r3c11} {0.4}
+global {conc_r3c12}
+set {conc_r3c12} {0.4}
+global {conc_r3c2}
+set {conc_r3c2} {0.1}
+global {conc_r3c3}
+set {conc_r3c3} {0.3}
+global {conc_r3c4}
+set {conc_r3c4} {0.3}
+global {conc_r3c5}
+set {conc_r3c5} {0.1}
+global {conc_r3c6}
+set {conc_r3c6} {0.4}
+global {conc_r3c7}
+set {conc_r3c7} {0.4}
+global {conc_r3c8}
+set {conc_r3c8} {0.4}
+global {conc_r3c9}
+set {conc_r3c9} {0.4}
+global {conc_r4.c1}
+set {conc_r4.c1} {0.2}
+global {conc_r4.c2}
+set {conc_r4.c2} {0.2}
+global {conc_r4.c3}
+set {conc_r4.c3} {0.2}
+global {conc_r4c1}
+set {conc_r4c1} {0.2}
+global {conc_r4c10}
+set {conc_r4c10} {0.3}
+global {conc_r4c11}
+set {conc_r4c11} {0.3}
+global {conc_r4c12}
+set {conc_r4c12} {0.3}
+global {conc_r4c2}
+set {conc_r4c2} {0.2}
+global {conc_r4c3}
+set {conc_r4c3} {0.2}
+global {conc_r4c4}
+set {conc_r4c4} {0.2}
+global {conc_r4c5}
+set {conc_r4c5} {0.2}
+global {conc_r4c6}
+set {conc_r4c6} {0.3}
+global {conc_r4c7}
+set {conc_r4c7} {0.3}
+global {conc_r4c8}
+set {conc_r4c8} {0.3}
+global {conc_r4c9}
+set {conc_r4c9} {0.3}
+global {conc_r5.c1}
+set {conc_r5.c1} {0.3}
+global {conc_r5.c2}
+set {conc_r5.c2} {0.3}
+global {conc_r5.c3}
+set {conc_r5.c3} {0.3}
+global {conc_r5c1}
+set {conc_r5c1} {0.3}
+global {conc_r5c10}
+set {conc_r5c10} {0.3}
+global {conc_r5c11}
+set {conc_r5c11} {0.3}
+global {conc_r5c12}
+set {conc_r5c12} {0.3}
+global {conc_r5c2}
+set {conc_r5c2} {0.3}
+global {conc_r5c3}
+set {conc_r5c3} {0.2}
+global {conc_r5c4}
+set {conc_r5c4} {0.2}
+global {conc_r5c5}
+set {conc_r5c5} {0.3}
+global {conc_r5c6}
+set {conc_r5c6} {0.3}
+global {conc_r5c7}
+set {conc_r5c7} {0.3}
+global {conc_r5c8}
+set {conc_r5c8} {0.3}
+global {conc_r5c9}
+set {conc_r5c9} {0.3}
+global {conc_r6c1}
+set {conc_r6c1} {0.4}
+global {conc_r6c2}
+set {conc_r6c2} {0.4}
+global {conc_r6c3}
+set {conc_r6c3} {0.4}
+global {conc_r6c4}
+set {conc_r6c4} {0.3}
+global {concfile}
+set {concfile} {file6}
+global {cresultsfil}
+set {cresultsfil} {file15}
+global {datum}
+set {datum} {Thu May 14 16:28:01 CEST 1998}
+global {density}
+set {density} {1.4}
+global {el}
+set {el(1)} {Na}
+set {el(2)} {O}
+global {elem_line}
+set {elem_line} {ka}
+global {elem_name}
+set {elem_name} {Fe}
+global {element}
+set {element} {O}
+global {estim}
+set {estim(0)} {0.0210937}
+set {estim(1)} {0.279173}
+set {estim(2)} {0.150003}
+set {estim(3)} {0.7}
+global {extralistlin}
+set {extralistlin} {}
+global {extrareg}
+set {extrareg} {Fe ka 50.0 None 0.00 LIF200 MLARGE}
+global {f}
+set {f} {.top17.frame4.entry(2)}
+global {fil}
+set {fil} {file6}
+global {fil2}
+set {fil2} {file5}
+global {filaresults}
+set {filaresults} {file11}
+global {filconc}
+set {filconc} {file11}
+global {fildeflin}
+set {fildeflin} {file13}
+global {fildefs}
+set {fildefs} {file6}
+global {filein}
+set {filein} {file6}
+global {fileout}
+set {fileout} {file4}
+global {fileselect_cancel}
+set {fileselect_cancel} {.fileSelectWindow.bframe.cancel}
+global {fileselect_dirlabel}
+set {fileselect_dirlabel} {.fileSelectWindow.file.dirlabel}
+global {fileselect_entry}
+set {fileselect_entry} {.fileSelectWindow.file.eframe.entry}
+global {fileselect_list}
+set {fileselect_list} {.fileSelectWindow.file.sframe.list}
+global {fileselect_ok}
+set {fileselect_ok} {.fileSelectWindow.bframe.okframe.ok}
+global {filesmplids}
+set {filesmplids} {file6}
+global {filint}
+set {filint} {file12}
+global {filistio}
+set {filistio} {file6}
+global {fillin}
+set {fillin} {file14}
+global {fillines}
+set {fillines} {file4}
+global {fillinextra}
+set {fillinextra} {file11}
+global {filout1}
+set {filout1} {file8}
+global {filout2}
+set {filout2} {file9}
+global {filplot}
+set {filplot} {file9}
+global {filsetconc}
+set {filsetconc} {file6}
+global {filsetintens}
+set {filsetintens} {file7}
+global {filslopes}
+set {filslopes} {file9}
+global {filsmpl}
+set {filsmpl} {file7}
+global {filsmpldef}
+set {filsmpldef} {file15}
+global {filter}
+set {filter} {0}
+global {fix}
+set {fix(0)} {0}
+set {fix(1)} {0}
+set {fix(2)} {0}
+set {fix(3)} {1}
+global {fixed}
+set {fixed} {0.7}
+global {formula}
+set {formula} {Na2O}
+global {fullijst}
+set {fullijst} {{Zr la1 30.0 None 0.00 LIF200 MLARGE 3.581105e+02} {Zr ka 50.0 None 0.00 LIF200 MLARGE 3.712660e+02} {Ru ka 50.0 None 0.00 LIF200 MLARGE 3.096550e+02} {Y ka 50.0 None 0.00 LIF200 MLARGE 3.527091e+02} {Hf lb1 50.0 None 0.00 LIF200 MLARGE 1.379792e+02} {Al ka 50.0 None 0.00 PE MLARGE 1.770616e+03} {Si ka 50.0 None 0.00 PE MLARGE 1.691958e+03} {K ka 50.0 None 0.00 LIF200 MLARGE 6.521413e+03} {Na ka 50.0 None 0.00 PX1 MLARGE 1.907666e+03} {Cl ka 50.0 None 0.00 PE MLARGE 4.216985e+03}}
+global {gfactor}
+set {gfactor} {1.0}
+global {homog}
+set {homog} {1}
+global {i}
+set {i} {1}
+global {i0array}
+set {i0array(0)} {5.688915e+02}
+set {i0array(1)} {1.432803e+01}
+set {i0array(2)} {5.999883e+01}
+global {intens}
+set {intens(0)} {22.0}
+set {intens(1)} {23.0}
+set {intens(2)} {24.0}
+set {intens(3)} {44.0}
+set {intens(4)} {55.0}
+set {intens(5)} {}
+set {intens(6)} {}
+set {intens(7)} {}
+global {inul}
+set {inul} {5.999883e+01}
+global {inulcnt}
+set {inulcnt} {3}
+global {j}
+set {j} {4}
+global {k}
+set {k} {3}
+global {kind}
+set {kind} {HOM}
+global {korteregel}
+set {korteregel} {Cl ka 50.0 None 0.00 PE MLARGE}
+global {kv-value}
+set {kv-value} {}
+global {kv_value}
+set {kv_value} {50.0}
+global {lijstcomps}
+set {lijstcomps} {{Na2O 2.27  AT 2  Na 2 O 1} {AlPO4 2.566 AT 3  Al 1 P 1 O 4} {Al2O3 3.965 AT 2  Al 2 O 3} {BaO 5.72 AT 2  Ba 1 O 1} {CaO 3.3 AT 2  Ca 1 O 1} {Ce2O3 6.86 AT 2  Ce 2 O 3} {CoO 6.45 AT 2  Co 1 O 1} {CuO 6.4 AT 2  Cu 1 O 1} {BaSO4 4.50 AT 3  Ba 1 S 1 O 4} {BaCl2 5.72 AT 2  Ba 1 Cl 2} {Al 2.702 AT 1  Al 1} {As 5.727 AT 1  As 1} {As2O3 3.738 AT 2  As 2 O 3} {As2O3 3.738 AT 2  As 2 O 3} {Bi 9.80 AT 1  Bi 1} {Bi2O3 8.9 AT 2  Bi 2 O 3} {Cd 8.642 AT 1  Cd 1} {CdO 8.15 AT 2  Cd 1 O 1} {Li2B4O7 1.4 AT 3  Li 2 B 4 O 7} {Si 2.33 AT 1  Si 1} {Ti 4.5 AT 1  Ti 1} {V 5.96 AT 1  V 1} {Cr 7.20 AT 1  Cr 1} {Mn 7.20 AT 1  Mn 1} {Fe 7.86 AT 1  Fe 1} {Co 8.9 AT 1  Co 1} {Ni 8.9 AT 1  Ni 1} {Cu 8.92 AT 1  Cu 1} {Zn 7.14 AT 1  Zn 1} {Mo 10.2 AT 1  Mo 1} {Sn 6.52 AT 1  Sn 1} {W 19.35 AT 1  W 1} {Pb 11.3 AT 1  Pb 1} {Zr 6.49 AT 1  Zr 1} {ZrO2 5.6 AT 2  Zr 1 O 2} {Y2O3 3.286 AT 2  Y 2 O 3} {HfO2 9.68 AT 2  Hf 1 O 2} {TiO2 4.26 AT 2  Ti 1 O 2} {Fe2O3 5.24 AT 2  Fe 2 O 3} {SiO2 2.32 AT 2  Si 1 O 2} {V2O5 3.357 AT 2  V 2 O 5} {NEP 5.72 AT 1  Gd 1} {Gd 5.72 AT 1  Gd 1} {Hf 5.72 AT 1  Hf 1} {Nb 8.57 AT 1  Nb 1} {P 2.34 AT 1  P 1} {S 2.07 AT 1  S 1} {HgO 2.34456 AT 2  Hg 1 O 1} {K2O 1.23456 AT 2  K 2 O 1} {Na2O 1.4 AT 2  Na 2 O 1}}
+global {lijstconcs}
+set {lijstconcs} {{4 10.0 Al2O3 0.05 Ce2O3 0.05 Fe2O3 0.05 Li2B4O7 0.85} {4 10.0 Al2O3 0.10 Ce2O3 0.10 Fe2O3 0.10 Li2B4O7 0.70}}
+global {lijstintens}
+set {lijstintens} {}
+global {line_cnt}
+set {line_cnt} {1}
+global {line_nr}
+set {line_nr} {1}
+global {linecnt}
+set {linecnt} {3}
+global {linedef}
+set {linedef(0)} {Al ka 50.0 None 0.00 PX1 MLARGE}
+set {linedef(1)} {Ce ka 50.0 None 0.00 LIF200 MLARGE}
+set {linedef(2)} {Fe ka 50.0 None 0.00 LIF200 MLARGE}
+global {linesextra}
+set {linesextra} {file5}
+global {linesfil}
+set {linesfil} {file4}
+global {listcomps}
+set {listcomps} {{Al 2.702 AT 1  Al 1} {Al2O3 3.965 AT 2  Al 2 O 3} {AlPO4 2.566 AT 3  Al 1 P 1 O 4} {As 5.727 AT 1  As 1} {As2O3 3.738 AT 2  As 2 O 3} {As2O3 3.738 AT 2  As 2 O 3} {BaCl2 5.72 AT 2  Ba 1 Cl 2} {BaO 5.72 AT 2  Ba 1 O 1} {BaSO4 4.50 AT 3  Ba 1 S 1 O 4} {Bi 9.80 AT 1  Bi 1} {Bi2O3 8.9 AT 2  Bi 2 O 3} {CaO 3.3 AT 2  Ca 1 O 1} {Cd 8.642 AT 1  Cd 1} {CdO 8.15 AT 2  Cd 1 O 1} {Ce2O3 6.86 AT 2  Ce 2 O 3} {Co 8.9 AT 1  Co 1} {CoO 6.45 AT 2  Co 1 O 1} {Cr 7.20 AT 1  Cr 1} {Cu 8.92 AT 1  Cu 1} {CuO 6.4 AT 2  Cu 1 O 1} {Fe 7.86 AT 1  Fe 1} {Fe2O3 5.24 AT 2  Fe 2 O 3} {Gd 5.72 AT 1  Gd 1} {Hf 5.72 AT 1  Hf 1} {HfO2 9.68 AT 2  Hf 1 O 2} {HgO 2.34456 AT 2  Hg 1 O 1} {K2O 1.23456 AT 2  K 2 O 1} {Li2B4O7 1.4 AT 3  Li 2 B 4 O 7} {Mn 7.20 AT 1  Mn 1} {Mo 10.2 AT 1  Mo 1} {NEP 5.72 AT 1  Gd 1} {Na2O 1.4 AT 2  Na 2 O 1} {Na2O 2.27  AT 2  Na 2 O 1} {Nb 8.57 AT 1  Nb 1} {Ni 8.9 AT 1  Ni 1} {P 2.34 AT 1  P 1} {Pb 11.3 AT 1  Pb 1} {S 2.07 AT 1  S 1} {Si 2.33 AT 1  Si 1} {SiO2 2.32 AT 2  Si 1 O 2} {Sn 6.52 AT 1  Sn 1} {Ti 4.5 AT 1  Ti 1} {TiO2 4.26 AT 2  Ti 1 O 2} {V 5.96 AT 1  V 1} {V2O5 3.357 AT 2  V 2 O 5} {W 19.35 AT 1  W 1} {Y2O3 3.286 AT 2  Y 2 O 3} {Zn 7.14 AT 1  Zn 1} {Zr 6.49 AT 1  Zr 1} {ZrO2 5.6 AT 2  Zr 1 O 2}}
+global {listlines}
+set {listlines} {{Fe ka 50.0}}
+global {listslopes}
+set {listslopes} {2.364943e+02 4.029339e+02 7.000965e+01}
+global {lstoutline}
+set {lstoutline} {Al ka 50.0 None 0.00 PX1 MLARGE 0.0210937 Ce ka 50.0 None 0.00 LIF200 MLARGE 0.279173 Fe ka 50.0 None 0.00 LIF200 MLARGE 0.150003}
+global {lstregel}
+set {lstregel} {Cl ka 50.0 None 0.00 PE MLARGE 4.216985e+03}
+global {lstregel1}
+set {lstregel1} {12.0 4.0 9.0}
+global {mask}
+set {mask} {MLARGE}
+global {mintens}
+set {mintens(10)} {24.0}
+set {mintens(11)} {14.0}
+set {mintens(12)} {22.0}
+set {mintens(13)} {33.0}
+set {mintens(14)} {44.0}
+set {mintens(15)} {44.0}
+set {mintens(16)} {55.0}
+set {mintens(3)} {1.000}
+set {mintens(4)} {1.0}
+set {mintens(5)} {11.0}
+set {mintens(6)} {12.0}
+set {mintens(7)} {13.0}
+set {mintens(8)} {22.0}
+set {mintens(9)} {23.0}
+global {mth}
+set {mth} {10.0}
+global {mthc}
+set {mthc(1)} {10.0}
+set {mthc(2)} {10.0}
+set {mthc(3)} {10.0}
+set {mthc(4)} {100}
+global {mthc1}
+set {mthc1} {100}
+global {mthc10}
+set {mthc10} {100}
+global {mthc11}
+set {mthc11} {100}
+global {mthc12}
+set {mthc12} {100}
+global {mthc2}
+set {mthc2} {100}
+global {mthc3}
+set {mthc3} {100}
+global {mthc4}
+set {mthc4} {100}
+global {mthc5}
+set {mthc5} {100}
+global {mthc6}
+set {mthc6} {100}
+global {mthc7}
+set {mthc7} {100}
+global {mthc8}
+set {mthc8} {100}
+global {mthc9}
+set {mthc9} {100}
+global {name_comp}
+set {name_comp} {Fe2O3}
+global {name_compd}
+set {name_compd(0)} {Al2O3}
+set {name_compd(1)} {Ce2O3}
+set {name_compd(2)} {Fe2O3}
+set {name_compd(3)} {Li2B4O7}
+global {nep}
+set {nep} {conc_r3.C2 {Ca ka 50.0 None 0.00 LIF200 MLARGE 11.111 } {Ba la1 50.0 None 0.00 LIF200 MLARGE 125.757 } {Cu ka 50.0 None 0.00 LIF200 MLARGE 136.214 } {Ca ka 50.0 None 0.00 LIF200 MLARGE 11.111 }}
+global {nr_compounds}
+set {nr_compounds} {4}
+global {nr_comps}
+set {nr_comps} {3}
+global {nr_elms}
+set {nr_elms} {2}
+global {nr_elmsa}
+set {nr_elmsa} {3}
+global {nr_line_unkn}
+set {nr_line_unkn} {3}
+global {nr_of_intens}
+set {nr_of_intens} {0}
+global {nr_of_samples}
+set {nr_of_samples} {2}
+global {nr_samples}
+set {nr_samples} {1}
+global {nr_smplids}
+set {nr_smplids} {2}
+global {nummer}
+set {nummer} {-1}
+global {partic}
+set {partic} {0}
+global {partlist}
+set {partlist} {Al2O3 0.10 Ce2O3 0.10 Fe2O3 0.10 Li2B4O7 0.70}
+global {partlistint}
+set {partlistint} {22.0 23.0 24.0}
+global {psi1}
+set {psi1} {61.0}
+global {psi2}
+set {psi2} {40.0}
+global {pwfile}
+set {pwfile} {file4}
+global {regel}
+set {regel} {}
+global {regel1}
+set {regel1} {Na2O 1.4 AT 2  Na 2 O 1}
+global {regel2}
+set {regel2} {      COM NEP HOM 5.0  }
+global {regel3}
+set {regel3} {7.000965e+01}
+global {regel_comp}
+set {regel_comp} {Fe2O3 5.24 AT 2  Fe 2 O 3}
+global {regg}
+set {regg} {Fe ka 50.0}
+global {rescalfil}
+set {rescalfil} {file13}
+global {resnummer}
+set {resnummer} {1}
+global {rij}
+set {rij} {5}
+global {sample_name}
+set {sample_name} {no1}
+global {shortlist}
+set {shortlist} {{Zr la1 30.0 None 0.00 LIF200 MLARGE} {Zr ka 50.0 None 0.00 LIF200 MLARGE} {Ru ka 50.0 None 0.00 LIF200 MLARGE} {Y ka 50.0 None 0.00 LIF200 MLARGE} {Hf lb1 50.0 None 0.00 LIF200 MLARGE} {Al ka 50.0 None 0.00 PE MLARGE} {Si ka 50.0 None 0.00 PE MLARGE} {K ka 50.0 None 0.00 LIF200 MLARGE} {Na ka 50.0 None 0.00 PX1 MLARGE} {Cl ka 50.0 None 0.00 PE MLARGE}}
+global {sid}
+set {sid(1)} {STD-1}
+set {sid(2)} {STD-2}
+set {sid(3)} {S3}
+set {sid(4)} {SAMPLE_NR3}
+global {sidc}
+set {sidc(1)} {STD-1}
+set {sidc(2)} {STD-2}
+set {sidc(3)} {S3}
+global {sidlines}
+set {sidlines} {STD-2}
+global {sim_on}
+set {sim_on} {Simulate}
+global {slope}
+set {slope} {4.029339e+02}
+global {smpl_name}
+set {smpl_name} {STD-2}
+global {smplcnt}
+set {smplcnt} {2}
+global {tblintens}
+set {tblintens(10)} {intens(0)}
+set {tblintens(11)} {intens(1)}
+set {tblintens(12)} {intens(2)}
+global {tcl_nonwordchars}
+set {tcl_nonwordchars} {[^a-zA-Z0-9_]}
+global {tcl_wordchars}
+set {tcl_wordchars} {[a-zA-Z0-9_]}
+global {thickness}
+set {thickness} {5.0}
+global {tmplijst}
+set {tmplijst} {4 10.0 Al2O3 0.10 Ce2O3 0.10 Fe2O3 0.10 Li2B4O7 0.70}
+global {total_comps}
+set {total_comps} {50}
+global {tube_el}
+set {tube_el} {Cr}
+global {voidfract}
+set {voidfract} {0.1}
+global {voidsize}
+set {voidsize} {}
+global {vorigfilt}
+set {vorigfilt} {0.00}
+global {wt}
+set {wt} {0}
+global {xtal}
+set {xtal} {LIF200}
+global {{Ba la1 50.0 None 0.00 LIF200 MLARGE 125.757 }}
+set {{Ba la1 50.0 None 0.00 LIF200 MLARGE 125.757 }} {{Cu ka 50.0 None 0.00 LIF200 MLARGE 136.214 }}
+
+# please don't modify the following
+# variables. They are needed by xf.
+global {autoLoadList}
+set {autoLoadList(combi102)} {0}
+set {autoLoadList(combi134)} {0}
+set {autoLoadList(combi150)} {0}
+set {autoLoadList(combi223)} {0}
+set {autoLoadList(combitstn)} {0}
+set {autoLoadList(xrfcombi)} {0}
+global {internalAliasList}
+set {internalAliasList} {}
+global {moduleList}
+set {moduleList(combi102)} {}
+set {moduleList(combi134)} {}
+set {moduleList(combi150)} {}
+set {moduleList(combi223)} {}
+set {moduleList(combitstn)} {}
+set {moduleList(xrfcombi)} {}
+global {preloadList}
+set {preloadList(xfInternal)} {}
+global {symbolicName}
+set {symbolicName(root)} {.}
+global {xfWmSetPosition}
+set {xfWmSetPosition} {.top0 .top6 .top1 .top3 .top2 .top4 .top12 .top13 .top9 .top15 .top5 .top16 .top17 .top18 . .top19 .top20 .top22 .top7 .top10 .top8 .top11}
+global {xfWmSetSize}
+set {xfWmSetSize} {.top2 .top13 .top18}
+global {xfAppDefToplevels}
+set {xfAppDefToplevels} {}
+
+# display/remove toplevel windows.
+ShowWindow.
+
+global xfShowWindow.top0
+set xfShowWindow.top0 0
+
+global xfShowWindow.top1
+set xfShowWindow.top1 0
+
+global xfShowWindow.top10
+set xfShowWindow.top10 0
+
+global xfShowWindow.top11
+set xfShowWindow.top11 0
+
+global xfShowWindow.top12
+set xfShowWindow.top12 0
+
+global xfShowWindow.top13
+set xfShowWindow.top13 0
+
+global xfShowWindow.top14
+set xfShowWindow.top14 0
+
+global xfShowWindow.top15
+set xfShowWindow.top15 0
+
+global xfShowWindow.top16
+set xfShowWindow.top16 0
+
+global xfShowWindow.top17
+set xfShowWindow.top17 0
+
+global xfShowWindow.top18
+set xfShowWindow.top18 0
+
+global xfShowWindow.top19
+set xfShowWindow.top19 0
+
+global xfShowWindow.top2
+set xfShowWindow.top2 0
+
+global xfShowWindow.top20
+set xfShowWindow.top20 0
+
+global xfShowWindow.top21
+set xfShowWindow.top21 0
+
+global xfShowWindow.top22
+set xfShowWindow.top22 0
+
+global xfShowWindow.top25
+set xfShowWindow.top25 0
+
+global xfShowWindow.top3
+set xfShowWindow.top3 0
+
+global xfShowWindow.top4
+set xfShowWindow.top4 0
+
+global xfShowWindow.top5
+set xfShowWindow.top5 0
+
+global xfShowWindow.top6
+set xfShowWindow.top6 0
+
+global xfShowWindow.top7
+set xfShowWindow.top7 0
+
+global xfShowWindow.top8
+set xfShowWindow.top8 0
+
+global xfShowWindow.top9
+set xfShowWindow.top9 0
+
+# load default bindings.
+if {[info exists env(XF_BIND_FILE)] &&
+    "[info procs XFShowHelp]" == ""} {
+  source $env(XF_BIND_FILE)
+}
+
+# initialize bindings for all widgets.
+XFInitAllBindings
+
+
+# parse and apply application defaults.
+XFLocalLoadAppDefs Combitstn
+XFLocalSetAppDefs
+
+# eof
+#
+

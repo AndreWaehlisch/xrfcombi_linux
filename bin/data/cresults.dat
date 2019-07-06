@@ -1,0 +1,32 @@
+Calibration Results   Mon Mar 15 14:17:46 GMT+1 2004   
+
+----------------------------------------------
+
+
+
+name #cmpds mth  compound  fraction ...
+
+                                           
+
+50A  2 0.5972 Mn3O4 0.0760859 Li2B4O7 0.92391
+
+50D  2 0.5619 Mn3O4 0.0752429 Li2B4O7 0.92476
+
+50G  2 0.4933 Mn3O4 0.0253550 Li2B4O7 0.97465
+
+-------------------------------------------------
+  
+
+Sample Id | int line 1 | int line 2 | ....      
+
+50A 4.606
+
+50D 4.551
+
+50G 1.823
+
+-----------slopes calibration lines ------
+
+
+
+Mn ka 50.0 Al 0.081 LIF200 MLARGE  1.866463e+01

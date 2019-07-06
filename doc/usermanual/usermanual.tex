@@ -1,0 +1,718 @@
+\documentstyle[12pt,supertabular, epsf]{article}
+\title{XRFCOMBI\\
+User Manual}
+\author{M.Bos\\
+Herikebrink 87\\
+7544 ES ENSCHEDE\\
+NETHERLANDS}
+\date{March 2004}
+\begin{document}
+\maketitle
+\section{INTRODUCTION}
+The first version of this manual described the installation
+ and use of the set of
+programs described in the papers {\em M.Bos, J.A.M. Vrielink, Anal.Chim.Acta 373(1998)291}
+   and 
+{\em M.Bos, J.A.M.Vrielink, W.E. van der Linden,\\ Anal.Chim.Acta, 412(2000)203}.
+ It now contains additional information concerning
+corrections for double photon interactions concerning scatter.
+ The user interface
+is written in Tk/Tcl. Menu buttons give access to the various programs
+and some utilities to simplify data entry. Data transfer between
+the various programs is performed by temporary ascii-files that can be inspected
+(and edited) by any plain ascii text editor.
+
+The calculation methods {\bf XRFSMPLX}, {\bf XRFROUS},\\
+ {\bf SMPLX/SCATTER} and
+{\bf SMPLX/GICAL}  handle concentrations of
+sample components in terms of chemical compounds directly and produces
+results in terms of the concentrations of chemical compounds. All other
+programs start with a conversion of the initial  estimate of the
+sample composition to an estimated elemental composition, refine this
+elemental composition and produce the result also as an elemental composition.
+
+The choice of the program to use for calculating analytical results
+should be governed by the guidelines given in the abovementioned papers.
+
+In March 2004 the program {\bf xrfcombi} was extended with
+ the incorporation of second order processes
+comprising one scattering event and one photoelectric absorption based  
+on the work of G.Tirao and G.Stutz, X-Ray Spectrom. 32 (2003)13.
+For the rayleigh scattering thr RTAB database from L.Kissel is used.
+(http://www-phys.llnl.gov/Research/scattering).
+Compton scattering is handled by a closed equation based on the Thomas-Fermi
+model.
+
+Apart from the user interface {\bf xrfcombi} and its associated programs
+that can be run from it, the {\bf bin} directory contains 2 standalone programs
+{\bf simmul} and {\bf xrfmul} that deal with multilayers.
+
+Bug reports and suggestions for improvement of the programs can be sent
+by e-mail to m.bos@misc.utwente.nl.
+
+\section{INSTALLATION}
+\subsection{Linux}
+The software is available as a gzipped tar archive {\bf xrfcombi021b.tgz}
+and can be unpacked in  a user directory by the command:
+\begin{verbatim}
+tar -xvzf xrfcombi020.tgz
+\end{verbatim}
+
+To function the software needs an installed version of Tk/Tcl. The program
+{\bf wish} of this package should be reachable via {\bf /usr/XR11R6/bin/wish}.
+If this is not the place of
+{\bf wish}, the first line of the script\\ {\bf \~/combiscat/bin/xrfcombi}
+should be adapted to point to the place of {\bf wish}.
+
+The package {\em gnuplot} should be available if one wants to
+use the plot option in the File menu of the calibration step
+to display calibration lines.
+
+The printing of results is routed via the standard unix printer of
+the {\bf lpr} command. So attention has to be paid to the {\bf printcap} file.
+
+
+\subsection{W95/W98/W2000}
+The software is available as a zipped archive and can be unpacked
+in a user directory. 
+To function the software needs an installed version of Tk/Tcl for Windows.
+The package {\em gnuplot} should be available if one wants to
+use the plot option in the File menu of the calibration step
+to display calibration lines.
+The printing of results is routed via a utility program {\bf lprint.exe}
+which copies the output to be printed in plain ascii to the port {\bf LPT1}.
+If no printer is connected to this port the program will hang.
+
+
+\section{USING THE PROGRAM}
+Once installed the program can be started in its working directory
+{\bf ~/combiscat/bin} (Linux) or {\bf $\backslash$ xrf $\backslash$ bin} (Windows)
+by typing {\bf xrfcombi} (Linux) or {\bf xrfgo} (Windows)
+ after which the main menu bar  (see figure
+\ref{mainmenu}) shows up.
+\setlength{\unitlength}{1.0cm}
+\begin{figure}[ht]
+\begin{picture}(10,1)
+\put(2,0)
+{\setlength{\epsfxsize}{10.0cm}\leftline{\epsffile{mainmenu.eps}}}
+\end{picture}
+\caption{Main menu of XRFCOMBI}
+\label{mainmenu}
+\end{figure}
+
+ The first thing to do now is to set
+the spectrometer characteristics by clicking on the {\bf Spectrometer}
+button with the left mouse button. Now a data-entry form 
+{\bf SPECTROM.PARAM} appears (figure \ref{spectrom})
+\setlength{\unitlength}{1.0cm}
+\begin{figure}[ht]
+\begin{picture}(7,4)
+\put(3,0)
+{\setlength{\epsfxsize}{7.0cm}\leftline{\epsffile{spectrom.eps}}}
+\end{picture}
+\caption{Entry form for spectrometer data}
+\label{spectrom}
+\end{figure}
+ and all items of it should be filled
+out by mouse clicking on the entry and typing the pertinent data
+in the entries  box. When done the {\bf To File} button should
+be clicked and the window can be dismissed.
+
+Depending on the task that has to be performed one can now make a choice
+with the buttons {\bf Simulate}, {\bf Calibrate} and {\bf Analyze}.
+{\bf Help} is not implemented yet.
+
+In the {\bf Simulate}, {\bf Calibrate} and {\bf Analyze} tasks
+one can define samples or standard samples in terms of already defined
+compounds. The definitions of these compounds are kept by the system
+in the file {\bf complist.dat}. New entries in this list can only
+be made via the {\bf Simulate} -$>$ {\bf Compounds} menu.
+
+\subsection{Simulate}
+The simulation menu is meant to calculate relative intensities for given
+lines belonging to elements of a sample with known composition.
+Clicking on the {\bf Simulate} button of the main menu bar produces
+the simulation menu (figure \ref{simmenu}) via which composition data 
+and the wanted lines can be given.
+\setlength{\unitlength}{1.0cm}
+\begin{figure}[ht]
+\begin{picture}(14,1)
+\put(0,0)
+{\setlength{\epsfxsize}{14.0cm}\leftline{\epsffile{simmenu.eps}}}
+\end{picture}
+\caption{Bar for Simulation Menu}
+\label{simmenu}
+\end{figure}
+
+\subsubsection{Compounds}
+Now the first thing to do is to check whether the systems knows all
+the compounds of which the sample has to be composed. This can be performed
+by clicking the {\bf Compounds} button that produces two windows,
+one named {\bf COMPOUNDS} that shows the list of all known compounds
+and an entry form to define new compounds (see figure \ref{defcomps}).
+\setlength{\unitlength}{1.0cm}
+\begin{figure}[ht]
+\begin{picture}(7,4)
+\put(3,0)
+{\setlength{\epsfxsize}{7.0cm}\leftline{\epsffile{defcomps.eps}}}
+\end{picture}
+\caption{Entry form for definition of Compounds}
+\label{defcomps}
+\end{figure}
+ If the list contains all
+the wanted compounds, the entry form can be dismissed. If not, this entry
+form should be filled out starting with the name of the compound to be
+defined in the
+{\bf FORMULA/NAME}  box.  Next the density of the compound should be
+entered in the density box. This quantity is not yet used in the 
+calculations, so at the moment this value is not important,
+but in the future it will be used to convert mass thickness to
+normal thickness, so it is better to enter the correct value here.
+Anyhow a value should be entered, otherwise the format of the 
+complist.dat file will be disturbed.
+
+In this release all compounds should be defined in terms of number
+of atoms of the elements present in the compound, so the radiobutton
+{\bf AT} should be on(red). If {\bf WT} is chosen the program refuses
+to accept the entry for now.
+
+Entering the number of different elements present in the compound
+in the box {\bf NR\_ELEMENTS} opens a number of entries
+in which the symbols of these elements should be entered, followed
+by the number of atoms of the element in the compound. When the
+information is entered correctly, then click the {\bf OK-ADD to FILE} button
+and proceed to the next compound to be defined, overwriting the
+info in the {\bf FORMULA/NAME} and density box. Clicking in the
+box {\bf NR\_ELEMENTS} removes the old element/number of atoms information
+and entering a new number of elements for the new compound creates
+fresh entries for the symbol/ number of atoms items.
+
+When the last new compound has thus been defined and
+been entered in the list 
+ with {\bf OK-ADD TO FILE},
+the entry form can be dismissed.
+
+\subsubsection{Sample}
+Clicking the {\bf Sample} button in the {\bf SIMULATION MENU} starts
+the definition of the composition of the sample for which
+the intensities have to be calculated. This action opens two windows,
+the {\bf COMPOUND SELECTION} window (figure \ref{compsel}) and
+the {\bf DEFINE SAMPLE} window (figure \ref{defsmpl}).
+\setlength{\unitlength}{1.0cm}
+\begin{figure}[ht]
+\begin{picture}(4,12)
+\put(5,0)
+{\setlength{\epsfxsize}{4.0cm}\leftline{\epsffile{compsel.eps}}}
+\end{picture}
+\caption{List box with compounds to select}
+\label{compsel}
+\end{figure}
+Continue by entering the requested data for {\bf NAME} and {\bf THICKNESS}
+\setlength{\unitlength}{1.0cm}
+\begin{figure}[ht]
+\begin{picture}(7,5)
+\put(3,0)
+{\setlength{\epsfxsize}{7.0cm}\leftline{\epsffile{defsmpl.eps}}}
+\end{picture}
+\caption{Entry form for definition of Sample}
+\label{defsmpl}
+\end{figure}
+in their boxes. Next click on the names of those compounds listed
+ in the {\bf COMPOUND
+SELECTION} listbox that should be included in the sample. These compounds 
+will appear automatically as entries in the {\bf DEFINE SAMPLE}
+entry form. When all necessary compounds have been selected,
+dismiss the {\bf COMPOUND SELECTION} box. Then adjust the
+fractions of the compounds in the {\bf DEFINE SAMPLE} form to the right
+values either by overwriting the fractions shown or just entering them
+in their boxes. Now click on the {\bf OK ADD TO FILE} button. If you plan
+to do calculations on a sample with the same compounds but with  different
+contents or with a different thickness, do not dismiss this entry form to be able to use
+it later without having to select all compounds again.
+
+The boxes {\bf HOMOGENEOUS}, {\bf PARTICULATE}, {\bf VOID FRACTION}
+and {\bf VOID SIZE}  are not yet used in the program, so don't bother
+with them.
+
+Now the lines for which the intensities have to be calculated
+should be entered. Start this process by clicking
+on the {\bf Lines} button of the {\bf SIMULATION MENU}. This opens
+the {\bf DEFINE LINES} entry form (figure \ref{deflines}).
+\setlength{\unitlength}{1.0cm}
+\begin{figure}[ht]
+\begin{picture}(7,11)
+\put(4,0)
+{\setlength{\epsfxsize}{7.0cm}\leftline{\epsffile{deflines.eps}}}
+\end{picture}
+\caption{Entry form for definition of lines}
+\label{deflines}
+\end{figure}
+This entry form is also used in other places in the program where more data
+is needed than for the simulations that we are dealing with now,
+so not all entries need to be filled. It suffices
+to enter the data on {\bf Element} (symbol only),
+{\bf Line} (line type ka, kb1, kb2, la1, la2, lb1 etc.),
+{\bf kV} (the voltage the x-ray tube is operated on in kV when
+the line is measured) and to set the radiobutton {\bf FILTER ON}. When
+the latter button is red the calculations are performed for the
+presence of an aluminium filter of 300 $\mu$m in the primary beam (we have
+only this one filter).
+
+Pressing {\bf OK ADD TO LIST} enters this line into the list
+and when all lines have thus been entered, pressing {\bf CLOSE FILE}
+writes this list to a diskfile that is used in the calculations. 
+After all lines have been entered the form can be dismissed.
+
+At this stage sufficient data has been entered to start the
+simulation calculations by clicking on the {\bf Simulate} button
+of the {\bf SIMULATION MENU}. A DropDown Menu  opens and a choice 
+between calculations with or without scattering has to be made by
+click on one of the entries {\bf Simulate no scatter} 
+and {\bf Simulate with scatter}.
+When the calculations are ready the results can be inspected
+by openening the {\bf Viewer} dropdown menu on the {\bf SIMULATION
+MENU} bar and clicking on the {\bf View Results Simulation} item.
+This dropdown menu also gives the opportunity to inspect
+all data files used for the calculation to check for entry errors.
+The results can also be printed by opening the {\bf Print}
+dropdown menu and choosing {\bf Print results}.
+
+If the {\bf DEFINE SAMPLE} entry form was not dismissed earlier
+it is now possible to repeat the calculations for a different
+composition or thickness just by changing the pertinent data
+in this entry form, writing it to file by clicking on {\bf OK ADD TO FILE}
+button of this {\bf DEFINE SAMPLE MENU} form and clicking the {\bf Simulate}
+button again, followed by Viewing or Printing.
+
+When done with all the needed simulations, dismiss the {\bf DEFINE
+SAMPLE} entry form and dismiss the {\bf SIMULATION MENU} by clicking
+on the {\bf Dismiss Sim. Menu} button on its bar.
+
+\subsection{Calibrate}
+The button {\bf Calibrate} opens the menu bar  for the calibration
+process (see figure \ref{calmenu}).
+\setlength{\unitlength}{1.0cm}
+\begin{figure}[ht]
+\begin{picture}(14,1)
+\put(0,0)
+{\setlength{\epsfxsize}{14.0cm}\leftline{\epsffile{calmenu.eps}}}
+\end{picture}
+\caption{Menu bar for calibration}
+\label{calmenu}
+\end{figure}
+
+Data is needed on the composition of the standard samples
+used for the calibration and on the  measured fluorescence lines and
+their intensities. Entry forms for this data can be opened
+by clicking on the buttons {\bf Define Sample} (the compounds 
+composing the sample), {\bf Enter Concs} (the fractions  of these
+compounds in the standard), {\bf Define Lines} (the nature of
+the lines used in the calibration) and {\bf Enter intensities}
+(the measured intensities for all measured lines for all samples).
+
+The data should be entered in a specific order: {\bf Define Sample} -$>$
+{\bf Enter Concs} -$>$ {\bf Define Lines} -$>$ {\bf Enter intensities}.
+
+\subsubsection{Define Sample}
+Clicking on the {\bf Define Sample} button of the {\bf CALIBRATION MENU} bar
+opens the listbox {\bf COMPOUND SELECTION} (see figure \ref{compsel} containing all the compounds that
+ the system knows of and a box {\bf SAMPLE COMPOUNDS} that shows the
+compounds entered thus far (see figure \ref{sampcomp}). 
+\setlength{\unitlength}{1.0cm}
+\begin{figure}[ht]
+\begin{picture}(7,4)
+\put(3,0)
+{\setlength{\epsfxsize}{7.0cm}\leftline{\epsffile{sampcomp.eps}}}
+\end{picture}
+\caption{Window showing compounds in sample}
+\label{sampcomp}
+\end{figure}
+Compounds are entered into the sample by clicking on their name 
+in the listbox {\bf COMPOUND SELECTION}. There is no error correction
+possibility. On an error just dismiss the {\bf SAMPLE COMPOUNDS} box
+and start again by clicking on the {\bf Define Sample} button of the
+{\bf CALIBRATION MENU}. When all compounds that are needed have been entered,
+dismiss both boxes.
+
+\subsubsection{Enter Concs}
+The entry of the composition of the various calibration samples is started
+by clicking on the {\bf Enter Concs} button of the {\bf CALIBRATION MENU} bar.
+This action opens an entry form {\bf ENTER CONCS} (see figure \ref{entcon})
+\setlength{\unitlength}{1.0cm}
+\begin{figure}[ht]
+\begin{picture}(7,4)
+\put(3,0)
+{\setlength{\epsfxsize}{7.0cm}\leftline{\epsffile{entcon.eps}}}
+\end{picture}
+\caption{Entry form for concentrations of compounds in sample}
+\label{entcon}
+\end{figure}
+and a table {\bf TABLE OF CONCS} (see figure \ref{tblconcs}) that gives
+an overview of the composition of the standard samples entered thus far.
+\setlength{\unitlength}{1.0cm}
+\begin{figure}[ht]
+\begin{picture}(10,5)
+\put(2,0)
+{\setlength{\epsfxsize}{10.0cm}\leftline{\epsffile{tblconcs.eps}}}
+\end{picture}
+\caption{table of entered sample compositions}
+\label{tblconcs}
+\end{figure}
+The entry form should be filled with a sample identification 
+({\bf Sample ID}), the massthickness in g/cm2 of the sample and
+the fractions of its constituents. If all entries have been entered
+correctly the {\bf Enter} button should be pressed to copy
+the data for this particular sample to the table where it appears
+automatically. When all standard samples have been treated, the
+{\bf Done} button of the entry form can be clicked.
+
+The next step is to check the contents of the table {\bf TABLE OF CONCS}.
+If there are mistakes, then correct them by clicking on the
+pertinent box and type the correct value. When all is ok, then
+click on the {\bf OK} button of the table. 
+
+\subsubsection{Define Lines}
+With the {\bf Define Lines} button the same entry form as used
+in the Simulate menu is opened to indicate which X-Ray Fluorescence Lines
+haven been measured (see figure \ref{deflines}). Now, however, we are
+dealing with specific measurements, so all information should be
+entered correctly. In our laboratory we we either measure with a large 
+mask or a small one, or we measure in cups closed with a mylar film.
+The choice can be indicated by clicking on the correct radiobutton.
+
+Furthermore we have the choice between four analyzing crystals. The 
+choice is indicated to the system by clicking on one of the
+radiobuttons {\bf LIF-200}, {\bf GE}, {\bf PE} or {\bf PX1}.
+
+The only thing the system does with this data is to mark calculated
+calibration constants as belonging to these specific conditions 
+(in the file {\bf listio.dat}), so that
+in the analyzing phase the correct calibration constants can be found
+for a given set of measurement conditions. So if you don't find
+your wanted conditions concerning masks and analyzing crystals
+here, just pick one and be consistent in using it.
+
+\subsubsection{Enter intensities}
+The final thing to do before the calculations can be
+started is to enter the measured intensities for all standard samples.
+The process is started by clicking on the {\bf Enter intensities} button
+of the {\bf CALIBRATION MENU} bar. This opens and entry form
+{\bf ENTER INTENSITIES} in which the intensities measured for the
+indicated sample should be given (see figure \ref{entint}).
+\setlength{\unitlength}{1.0cm}
+\begin{figure}[ht]
+\begin{picture}(7,5)
+\put(2,0)
+{\setlength{\epsfxsize}{7.0cm}\leftline{\epsffile{entint.eps}}}
+\end{picture}
+\caption{Entry form for measured intensities}
+\label{entint}
+\end{figure}
+Clicking
+on the {\bf Enter} button of this form copies the data to the
+{\bf TABLE OF INTENSITIES} (figure \ref{tblints}). 
+\setlength{\unitlength}{1.0cm}
+\begin{figure}[ht]
+\begin{picture}(10,4)
+\put(1,0)
+{\setlength{\epsfxsize}{10.0cm}\leftline{\epsffile{tblints.eps}}}
+\end{picture}
+\caption{Table of measured intensities}
+\label{tblints}
+\end{figure}
+If all  standard
+samples have been treated the entry box shrinks and can be dismissed.
+
+After checking the contents of the {\bf TABLE OF INTENSITIES} and
+correcting the mistakes, this table can be dismissed by clicking 
+its {\bf OK} button. The data is now written to a file which is used
+in the calibration calculations.
+
+\subsubsection{Results}
+The calibration results can now be obtained by clicking on 
+the {\bf Results} menubutton of the {\bf CALIBRATION MENU} bar.
+This opens a pull down menu with which the right type of calculations
+ can be started or  the
+results can be inspected and printed. The button {\bf Normal calibration}
+starts a calibration procedure that uses the normal relative intensities
+based on the intensities of the pure elements. With the button
+{\bf Gi-factor calibration} the calibration method from the paper
+"Non-destructive analysis of small irregularly shaped homogeneous
+samples by X-ray fluorescence spectrometry", M.Bos, et.al. in
+Anal.Chim.Acta 412(2000)203, is carried out. It is very well possible
+to perform the calibration calculation in both ways. The results
+are kept in different files, i.e. {\bf listio.dat} resp. {\bf listgi.dat}
+the list of calibration constants ({\bf listio.dat}) that the
+system uses in the analyzing phase. If scatter corrections are wanted in the
+analyzing phase, the calibration should be carried out using the menu choices
+{\bf Calibrate} -$>$ {\bf Results} -$>$ {\bf Scatter calibration}.
+
+\subsubsection{File}
+The {\bf CALIBRATION MENU} bar has a {\bf File} menubutton that gives
+access to some maintenance functions via a dropdown menu.
+The last item on this menu {\bf Quit calibration} closes the calibration
+menu bar. All files used in the calibration calculations can be archived
+by clicking on the {\bf Save Calib Data} entry of this menu.
+The entry {\bf Load Calib Data} restores archived calibration
+to the standard files, which then can be edited by hand if necessary
+so that a recalculation of calibration constants can be performed.
+
+Finally the calibration constants can be inspected graphically
+via the gnuplot program by clicking on the {\bf Plot Calib Data} entry
+of the {\bf File} menubutton.
+
+\subsection{Analyze}
+The button {\bf Analyze} on the main menu bar (figure \ref{mainmenu})
+opens the {\bf ANALYZE SAMPLES} menu bar (see figure \ref{analmenu}).
+\setlength{\unitlength}{1.0cm}
+\begin{figure}[ht]
+\begin{picture}(10,1)
+\put(1,0)
+{\setlength{\epsfxsize}{10.0cm}\leftline{\epsffile{analmenu.eps}}}
+\end{picture}
+\caption{Analyze menu bar}
+\label{analmenu}
+\end{figure}
+This bar shows a number of buttons that give access to the entry forms
+that should be filled out to enter data on the qualitative composition
+of the sample ({\bf Compounds in Sample}), the quantitative composition
+of the sample for those components of which the concentration
+is known together with the indication of the quantities
+to be calculated from the measurements, i.e. unknown concentrations
+and maybe the massthickness of the sample ({\bf Enter Concs}),
+the definition of the lines that were used in the measurements 
+({\bf Define Lines}) and the intensities of the measured lines ({\bf Enter
+intensities}).
+These entries should be dealt with in the order given.
+
+The {\bf Results} button gives access  to the various calculation
+methods and with the {\bf File} button data that has been entered
+can be archived or saved data can be retrieved and/or edited.
+
+Details for the various entry forms are given below.
+
+\subsubsection{Compounds in sample}
+The first thing to do in an analyzing session is clicking
+ on the {\bf Compounds in sample} button of the {\bf ANALYZE SAMPLES}
+menu bar and this  produces the same {\bf COMPOUNDS SELECTION}
+ listbox with compounds from which the
+samples can be composed as was used in the calibration menu 
+(figure \ref{compsel}). Clicking on the names of the wanted compounds
+enters them in the {\bf SAMPLE COMPOUNDS} table (see figure \ref{smplcomps}).
+\setlength{\unitlength}{1.0cm}
+\begin{figure}[ht]
+\begin{picture}(7,4)
+\put(3,0)
+{\setlength{\epsfxsize}{7.0cm}\leftline{\epsffile{smplcomps.eps}}}
+\end{picture}
+\caption{Table of sample compounds}
+\label{smplcomps}
+\end{figure}
+Both windows should be dismissed before continuing.
+
+\subsubsection{Enter Concs}
+The {\bf Enter Concs} button of the {\bf CALIBRATION MENU} bar
+opens an entry form and a table. The entry form {\bf ENTER CONCS}
+shows entries for the sample identification, the massthickness
+and the concentration of the constituents of the sample
+ (see figure \ref{concs}).
+\setlength{\unitlength}{1.0cm}
+\begin{figure}[ht]
+\begin{picture}(10,6)
+\put(2,0)
+{\setlength{\epsfxsize}{10.0cm}\leftline{\epsffile{concs.eps}}}
+\end{picture}
+\caption{Entry form for sample composition/unknowns}
+\label{concs}
+\end{figure}
+Unknown concentrations or an unknown
+massthickness should be given as  question marks. Concentrations
+that are known (i.e. the Li2B4O7 content) should be given as fractions
+and are kept fixed during the calculations.
+
+When this form has been completed for a sample to be analyzed the button
+{\bf Enter} of this form should be pressed to copy the data to the
+{\bf TABLE OF CONCS}. As soon as the data of the last sample has been entered
+this form can be dismissed by clicking on its {\bf Done} button.
+
+The next step is to inspect the {\bf TABLE OF CONCS} for errors, correcting
+them if there are any and copying them to a system file used
+in the calculations by clicking on its {\bf OK} button.
+
+\subsubsection{Define Lines}
+The definition  of the characteristics of the measured lines proceeds
+exactly as in the calibration section. It is stressed here that
+entering multiple lines for one element is only possible
+for the calculation methods that use the simplex algorithm ({\bf XRFSLMPX},
+{\bf SMPLX/GICAL} and {\bf SMPLX/SCATTER}). The other calculation method don't converge
+if multiple lines for one element are used.
+
+\subsubsection{Enter intensities}
+The procedure to enter the measured intensities is also the same
+as in the calibration menu.
+
+\subsubsection{Results}
+The button {\bf Results} of the {\bf ANALYZE SAMPLE} menu bar gives access
+to the various calculation methods as described in the Anal.Chim.Acta papers
+and a calculation method that includes the contribution of scatter to
+the intensities of the measured lines {\bf SMPLX/SCATTER}.
+The latter calculation method  should only be used if the 
+calibration has also been carried out including the contribution
+for scatter. Only in case the calibration is carried out with the pure
+element concerned as the only standard this is not necessary.
+
+Choose the wanted calculation
+method. The calculation results are available when the {\bf Results}
+button returns from its raised state to the flat state and then can
+be inspected with the {\bf View} item of the {\bf Results} menu
+or printed with the {\bf Print} item.
+
+N.B. Only the method {\bf SMPLX/SCATTER} includes scatter contributions and
+should be used with the corresponding calibration method.
+
+
+\subsubsection{File}
+The {\bf File} menu button of the {\bf ANALYZE SAMPLE} menu bar
+gives access to  utilities for editing, storing and retrieving
+the system files that are used in the calculation of the results.
+
+The {\bf Quit} item dismisses the {\bf ANALYZE SAMPLE} menu bar.
+ 
+\section{MULTILAYERS}
+ 
+Apart from the user interface {\bf xrfcombi} and its associated prgrams
+that can be run from it, the {\bf bin} directory contains 2 standalone programs
+{\bf simmul} and {\bf xrfmul} that deal with multilayers.
+
+Both programs can only be run from the commandline and rely on the
+presence of some data files in the {\bf bin/data } directory to provide 
+the needed input data.
+\subsection{simmul}
+{\bf simmul} needs the following datafiles
+in the ./bin/data directory:  (1) {\bf simsampl.dat} and (2) 
+{\bf deflines.dat}. The first contains the structure and quantitative
+composition of a multilayer sample, the second contains the names of the 
+lines for which the relative fluorescence intensities will be calculated.
+
+The file {\bf simsampl.dat} should contain the following data:\\
+\begin{enumerate}
+\item Line 1 - number of layers of the sample
+\item Line 2 - number of components of toplayer massthickness of toplayer
+followed by $n$ times a name of a compound from the list {\bf complist.dat} and its fraction in the toplayer. $n$ stands for the number of compounds that the
+toplayer consists of.
+\item Line 3 - same structure as line 2 but now for the layer beneath the toplayer.
+\item Line 4 - same structure als line 2 but now for the 3rd layer from the top
+etc.
+\end{enumerate}
+
+An example of {\bf simsampl.dat} is given below:
+\begin{verbatim}
+3
+2 0.0005  Cu 0.8  Zn 0.2
+3 0.001  Cu 0.1 Al 0.1 Zn 0.8
+1 10.0 BaTiO3 1.0
+\end{verbatim}
+This files describes a sample with a toplayer of 0.0005 g/cm2 Cu/Zn consisting of 80\% Cu and 20\% Zn , a middle layer of 0.001 g/cm2 Cu/Al/Zn  10/10/80 \% on
+a substrate of 10.0 g/cm2 pure bariumtitanate.
+
+The file {\bf deflines.dat} should contain the data on the fluorescence lines for 
+which the relative intensity will be calculated. It can be built by hand using an ascii editor,
+but it can also be constructed using {\bf xrfcombi} -$>$ Simulate -$>$ Lines.
+Its structure is as follows:\\
+\begin{itemize}
+\item Line 1 -  Element symbol line symbol kV setting 
+\item Line 2 - Element symbol Line symbol kV setting
+\item etc.
+\end{itemize}
+
+An example for the file {\bf deflines.dat}:\\
+\begin{verbatim}
+Cu ka 50.0
+Zn ka 50.0
+Al ka 50.0
+Ba la1 50.0
+Ti ka 50.0
+\end{verbatim}
+
+Using these files with simmul produces:\\
+\begin{verbatim}
+Rel. int Cu ka is 9.691811e-02 
+Rel. int Zn ka is 1.469369e-01 
+Rel. int Al ka is 2.873800e-04 
+Rel. int Ba la1 is 3.212512e-01 
+Rel. int Ti ka is 7.387456e-02 
+\end{verbatim}
+
+\subsection{xrfmul}
+The program {\bf xrfmul} can be used to calculate the composition and
+thickness of the layers of a multilayersample if sufficient measurement data is provided. This program needs 2 data files in de ./bin/data directory:
+(1) {\bf sample.dat} and (2) {\bf lines.dat}.
+The structure of the {\bf sample.dat} file is as follows:\\
+\begin{itemize}
+\item Line 1 - number of layers of the sample
+\item Line 2 - number of compounds of toplayer , massthickness of toplayer followed by eiher 0 or 1, 
+name of compound \#1 fraction of compound \#1 in toplayer followed by either 0 or 1, name of compound \#2 in toplayer , etc.
+\item line 3 same structure as line 2 but for layer beneath toplayer
+\item etc.
+\end{itemize}
+
+massthicknesses and fractions followed by a 0 are refined, those followed
+by a 1 are kept fixed.  For the quantities to be refined an estimate should be 
+given.
+
+An example for the same multilayer as given in the example for {\bf simmul}:\\
+\begin{verbatim}
+3
+2 0.0001 0 Cu 0.5 0 Zn 0.5 0
+3 0.0001 0 Al 0.33 0 Cu 0.33 0 Zn 0.8 1
+1 10.0 1 BaTiO3 1.0 1
+\end{verbatim}
+This setup determines the thickness and composition of the toplayer and the thickness of
+the second layer and its Al and Cu content. The Zn  content is fixed at 80\% and so are
+the thickness and composition of the substrate BaTiO3.
+
+The measurement data should be put in the file {\bf lines.dat} in the format:\\
+\begin{itemize}
+\item Line 1 - Element Symbol Line symbol kV setting relative intensity
+\item Line 2 - same structure for next fluorescence line
+\end{itemize}
+
+For the same example:
+\begin{verbatim}
+Ti ka 50.0 7.387456E-2
+Ba la1 50.0 3.212512E-1
+Al ka 50.0 2.8738E-4
+Zn ka 50.0 1.469369E-1
+Cu ka 50.0 9.691911E-2
+\end{verbatim}
+The relative intensity given in this file for each line should be calculated by hand
+from the measured intensity by dividing by the slope of the corresponding calibration line.
+
+Running {\bf xrfmul} with both these files in the ./bin/data  directory
+produces:
+\begin{verbatim}
+0 Z: 22 line ka rel int. 0.0738746 
+1 Z: 56 line la1 rel int. 0.321251 
+2 Z: 13 line ka rel int. 0.00028738 
+3 Z: 30 line ka rel int. 0.146937 
+4 Z: 29 line ka rel int. 0.0969181 
+Line nr 0 RXI found 0.0738745 RXI meas 0.0738746
+Line nr 1 RXI found 0.321251 RXI meas 0.321251
+Line nr 2 RXI found 0.00028738 RXI meas 0.00028738
+Line nr 3 RXI found 0.146937 RXI meas 0.146937
+Line nr 4 RXI found 0.0969183 RXI meas 0.0969181
+Layer 0 has 2 compounds and a massthickness of 0.0005  g/cm2
+Compound Cu wfract 0.8  
+Compound Zn wfract 0.2  
+Layer 1 has 3 compounds and a massthickness of 0.001  g/cm2
+Compound Al wfract 0.0999999  
+Compound Cu wfract 0.100001  
+Compound Zn wfract 0.8  
+Layer 2 has 1 compounds and a massthickness of 10  g/cm2
+Compound BaTiO3 wfract 1  
+Ssq is 1.43745e-15
+\end{verbatim}
+It is stressed that the calculations with {\bf xrfmul} and {\bf simmul}
+do not include scatter contributions. 
+\end{document}
+

@@ -1,0 +1,30 @@
+Fri Apr 16 20:19:55 GMT+1 2004
+
+-----Sample ID A2 PELLET ------
+
+
+line  kv    intens.
+
+Rh ka 60.0 24.6929 
+Rh la1 50.0 4.9218 
+Si ka 50.0 .2951 
+P ka 50.0 12.5941 
+Cl ka 50.0 6.5736 
+
+-----Sample ID A2 PELLET ------
+
+
+Warning maximum # iterations reached 
+
+Line  Rh ka RXI found 0.69747 RXI meas 0.678121
+Line  Rh la1 RXI found 0.285204 RXI meas 0.297863
+Line  Si ka RXI found 0.00458593 RXI meas 0.00459974
+Line  P ka RXI found 0.0921485 RXI meas 0.0964587
+Line  Cl ka RXI found 0.0813503 RXI meas 0.0815979
+
+Layer 0 has 4 compounds and a massthickness of 0.367712  g/cm2
+Compound SiO2 wfract 0.0124105  
+Compound PPh3 wfract 0.791133  
+Compound Cl wfract 0.0780726  
+Compound Rh wfract 0.114145  
+Ssq is 0.00520675

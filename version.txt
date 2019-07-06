@@ -1,0 +1,57 @@
+version 0.21  corrected error in xrfwang  date June 10th 2004
+
+version 0.20 beta release date March 12th 2004
+for scatter calcns + correction in code for tube filter
+the contents of the subdirectory abscoef is copied from the RTAB
+database described by L.Kissel UCRL-JC-137026 August 2000,
+accessible through http://www-phys.llnl.gov/research/scattering.
+
+
+Version 0.19 alfa release for scatter calculation date  Feb 7th 2004
+
+Feb 7th 2004 added influence of Rayleigh and Compton scatter
+in double photon interactions; new menu items : calibrate with
+scatter, simulate with scatter and analyze smplx/scatter
+
+Feb 11th 2003 new emutable.dat and gen_spec.c
+to spread charac wavelength effect over 2 spectrum points
+In \xrf\bin now also simmul.exe and xrfmul.exe
+Sources of these are in external directories
+
+
+Oct 19th 1998 Changed the spec_gen.c file to handle characteristic
+radiation of tube anode better
+
+Oct 29th 1998 changed enhanc.c file to exclude enhancement of lines
+with lambda < lambda0
+
+Dec 7th 1998 updated userman.ps with installation procedure
+             and compiled binaries with C++ version5 + optimizations
+
+Feb 15th 1999 changed calibratie.c : corrected memory allocation
+              for sigmxx etc. and added calcn of stdev for slope
+              in this routine
+
+June 1999    2nd correction of gen_spec.c
+             and improved intrasecflu.c
+
+Nov 1999     added wangs ratio method (modified) see
+             "non-destructive analysis of small irregularly
+              shaped homogeneous samples by X-ray fluorescence
+              spectrometry"
+              M.Bos, J.A.M. Vrielink, W.E. van der Linden
+              Anal.Chim.Acta, to be published.
+
+              changed xrfrous to convert calculated elemental
+              composition to compound composition of sample.
+
+April 2001    Changed file enhanc.c to use absorption edges
+              instead of wavelengths in condition tests for
+              enhancement
+
+
+Oct 2001      Changed xrfcombi and xrfsmplx.c xrfsmplx.exe
+              to suit Louise Vrielinks' needs for more
+              readable output of results from analyze with
+              xrfsmplx, i.e. line names instead of numbers
+              and including original measured intensities

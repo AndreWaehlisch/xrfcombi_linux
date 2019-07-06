@@ -1,0 +1,109 @@
+Fri Apr 23 12:48:57 GMT+1 2004
+
+-----Sample ID LSG8-2-6-4N ------
+
+
+line  kv    intens.
+
+Fe ka 50.0 2.2894 
+Ga ka 50.0 4.6764 
+Sr la1 50.0 0.2332 
+La la1 50.0 6.7574 
+
+-----Sample ID LSG8-2-6-4N ------
+
+
+Warning maximum # iterations reached 
+
+Line  Fe ka RXI found 0.0476268 RXI meas 0.0475967
+Line  Ga ka RXI found 0.119052 RXI meas 0.118902
+Line  Sr la1 RXI found 0.0332432 RXI meas 0.0332194
+Line  La la1 RXI found 0.64491 RXI meas 0.642461
+
+Layer 0 has 4 compounds and a massthickness of 10  g/cm2
+Compound Fe2O3 wfract 0.15185  
+Compound Ga2O3 wfract 0.268843  
+Compound SrO wfract 0.0923283  
+Compound La2O3 wfract 0.486979  
+Ssq is 2.30815e-05
+
+-----Sample ID LSG8-2-6-4Used ------
+
+
+line  kv    intens.
+
+Fe ka 50.0 1.8898 
+Ga ka 50.0 3.4168 
+Sr la1 50.0 0.2790 
+La la1 50.0 5.7353 
+
+-----Sample ID LSG8-2-6-4Used ------
+
+
+Warning maximum # iterations reached 
+
+Line  Fe ka RXI found 0.0406255 RXI meas 0.039289
+Line  Ga ka RXI found 0.0922288 RXI meas 0.0868752
+Line  Sr la1 RXI found 0.041881 RXI meas 0.0397436
+Line  La la1 RXI found 0.669142 RXI meas 0.545284
+
+Layer 0 has 4 compounds and a massthickness of 10  g/cm2
+Compound Fe2O3 wfract 0.139159  
+Compound Ga2O3 wfract 0.214439  
+Compound SrO wfract 0.115471  
+Compound La2O3 wfract 0.530931  
+Ssq is 0.0748172
+
+-----Sample ID LSG7-3-3-7-N ------
+
+
+line  kv    intens.
+
+Fe ka 50.0 4.3659 
+Ga ka 50.0 2.6899 
+Sr la1 50.0 0.4146 
+La la1 50.0 6.2244 
+
+-----Sample ID LSG7-3-3-7-N ------
+
+
+Warning maximum # iterations reached 
+
+Line  Fe ka RXI found 0.0904108 RXI meas 0.0907672
+Line  Ga ka RXI found 0.0682072 RXI meas 0.0683931
+Line  Sr la1 RXI found 0.0588199 RXI meas 0.0590598
+Line  La la1 RXI found 0.58405 RXI meas 0.591786
+
+Layer 0 has 4 compounds and a massthickness of 10  g/cm2
+Compound Fe2O3 wfract 0.273056  
+Compound Ga2O3 wfract 0.152315  
+Compound SrO wfract 0.148821  
+Compound La2O3 wfract 0.425808  
+Ssq is 0.000270217
+
+-----Sample ID LSG7-3-3-7-Used ------
+
+
+line  kv    intens.
+
+Fe ka 50.0 3.3411 
+Ga ka 50.0 1.4893 
+Sr la1 50.0 0.3751 
+La la1 50.0 4.9098 
+
+-----Sample ID LSG7-3-3-7-Used ------
+
+
+Warning maximum # iterations reached 
+
+Line  Fe ka RXI found 0.0764737 RXI meas 0.0694615
+Line  Ga ka RXI found 0.0398087 RXI meas 0.0378668
+Line  Sr la1 RXI found 0.0599219 RXI meas 0.053433
+Line  La la1 RXI found 0.640928 RXI meas 0.4668
+
+Layer 0 has 4 compounds and a massthickness of 10  g/cm2
+Compound Fe2O3 wfract 0.257442  
+Compound Ga2O3 wfract 0.0938876  
+Compound SrO wfract 0.152964  
+Compound La2O3 wfract 0.495706  
+Ssq is 0.197132
